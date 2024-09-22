@@ -1,0 +1,1 @@
+# plugins-latest-post-shortcode
