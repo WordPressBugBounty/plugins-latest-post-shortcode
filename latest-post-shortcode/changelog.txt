@@ -1,0 +1,385 @@
+== Changelog ==
+
+= 13.0.2 =
+* Fixed the card clickable elements
+
+= 13.0.1 =
+* Refined the card elements
+
+= 13.0.0 =
+* This is a major update, please keep a backup of your files before updating
+* Tested up to 6.6
+* Strip out possible quotation marks and quotation-like characters from the card content
+* Card accessibility enhancement
+* Auto placeholders optimization
+* Wrap the card text in element to ensure markup consistency for flex elements
+* Block updated to allow for additional blocks before the output of the cards (by default heading and paragraph)
+* Block updated to improve editor preview
+* Block changed to apiVersion 3 (this might produce warnings for the old blocks in the editor)
+* Slider style updates to fill the whole available area with the cards when center mode is enabled
+* Added the new option to enable the version 1 legacy styles (by default this asset is no longer loaded)
+* Removed the option to setup new instances with version 1
+* Assets refactoring and optimization
+* Compatibility updates for Elementor 3.22
+* Filtered out the font family and font face from the selectable post types
+* Fixed the warning when stripping all tags on an empty string
+
+= 12.0.1 =
+* Fixed the second taxonomy dropdown options
+
+= 12.0.0 =
+* Tested up to 6.4.3
+* Added `modified date` as a sorting option
+* Added the option to remove the non-core CSS classes from the card output (so that the styles are less polluted by third-party scripts)
+* Added a new filter that allows to alter the output for each card article CSS classes
+* Added the new option "no link for the terms" when taxonomies are exposed in the cards
+* Added the new options "no label" and "no link for the author" when authors are exposed in the cards
+* Added the auto placeholder type - this would use a random fallback from the plugin samples when the card image is missing unless an explicit list is provided
+* Added the option to remove the LPS button from the Classic editor for specified roles
+* Added the slider image aspect ratio option - this would be recommended going further
+* Added the new `inline scroller` output option for a more compact view
+* Added the inline scroller counters option
+* Added the `next / prev` pagination option for a more compact view
+* Added new pagination output filters that allow replacing the non-numeric elements with custom content/icons
+* Added LPS Block supports for color, padding, and margin (if not disabled from the theme.json)
+* LPS Block dependencies updates
+* Compatibility updates for Elementor >= 3.18.3
+* Implemented a workaround to fix the inconsistent Elementor assets preview in the editor when the widgets are used on draft posts
+* Updated the post type and statuses lists to include also the translated labels
+* Simplified the output assets handles
+* Plugin assets optimization
+* Excluded patterns_ai_data from the CPTs list
+* Editor accessibility updates
+* Translations updates
+
+= 11.6.0 =
+* Tested up to 6.4.1
+* Detect command + click and open card link in new tab for navigation enhancement
+* Added two new card content vertical alignment: first top and last bottom
+* Compatibility with Twenty Twenty-Four
+* Dependencies and styles updates
+* Fixed the post type option when there was nothing selected
+
+= 11.5.2 =
+* Tested up to 6.4
+* Styles updates
+* Added the option to always load the assets for backward compatibility or for custom page builders
+* Fixed the pagination in the single page
+
+= 11.5.1 =
+* Tested up to 6.3.1
+* Added the option to display the total number of items when using pagination (and customizable text)
+* Added the dynamic parent option (filter by current post parent)
+* Added the dynamic author option (filter by current post author)
+* Added the card and image aspect ratio options (1:1, 16:9, 4:3, 3:2, 5:9, 4:5)
+* Assets load optimization
+* Fixed the card highlight style
+* Fixed the slider preview in the editor
+
+= 11.5.0 =
+* Tested up to 6.3
+* Added site option (only available in multisite)
+
+= 11.4.1 =
+* Fail fast if the shortcode is not used as intended, fixed the errors when the arguments are not set
+
+= 11.4.0 =
+* Added the `lps/card_output_types` new filter that allows registering custom card output options
+* Added a new parameter to the `lps/override_card` filter that specifies the card selected type to make it easier targetting only specific card type
+* Added the option to show a plain fallback message when no posts were found.
+
+= 11.3.0 =
+* Tested up to 6.2.2
+* Added the terms exclude children option
+* Added the editor placeholder for the block when there is no result
+* Fixed the trim with punctuation
+
+= 11.2.0 =
+* Tested up to 6.2
+* Tested with Elementor 3.12.0
+* Added the image size option on the horizontal card
+* Added card auto vertical alignment option
+* Added the title no decoration option
+* Added the title uppercase option
+* Added the card hover highlight option
+* Added a better precision for trimming the card content
+* Improved the grouping of card options in the UI
+* Minor styles updated in the shortcode UI
+* Translation updates
+
+= 11.1.0 =
+* Added space between option for the pagination
+* Added search key option
+* Added archive option
+* Added trailing chars option for trimmed strings
+* Added the option to apply the chars limit to title and text together (the excerpt/content length will be computed by subtracting the title length from the chars limit)
+* Added the option to hide taxonomy names when listed as extra options
+* Added the option to display only one term for taxonomies listed as extra options
+* Updated link nesting for SEO improvement
+* Updated the admin styles
+* Fixed pagination first element in archive
+* Fixed Firefox full card cursor
+* Fixed the block styles not loading when used in the site editor
+
+= 11.0.0 =
+* NOTE: POTENTIAL BREAKING CHANGES for older versions - PLEASE BACKUP BEFORE UPGRADING
+* Tested up to 6.1.1
+* Compatibility updates for Elementor 3.8.1
+* Compatibility updates for PHP 8
+* Added the vertical card as the default card output
+* Added the horizontal card as an option in the plugin UI: image + info and info + image (no longer experimental)
+* Added the drop shadow option
+* Added the border radius option
+* Added the image spacing option
+* Added the card title color and title size options
+* Added the card text color and text size options
+* Added card background color option
+* Added overlay image opacity option
+* Added new display options for WooCommerce products: price, add to cart, price + add to cart
+* Added vertical alignment option
+* Added 3 insert variants for the LPS block: 2 horizontal cards, 4 column cards, and 4 overlay cards
+* Added new sort options: by text post meta and by numeric post meta
+* Changed the plugin UI for the styles helper
+* Changed the default values for cards (height, padding, spacing, and overlay padding) to use the rem unit (recommended)
+* Updated the dependencies for the LPS block
+* Decoupled the front-end grid script from jQuery (excerpt for the carousel, if that is used)
+* Delegated click events to the whole card (when URLs are used)
+* Spinners/pagination and markup nesting updates
+* Changes the output markup for improved SEO
+* Global styles updates
+
+= 10.0.0 =
+* Tested up to 6.0.1
+* Updated the filtered statuses, CPTs and taxonomies
+* Compatibility updated for Elementor 3.7.3
+* Compatibility updated for PHP 8
+
+= 9.6.5 =
+* Restore the post object inside the legacy custom templates.
+
+= 9.6.4 =
+* Assets optimization.
+* Elementor block icons update for dark mode.
+
+= 9.6.3 =
+* Tested up to 5.5.
+* Icon update.
+
+= 9.6.2 =
+* Tested up to 5.4.2.
+* Added the LPS / Latest Post Shortcode Gutenberg block.
+* Added the option to sort the posts ascending/descending by ID.
+
+= 9.6.1 =
+* Fix the tiles variable height when not using columns.
+
+= 9.6 =
+* Tested up to 5.4.
+* Fix tiles stripped attributes.
+* Added the CSS helper to make it easier to chain the CSS classes based on what the output should look like.
+* Added options for setting different height, gaps, padding, overlay padding for desktop vs. tablet vs. mobile.
+* Added the clear overlay option.
+* Added the hover scale effect for tiles rendered with overlays.
+* Added experimental horizontal tile (image + text and text + image).
+* Fix for Elementor preview not updating when the shortcode was embedded.
+* Added post classes for the articles.
+
+= 9.5.1 =
+* Added the cache feature.
+* Added lightbox up arrow in small resolution view.
+* Added support for 5 and 6 columns.
+* Added support for aligning to left, center or right the tile content.
+* Fix limit attribute update when configuring the shortcode as a slider.
+* Translation updates.
+* Added demo video.
+* Screenshots update.
+
+= 9.5 =
+* Tested up to 5.3.2.
+* Added the new option for infinite scroll (this appends posts on the page when scrolling the page).
+* Added slider wrapper element.
+* Limit for pagination (regardless of the total of posts that match the shortcode).
+* Multiple image placeholders (one is randomly selected when the case).
+* Slider default breakpoint update to 1200.
+* Shortcode UI styles updates.
+* Update filters for post types, statuses and taxonomies.
+* Display taxonomies slugs in the UI, to make it easier to identify these when having the same titles.
+* Enqueue updates.
+* Fix slider preview when using the shortcode with Elementor.
+* Fix warning for no post type set.
+* Fix setting item select when scrolling the settings lightbox.
+* Translations updates.
+
+= 9.4 =
+* Tested up to 5.3.
+* Added two out of the box CSS classes that allows to center or align right the pagination.
+
+= 9.3 =
+* Tested up to 5.2.2.
+* Added `$args` argument for the custom tile markup filter for allowing access from other scripts to the shortcode configuration
+* Added sticky posts filter: only sticky posts, no sticky posts, no restriction in terms of sticky option
+* Added one more taxonomy filter and their terms input for more targeted filtering of posts
+* Added the option for line break, that will clear the content below by adding a line break after the shortcode.
+
+= 9.2.1 =
+* Added the caption extra option to be exposed in the tile.
+* Updated the mime type extra option to allow for selecting a position inside the tile for it.
+* Tested up to 5.2.
+* Tested with Elementor 2.5.15.
+
+= 9.2 =
+* Fix no link for tiles using as-overlay class
+* Added new option to hookup the media link and media lightbox (integrate with Easy FancyBox and FooBox Image Lightbox)
+
+= 9.1 =
+* Fix attachment multiple status filters
+* Added extra options for showing the mime type for attachments as text or/and as CSS class for the tile wrapper
+
+= 9.0 =
+* Tested up to 5.1.1
+* Added the attachment tiles options
+* Added date range and dynamic range filtering for items
+
+= 8.7 =
+* Tested up to 5.1
+* Added configurable title wrap element
+* Added raw content option
+* Added four new tile patterns with more targeted links
+* Added support for Elementor, the Latest Post Shortcode functionality can be used from Elementor, as a basic element.
+
+= 8.61 =
+* Fix resize when used with Gutenberg
+
+= 8.6 =
+* Tested up to 5.0.1
+* Added 4 columns styles support
+* Added styles to support tiles with image as the background and the content as the overlay text
+* Added overlay (dark by default, but supports the `light` option)
+* Fixed carousel placeholder
+* Better translation
+
+= 8.5 =
+* Fix the multiple terms filter
+* Change the date difference function to use the timezone from the settings
+
+= 8.4 =
+* Tested up to 4.9.8
+* Implement the "load more" feature to switch the AJAX pagination into a load more button with customizable text
+* Added AJAX spinner option for light and dark colors (you can still disable the spinner)
+* Added date option as date difference, so that the date to read 30 minutes ago, or 2 das ago, etc.
+* Added new tile pattern that allows to display date, title, excerpt, and content
+* Fix the issue when first page from pagination was not showing as selected by default
+* Allow for sliders without image (not recommended as it comes with more limitations like fixed height)
+
+= 8.3 =
+* Tested up to 4.9.7
+* Added exclude by tags and exclude by categories in the UI
+* Added plugin translations
+
+= 8.2 =
+* Pagination update to use a more intuitive display + auto exclude
+* Option to display all elements of the pagination (to display the pagination elements all the time, including the disabled elements like: go to first, previous, next, and last page, even if these are disabled)
+* Workaround for Gravity Forms compatibility
+* SEO improvement
+
+= 8.1 =
+* Added missing assets from the recent release
+
+= 8.0 =
+* Tested up to 4.9.6
+* New UI
+* Added exclude content by post IDs option
+* Added exclude content by author IDs option
+* Added placeholder that allows to define an image to be used for the posts that do not have a featured image, so that the lists/grid looks nicer
+* Slider output options
+
+= 7.4 =
+* Tested up to 4.8.2
+* Add the posts filter option by author IDs
+* Update the date arguments
+* Added filters for shortcode arguments and shortcode query arguments.
+
+= 7.3 =
+* Added the option to show the author, categories and tags before or after specific tile elements.
+
+= 7.2 =
+* Added the option to exclude dynamic content already exposed by the shortcodes embedded above in the current page content.
+
+= 7.1 =
+* Extra options to display author and taxonomies
+* Allow to order items by random
+
+= 7.0 =
+* New shortcode config UI
+* Introduce hooks for allowing the definition of custom output
+
+= 6.4 =
+* Tested up to 4.8
+* Three columns style fix
+
+= 6.3 =
+* Tested up to 4.5.2
+* Fix parents list
+* Replace thickbox style
+
+= 6.2 =
+* Add support for post status filter
+* Add support for exclude tags by slugs. The new argument sample: exclude_tags="slug1,slug2"
+
+= 6.1 =
+* Add suppress filters false
+* Apply filters before displaying the post image
+
+= 6.0 =
+* Add support for the Latest Post Shortcode Slider extension
+
+= 5.4 =
+* Add the plugin link
+* Separate the content and excerpt filters
+* Tested up to 4.3.1
+
+= 5.3 =
+* Add the 'open in a new window' option for the links
+
+= 5.2 =
+* Implement changes to render full posts content (including the extra shortcodes)
+
+= 5.1 =
+* Add the order option (by date, title, menu order)
+* Add the ajax pagination option. As the shortcode pagination relies on the wp native pagination, when using more shortcodes with pagination on the same page, the navigation will affect all shortcodes, hence, by activating the ajax pagination, each shortcode pagination will act independent
+
+= 5.0 =
+* Add the extra display of post tags of the posts
+* Add filter to allow the text widget to render the content of a shortcode
+
+= 4.2 =
+* Introduce the post date in the output. The general settings will apply to the date and time format.
+
+= 4.1 =
+* Add changes to the javascript to avoid the content check for resize when lightbox resources are not available (compatibility with other plugins)
+
+= 4.0 =
+* Add Pagination Position (default to top only) so that the pagination can be displayed below the results, or above and below the results
+* Add Dynamic Tag option so that you can show the posts that have one of the current page tags (current page is the page where the shortcode is embedded), without the need to specify a particular tag. This is useful to display something like "similar posts" or "on the same topic", etc.
+
+= 3.1 =
+* Populate the "Use Image" dropdown dynamically from the list of image sizes registered in the application
+* Add global tile a class to differentiate when the link is applied to the entire tile content or to just the "read more" text
+
+= 3.0 =
+* Add No Pagination / Paginate Results option that allows to paginate the posts selection
+* Add Records Per Page option
+* Add Offset
+* Add Hide / Show Pagination Navigation that allows to hide or show the pagination
+* Reload Tile Pattern selection when a shortcode is selected before clicking the plugin button (reload shotcode settings in the content selection lightbox)
+
+= 2.0 =
+* Allow for different tile pattern (the html tags order in the tile: post title, image, text and read more message)
+* Add visual tile pattern selector
+* Add short excerpt and short content options
+* Add chars limit to the excerpt or content for the tile
+* Add custom "read more" message option
+* Allow for the post link to wrap the entire tile or just the "read more" message if this is set
+
+= 1.0 =
+* Plugin prototype

@@ -1,0 +1,1764 @@
+# Copyright (C) 2024 Iulia Cazan
+# This file is distributed under the GPL2.
+msgid ""
+msgstr ""
+"Project-Id-Version: Latest Post Shortcode 13.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/lps\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-07-13T12:26:23+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.9.0\n"
+"X-Domain: lps\n"
+
+#. Plugin Name of the plugin
+#: incs/assets.php:88
+#: incs/elementor/widgets/class-lps-widgets.php:29
+#: incs/elementor/widgets/class-lps-widgets.php:56
+#: incs/elementor/widgets/class-lps-widgets.php:82
+#: incs/settings-popup.php:34
+#: latest-post-shortcode.php:3213
+#: latest-post-shortcode.php:3241
+#: latest-post-shortcode.php:3393
+#: lps-block/build/index.js:1
+msgid "Latest Post Shortcode"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://iuliacazan.ro/latest-post-shortcode/"
+msgstr ""
+
+#. Description of the plugin
+msgid "This plugin allows you to create a dynamic content selection from your posts, pages and custom post types that can be embedded with a UI configurable shortcode. When used with WordPress >= 5.0 + Gutenberg, the plugin shortcode can be configured from the LPS block or any Classic block, using the plugin button."
+msgstr ""
+
+#. Author of the plugin
+msgid "Iulia Cazan"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://profiles.wordpress.org/iulia-cazan"
+msgstr ""
+
+#. Translators: 1: Plugin name 2: Elementor
+#: incs/elementor/class-elementor-lps-extension.php:128
+msgid "\"%1$s\" requires \"%2$s\" to be installed and activated."
+msgstr ""
+
+#: incs/elementor/class-elementor-lps-extension.php:129
+#: incs/elementor/class-elementor-lps-extension.php:146
+#: incs/elementor/class-elementor-lps-extension.php:167
+msgid "LPS Elementor Extension"
+msgstr ""
+
+#: incs/elementor/class-elementor-lps-extension.php:130
+#: incs/elementor/class-elementor-lps-extension.php:147
+msgid "Elementor"
+msgstr ""
+
+#. Translators: %1$s - plugin name, %2$s - required, %3$s - required version.
+#: incs/elementor/class-elementor-lps-extension.php:145
+#: incs/elementor/class-elementor-lps-extension.php:166
+msgid "\"%1$s\" requires \"%2$s\" version %3$s or greater."
+msgstr ""
+
+#: incs/elementor/class-elementor-lps-extension.php:168
+msgid "PHP"
+msgstr ""
+
+#: incs/elementor/widgets/class-lps-widgets.php:77
+msgid "Read more"
+msgstr ""
+
+#. Translators: %1$s - icon embed.
+#: incs/elementor/widgets/class-lps-widgets.php:92
+msgid "To configure the shortcode, use the custom button %1$s from the Visual editor or the LPS button from the Text editor (see a sample below)."
+msgstr ""
+
+#. Translators: %1$s - shorcode example.
+#: incs/elementor/widgets/class-lps-widgets.php:97
+msgid "Sample of showing four columns of your posts: %1$s."
+msgstr ""
+
+#: incs/settings-popup.php:40
+msgid "Preview"
+msgstr ""
+
+#: incs/settings-popup.php:41
+msgid "Embed Shortcode"
+msgstr ""
+
+#: incs/settings-popup.php:53
+msgid "Reset cache"
+msgstr ""
+
+#: incs/settings-popup.php:58
+#: lps-block/build/index.js:1
+msgid "Settings"
+msgstr ""
+
+#: incs/settings-popup.php:60
+#: incs/settings-popup.php:76
+msgid "Output Type"
+msgstr ""
+
+#: incs/settings-popup.php:61
+#: incs/settings-popup.php:113
+msgid "Content & Filters"
+msgstr ""
+
+#: incs/settings-popup.php:62
+#: incs/settings-popup.php:403
+msgid "Limit & Pagination"
+msgstr ""
+
+#: incs/settings-popup.php:63
+#: incs/settings-popup.php:585
+msgid "Display Settings"
+msgstr ""
+
+#: incs/settings-popup.php:64
+#: incs/settings-popup.php:850
+msgid "Extra Options"
+msgstr ""
+
+#: incs/settings-popup.php:81
+msgid "Version"
+msgstr ""
+
+#: incs/settings-popup.php:84
+msgid "1 (deprecated)"
+msgstr ""
+
+#: incs/settings-popup.php:85
+msgid "2 (recommended starting with 11.0.0)"
+msgstr ""
+
+#: incs/settings-popup.php:90
+msgid "Display as"
+msgstr ""
+
+#: incs/settings-popup.php:103
+msgid "post grid/list/tiles"
+msgstr ""
+
+#: incs/settings-popup.php:104
+#: incs/settings-slider.php:212
+msgid "slider"
+msgstr ""
+
+#: incs/settings-popup.php:115
+msgid "Post Types, Status & Order"
+msgstr ""
+
+#: incs/settings-popup.php:123
+msgid "Site ID"
+msgstr ""
+
+#: incs/settings-popup.php:126
+msgid "current site"
+msgstr ""
+
+#: incs/settings-popup.php:138
+msgid "Post Type"
+msgstr ""
+
+#: incs/settings-popup.php:142
+#: incs/settings-popup.php:205
+#: incs/settings-popup.php:228
+msgid "any"
+msgstr ""
+
+#: incs/settings-popup.php:154
+msgid "Post Status"
+msgstr ""
+
+#: incs/settings-popup.php:166
+msgid "Sticky Posts"
+msgstr ""
+
+#: incs/settings-popup.php:169
+msgid "no restriction"
+msgstr ""
+
+#: incs/settings-popup.php:170
+msgid "only sticky posts"
+msgstr ""
+
+#: incs/settings-popup.php:171
+msgid "no sticky posts"
+msgstr ""
+
+#: incs/settings-popup.php:176
+msgid "Order by"
+msgstr ""
+
+#: incs/settings-popup.php:185
+msgid "Post meta (ex: _price)"
+msgstr ""
+
+#: incs/settings-popup.php:186
+msgid "* Please note that ordering the items by post meta might present performance risks, please use this careful. Additionally, the output will be filtered only to the posts that have the specified post meta."
+msgstr ""
+
+#: incs/settings-popup.php:189
+msgid "* Please note that ordering the items by random might present performance risks, please use this careful."
+msgstr ""
+
+#: incs/settings-popup.php:189
+msgid "Also, using a random order and pagination will output unexpected and potentially redundant content."
+msgstr ""
+
+#: incs/settings-popup.php:192
+msgid "descending"
+msgstr ""
+
+#: incs/settings-popup.php:192
+msgid "ascending"
+msgstr ""
+
+#: incs/settings-popup.php:199
+msgid "Filter By Taxonomy"
+msgstr ""
+
+#: incs/settings-popup.php:202
+#: incs/settings-popup.php:225
+msgid "Taxonomy"
+msgstr ""
+
+#: incs/settings-popup.php:215
+#: incs/settings-popup.php:238
+msgid "Term"
+msgstr ""
+
+#: incs/settings-popup.php:217
+#: incs/settings-popup.php:240
+msgid "Term slug (ex: news)"
+msgstr ""
+
+#: incs/settings-popup.php:220
+#: incs/settings-popup.php:244
+msgid "exclude children"
+msgstr ""
+
+#: incs/settings-popup.php:252
+msgid "Filter By Tag"
+msgstr ""
+
+#: incs/settings-popup.php:255
+msgid "Tag"
+msgstr ""
+
+#: incs/settings-popup.php:259
+#: incs/settings-popup.php:364
+msgid "Dynamic"
+msgstr ""
+
+#: incs/settings-popup.php:263
+#: incs/settings-popup.php:290
+#: incs/settings-popup.php:470
+#: incs/settings-popup.php:773
+#: incs/settings-popup.php:1208
+#: incs/settings-popup.php:1215
+#: incs/settings-popup.php:1225
+#: incs/settings-popup.php:1232
+#: incs/settings-popup.php:1276
+#: incs/settings-popup.php:1303
+#: incs/settings-popup.php:1314
+#: incs/settings-popup.php:1325
+#: incs/settings-slider.php:44
+#: incs/settings-slider.php:72
+#: incs/settings-slider.php:160
+#: incs/settings-slider.php:168
+#: incs/settings-slider.php:191
+#: incs/settings-slider.php:199
+#: incs/settings-slider.php:246
+#: incs/settings-slider.php:253
+#: incs/settings-slider.php:285
+#: incs/settings-slider.php:293
+msgid "no"
+msgstr ""
+
+#: incs/settings-popup.php:264
+msgid "use the selected ones"
+msgstr ""
+
+#: incs/settings-popup.php:267
+#: incs/settings-popup.php:292
+#: incs/settings-popup.php:472
+#: incs/settings-popup.php:553
+#: incs/settings-popup.php:1209
+#: incs/settings-popup.php:1216
+#: incs/settings-popup.php:1226
+#: incs/settings-popup.php:1233
+#: incs/settings-popup.php:1243
+#: incs/settings-popup.php:1250
+#: incs/settings-popup.php:1277
+#: incs/settings-popup.php:1304
+#: incs/settings-popup.php:1315
+#: incs/settings-popup.php:1326
+#: incs/settings-slider.php:73
+#: incs/settings-slider.php:161
+#: incs/settings-slider.php:169
+#: incs/settings-slider.php:192
+#: incs/settings-slider.php:200
+#: incs/settings-slider.php:247
+#: incs/settings-slider.php:254
+#: incs/settings-slider.php:286
+#: incs/settings-slider.php:294
+msgid "yes"
+msgstr ""
+
+#: incs/settings-popup.php:268
+msgid "use the current post tags"
+msgstr ""
+
+#: incs/settings-popup.php:277
+msgid "Search & Archive Filter"
+msgstr ""
+
+#: incs/settings-popup.php:281
+msgid "Search Key"
+msgstr ""
+
+#: incs/settings-popup.php:287
+msgid "Use as Archive"
+msgstr ""
+
+#: incs/settings-popup.php:293
+msgid "use the current search key or taxonomy term"
+msgstr ""
+
+#: incs/settings-popup.php:297
+msgid "If you enable this option, the rest of taxonomies filters will not apply. This option is only intended to mimic the native archives (categories, tags, etc.) or the search result. If you are using pagination, the number of posts per page is inherited from the site reading settings."
+msgstr ""
+
+#: incs/settings-popup.php:307
+msgid "Filter By Specific IDs"
+msgstr ""
+
+#: incs/settings-popup.php:310
+msgid "Post ID"
+msgstr ""
+
+#: incs/settings-popup.php:312
+#: incs/settings-popup.php:328
+#: incs/settings-popup.php:347
+#: incs/settings-popup.php:373
+#: incs/settings-popup.php:380
+msgid "Separate IDs with comma"
+msgstr ""
+
+#: incs/settings-popup.php:312
+msgid "Show only objects with the selected IDs."
+msgstr ""
+
+#: incs/settings-popup.php:315
+msgid "Parent ID"
+msgstr ""
+
+#: incs/settings-popup.php:319
+#: incs/settings-popup.php:338
+msgid "static"
+msgstr ""
+
+#: incs/settings-popup.php:320
+#: incs/settings-popup.php:339
+msgid "use the specified IDs"
+msgstr ""
+
+#: incs/settings-popup.php:323
+#: incs/settings-popup.php:342
+msgid "dynamic"
+msgstr ""
+
+#: incs/settings-popup.php:324
+#: incs/settings-popup.php:343
+msgid "use the current post attributes"
+msgstr ""
+
+#: incs/settings-popup.php:330
+msgid "Show only objects with specific parents."
+msgstr ""
+
+#: incs/settings-popup.php:334
+msgid "Author ID"
+msgstr ""
+
+#: incs/settings-popup.php:348
+msgid "Show only objects with specific authors."
+msgstr ""
+
+#: incs/settings-popup.php:355
+msgid "Exclude Content"
+msgstr ""
+
+#: incs/settings-popup.php:358
+msgid "Current"
+msgstr ""
+
+#: incs/settings-popup.php:360
+msgid "the current post"
+msgstr ""
+
+#: incs/settings-popup.php:366
+msgid "previous shortcodes*"
+msgstr ""
+
+#: incs/settings-popup.php:367
+msgid "* The exclude content dynamic option will filter the content so that the posts that were already embedded by previous shortcodes on this page will not show up (so that the content does not repeat)."
+msgstr ""
+
+#: incs/settings-popup.php:371
+msgid "By Post ID"
+msgstr ""
+
+#: incs/settings-popup.php:374
+msgid "Exclude the objects with the selected IDs."
+msgstr ""
+
+#: incs/settings-popup.php:378
+msgid "By Author ID"
+msgstr ""
+
+#: incs/settings-popup.php:381
+msgid "Exclude the objects with the selected author IDs."
+msgstr ""
+
+#: incs/settings-popup.php:385
+msgid "By Tags"
+msgstr ""
+
+#: incs/settings-popup.php:387
+#: incs/settings-popup.php:394
+msgid "Separate slugs with comma"
+msgstr ""
+
+#: incs/settings-popup.php:388
+msgid "Exclude the objects with the selected tags."
+msgstr ""
+
+#: incs/settings-popup.php:392
+msgid "By Categories"
+msgstr ""
+
+#: incs/settings-popup.php:395
+msgid "Exclude the objects with the selected categories."
+msgstr ""
+
+#: incs/settings-popup.php:405
+msgid "Posts Limit"
+msgstr ""
+
+#: incs/settings-popup.php:408
+msgid "Number of Posts"
+msgstr ""
+
+#: incs/settings-popup.php:411
+msgid "This is the maximum number of posts the shortcode will expose."
+msgstr ""
+
+#: incs/settings-popup.php:416
+msgid "Date Limit"
+msgstr ""
+
+#: incs/settings-popup.php:419
+msgid "Date Limit Type"
+msgstr ""
+
+#: incs/settings-popup.php:422
+msgid "date range"
+msgstr ""
+
+#: incs/settings-popup.php:423
+msgid "dynamic date"
+msgstr ""
+
+#: incs/settings-popup.php:430
+msgid "published after"
+msgstr ""
+
+#: incs/settings-popup.php:437
+msgid "published before"
+msgstr ""
+
+#: incs/settings-popup.php:446
+msgid "since"
+msgstr ""
+
+#: incs/settings-popup.php:463
+msgid "Pagination Settings"
+msgstr ""
+
+#: incs/settings-popup.php:467
+msgid "Use Pagination"
+msgstr ""
+
+#: incs/settings-popup.php:473
+msgid "paginate results"
+msgstr ""
+
+#: incs/settings-popup.php:477
+msgid "Please note that paginated items are limited to the number of posts specified above. If you do not want to limit the result, just remove the value from the number of posts."
+msgstr ""
+
+#: incs/settings-popup.php:486
+msgid "Records Per Page"
+msgstr ""
+
+#: incs/settings-popup.php:492
+msgid "Offset"
+msgstr ""
+
+#: incs/settings-popup.php:498
+msgid "Visibility"
+msgstr ""
+
+#: incs/settings-popup.php:502
+msgid "hide navigation"
+msgstr ""
+
+#: incs/settings-popup.php:505
+#: incs/settings-popup.php:509
+#: incs/settings-popup.php:513
+#: incs/settings-popup.php:517
+#: incs/settings-popup.php:521
+msgid "show navigation"
+msgstr ""
+
+#: incs/settings-popup.php:506
+msgid "prev / next"
+msgstr ""
+
+#: incs/settings-popup.php:510
+msgid "range of 4"
+msgstr ""
+
+#: incs/settings-popup.php:514
+msgid "range of 5"
+msgstr ""
+
+#: incs/settings-popup.php:518
+msgid "range of 10"
+msgstr ""
+
+#: incs/settings-popup.php:522
+msgid "load more button"
+msgstr ""
+
+#: incs/settings-popup.php:525
+#: incs/settings-slider.php:196
+#: incs/settings-slider.php:251
+#: incs/settings-slider.php:290
+msgid "infinite scroll"
+msgstr ""
+
+#: incs/settings-popup.php:526
+msgid "load more on scroll"
+msgstr ""
+
+#: incs/settings-popup.php:533
+msgid "Load More Text"
+msgstr ""
+
+#: incs/settings-popup.php:535
+msgid "Custom 'Load more' button text"
+msgstr ""
+
+#: incs/settings-popup.php:535
+#: latest-post-shortcode.php:980
+msgid "Load more"
+msgstr ""
+
+#: incs/settings-popup.php:536
+msgid "This is the text that will be displayed on the button on the front-end. Do not use brackets for the custom load more message, these are shortcodes delimiters."
+msgstr ""
+
+#: incs/settings-popup.php:541
+msgid "Position"
+msgstr ""
+
+#: incs/settings-popup.php:544
+msgid "above the results"
+msgstr ""
+
+#: incs/settings-popup.php:545
+msgid "below the results"
+msgstr ""
+
+#: incs/settings-popup.php:546
+msgid "above & below the result"
+msgstr ""
+
+#: incs/settings-popup.php:551
+msgid "AJAX Pagination"
+msgstr ""
+
+#: incs/settings-popup.php:556
+msgid "no spinner"
+msgstr ""
+
+#: incs/settings-popup.php:557
+msgid "light spinner"
+msgstr ""
+
+#: incs/settings-popup.php:558
+msgid "dark spinner"
+msgstr ""
+
+#: incs/settings-popup.php:563
+msgid "Pagination Style"
+msgstr ""
+
+#: incs/settings-popup.php:565
+msgid "all pagination elements"
+msgstr ""
+
+#: incs/settings-popup.php:566
+msgid "Tick this option if you need to display the pagination elements all the time, including the disabled elements like: go to first, previous, next, and last page, even if these are disabled."
+msgstr ""
+
+#: incs/settings-popup.php:568
+msgid "show total items"
+msgstr ""
+
+#. Translators: %d - total value.
+#: incs/settings-popup.php:570
+msgid "Custom 'Total items: %d' text"
+msgstr ""
+
+#. Translators: %d - total value.
+#: incs/settings-popup.php:570
+#: latest-post-shortcode.php:1288
+msgid "Total items: %d"
+msgstr ""
+
+#. Translators: %d - total value.
+#: incs/settings-popup.php:571
+msgid "Write the total items text, %d will be replaced by the total value. Leave empty for the default."
+msgstr ""
+
+#: incs/settings-popup.php:579
+msgid "The pagination is not available for sliders, only for list/tiles output."
+msgstr ""
+
+#: incs/settings-popup.php:593
+msgid "Post Appearance"
+msgstr ""
+
+#: incs/settings-popup.php:597
+msgid "Display Post"
+msgstr ""
+
+#: incs/settings-popup.php:619
+msgid "Title Wrap"
+msgstr ""
+
+#: incs/settings-popup.php:626
+msgid "This is the HTML tag used to wrap the post title in the output (defaults to h3)."
+msgstr ""
+
+#: incs/settings-popup.php:634
+msgid "Chars Limit"
+msgstr ""
+
+#: incs/settings-popup.php:637
+msgid "Maximum number of chars from excerpt / content to be displayed (the text will be truncated, but will not break words)."
+msgstr ""
+
+#: incs/settings-popup.php:641
+msgid "Trim type"
+msgstr ""
+
+#: incs/settings-popup.php:643
+msgid "limit the title and text together"
+msgstr ""
+
+#: incs/settings-popup.php:644
+msgid "Apply the chars limit to title and excerpt/content together (the excerpt/content length will be computed by subtracting the title length from the chars limit)."
+msgstr ""
+
+#: incs/settings-popup.php:648
+msgid "More Suffix"
+msgstr ""
+
+#: incs/settings-popup.php:651
+msgid "The extra chars to be appended at the end of the trimmed strings."
+msgstr ""
+
+#: incs/settings-popup.php:659
+msgid "Raw Content"
+msgstr ""
+
+#: incs/settings-popup.php:661
+msgid "show raw content"
+msgstr ""
+
+#: incs/settings-popup.php:662
+msgid "This option is forcing the content output without stripping the markup. This might produce unexpected content layout on the front end, use wisely."
+msgstr ""
+
+#: incs/settings-popup.php:670
+msgid "Date Option"
+msgstr ""
+
+#: incs/settings-popup.php:672
+msgid "as date difference"
+msgstr ""
+
+#: incs/settings-popup.php:673
+msgid "If you check this option, the date for the tile (if that is included in the tile format) will display in date difference format (like 2 hours ago or 1 day ago, etc.)."
+msgstr ""
+
+#: incs/settings-popup.php:682
+msgid "Use Post URL"
+msgstr ""
+
+#: incs/settings-popup.php:686
+msgid "no link to the post"
+msgstr ""
+
+#: incs/settings-popup.php:689
+#: incs/settings-popup.php:692
+msgid "link to the post"
+msgstr ""
+
+#: incs/settings-popup.php:693
+#: incs/settings-popup.php:700
+msgid "_blank"
+msgstr ""
+
+#: incs/settings-popup.php:696
+#: incs/settings-popup.php:699
+msgid "link to the media file"
+msgstr ""
+
+#: incs/settings-popup.php:703
+msgid "link to the media file with lightbox"
+msgstr ""
+
+#: incs/settings-popup.php:706
+msgid "See below the available tile patterns and select to one you want."
+msgstr ""
+
+#: incs/settings-popup.php:713
+#: incs/settings-popup.php:715
+msgid "Custom 'Read more' message"
+msgstr ""
+
+#: incs/settings-popup.php:716
+msgid "Do not use brackets for the custom read more message, these are shortcodes delimiters."
+msgstr ""
+
+#: incs/settings-popup.php:725
+msgid "Lightbox Attributes"
+msgstr ""
+
+#: incs/settings-popup.php:727
+msgid "If you want to use a lightbox for the images, you can setup below the image size to be available in the lightbox and the selector."
+msgstr ""
+
+#: incs/settings-popup.php:731
+msgid "Lightbox Image"
+msgstr ""
+
+#: incs/settings-popup.php:735
+#: incs/settings-popup.php:781
+msgid "full (original size)"
+msgstr ""
+
+#: incs/settings-popup.php:747
+msgid "Selector attribute and value"
+msgstr ""
+
+#: incs/settings-popup.php:749
+msgid "Ex: class"
+msgstr ""
+
+#: incs/settings-popup.php:752
+msgid "Ex: fancybox image"
+msgstr ""
+
+#: incs/settings-popup.php:758
+msgid "This feature has been tested and is recommended to be used with Easy FancyBox plugin (>=1.8) or FooBox Image Lightbox plugin (>=2.6)."
+msgstr ""
+
+#: incs/settings-popup.php:769
+msgid "Use Image"
+msgstr ""
+
+#: incs/settings-popup.php:790
+msgid "Image Placeholder"
+msgstr ""
+
+#: incs/settings-popup.php:793
+msgid "Define an image to be used for the posts that do not have a featured image."
+msgstr ""
+
+#: incs/settings-popup.php:793
+msgid "If you specify a list of images separated by comma, a random one from the list will be picked for each article that does not have a featured image."
+msgstr ""
+
+#: incs/settings-popup.php:793
+msgid "If you want to use the plugin default placeholder, input the word `auto`."
+msgstr ""
+
+#: incs/settings-popup.php:801
+msgid "Content Fallback"
+msgstr ""
+
+#: incs/settings-popup.php:804
+msgid "Add a custom text to be displayed if no content matches the settings."
+msgstr ""
+
+#: incs/settings-popup.php:814
+msgid "Tile Pattern"
+msgstr ""
+
+#: incs/settings-popup.php:816
+msgid "The icons suggest a default order of the HTML tags, the links are marked with red."
+msgstr ""
+
+#: incs/settings-popup.php:817
+msgid "You are using a custom output, the markup is handled programatically, in your custom code."
+msgstr ""
+
+#: incs/settings-popup.php:833
+msgid "markup"
+msgstr ""
+
+#: incs/settings-popup.php:852
+msgid "Please note that if you are using a custom output template defined in your theme, the author, the taxonomies and the tags extra options will not function, since your custom template is overriding the output and the default behavior."
+msgstr ""
+
+#: incs/settings-popup.php:857
+msgid "Author"
+msgstr ""
+
+#: incs/settings-popup.php:858
+#: latest-post-shortcode.php:2338
+msgid "Caption"
+msgstr ""
+
+#: incs/settings-popup.php:858
+#: incs/settings-popup.php:859
+msgid "(only for attachments)"
+msgstr ""
+
+#: incs/settings-popup.php:859
+#: incs/settings-popup.php:910
+#: latest-post-shortcode.php:2319
+msgid "Mime Type"
+msgstr ""
+
+#: incs/settings-popup.php:860
+msgid "Price"
+msgstr ""
+
+#: incs/settings-popup.php:860
+#: incs/settings-popup.php:861
+#: incs/settings-popup.php:862
+msgid "(only for products)"
+msgstr ""
+
+#: incs/settings-popup.php:861
+msgid "Add to cart"
+msgstr ""
+
+#: incs/settings-popup.php:862
+msgid "Price + Add to cart"
+msgstr ""
+
+#: incs/settings-popup.php:868
+msgid "Tags"
+msgstr ""
+
+#: incs/settings-popup.php:882
+#: incs/settings-popup.php:889
+msgid "hide the label"
+msgstr ""
+
+#: incs/settings-popup.php:883
+msgid "no link for the author"
+msgstr ""
+
+#: incs/settings-popup.php:886
+msgid "do not display Uncategorized term"
+msgstr ""
+
+#: incs/settings-popup.php:892
+msgid "show only one term"
+msgstr ""
+
+#: incs/settings-popup.php:893
+msgid "hide the taxonomy name from the list"
+msgstr ""
+
+#: incs/settings-popup.php:894
+msgid "no link for the terms"
+msgstr ""
+
+#: incs/settings-popup.php:897
+msgid "Display position"
+msgstr ""
+
+#: incs/settings-popup.php:899
+#: incs/settings-popup.php:1051
+#: incs/settings-slider.php:154
+msgid "default"
+msgstr ""
+
+#: incs/settings-popup.php:912
+msgid "show mime type as CSS class"
+msgstr ""
+
+#: incs/settings-popup.php:913
+msgid "The extra options will apply only to attachment post type."
+msgstr ""
+
+#: incs/settings-popup.php:917
+msgid "Line Break"
+msgstr ""
+
+#: incs/settings-popup.php:919
+msgid "clear the content below"
+msgstr ""
+
+#: incs/settings-popup.php:920
+msgid "The extra options will clear the content below by adding a line break after the shorcode."
+msgstr ""
+
+#: incs/settings-popup.php:930
+msgid "Cache"
+msgstr ""
+
+#: incs/settings-popup.php:933
+msgid "Shortcode Cache"
+msgstr ""
+
+#: incs/settings-popup.php:935
+msgid "cache the shortcode result"
+msgstr ""
+
+#: incs/settings-popup.php:936
+msgid "The cache can help you speed up the page load. The default duration of the shortcode cache is 30 days. If you need to reset the shortcode cache, use the reset button."
+msgstr ""
+
+#: incs/settings-popup.php:943
+msgid "Style"
+msgstr ""
+
+#. Translators: %1$s - class, %2$s - class, %3$s - class, %4$s - class, %5$s - class, %6$s - class, %7$s - class, %8$s - class.
+#: incs/settings-popup.php:949
+msgid "Currently, the plugin offers out of the box support for two, three, four, five and six columns for the tiles and the overlay option. If, for example, you would like to display the tiles as four columns and the images as backgrounds, you can use `%1$s`. The content of the tiles can be aligned with `%6$s`, `%7$s` or `%8$s`. Extra options for the overlay usage: `%2$s` (for the overlay color), `%3$s` (to make the height of the tiles a bit bigger, so it fits more content). For the pagination alignment, there are two CSS classes that allow to center or align right the element: `%4$s` and `%5$s`."
+msgstr ""
+
+#: incs/settings-popup.php:965
+msgid "CSS Class"
+msgstr ""
+
+#: incs/settings-popup.php:967
+msgid "Ex: two-columns, three-columns, four-columns"
+msgstr ""
+
+#: incs/settings-popup.php:968
+msgid "The CSS class/classes you can use to customize the appearance of the shortcode output."
+msgstr ""
+
+#: incs/settings-popup.php:976
+msgid "Columns Helper"
+msgstr ""
+
+#: incs/settings-popup.php:990
+msgid "Output Helper"
+msgstr ""
+
+#: incs/settings-popup.php:1006
+msgid "Scroller"
+msgstr ""
+
+#: incs/settings-popup.php:1008
+msgid "show as inline scroller"
+msgstr ""
+
+#: incs/settings-popup.php:1009
+msgid "This option enables the modern snap to grid inline scroller output."
+msgstr ""
+
+#: incs/settings-popup.php:1013
+msgid "show counter on the card"
+msgstr ""
+
+#: incs/settings-popup.php:1014
+msgid "This option displays a small dynamic counter on top of the card."
+msgstr ""
+
+#: incs/settings-popup.php:1016
+msgid "use reverse order for the counter"
+msgstr ""
+
+#: incs/settings-popup.php:1019
+msgid "hide the load more button"
+msgstr ""
+
+#: incs/settings-popup.php:1020
+msgid "This option will hide the button when using infinite scroll type of pagination."
+msgstr ""
+
+#: incs/settings-popup.php:1028
+msgid "Pagination alignment"
+msgstr ""
+
+#: incs/settings-popup.php:1031
+#: incs/settings-popup.php:1137
+msgid "left"
+msgstr ""
+
+#: incs/settings-popup.php:1032
+#: incs/settings-popup.php:1138
+#: incs/settings-popup.php:1145
+msgid "center"
+msgstr ""
+
+#: incs/settings-popup.php:1033
+#: incs/settings-popup.php:1139
+msgid "right"
+msgstr ""
+
+#: incs/settings-popup.php:1034
+#: incs/settings-popup.php:1148
+msgid "space between"
+msgstr ""
+
+#: incs/settings-popup.php:1044
+msgid "Tiles Grid Options"
+msgstr ""
+
+#: incs/settings-popup.php:1046
+msgid "These options allow to specify the gap between tiles and the height for these. Use px, %, vw or vh as units."
+msgstr ""
+
+#: incs/settings-popup.php:1046
+#: incs/settings-popup.php:1169
+#: incs/settings-popup.php:1200
+msgid "Leave empty if you want to use the defaults."
+msgstr ""
+
+#: incs/settings-popup.php:1050
+#: incs/settings-slider.php:153
+msgid "Wide"
+msgstr ""
+
+#: incs/settings-popup.php:1055
+#: incs/settings-popup.php:1077
+#: incs/settings-popup.php:1099
+msgid "height"
+msgstr ""
+
+#: incs/settings-popup.php:1059
+#: incs/settings-popup.php:1063
+#: incs/settings-popup.php:1081
+#: incs/settings-popup.php:1085
+#: incs/settings-popup.php:1103
+#: incs/settings-popup.php:1107
+msgid "padding"
+msgstr ""
+
+#: incs/settings-popup.php:1067
+#: incs/settings-popup.php:1089
+#: incs/settings-popup.php:1111
+msgid "gap"
+msgstr ""
+
+#: incs/settings-popup.php:1073
+#: incs/settings-slider.php:222
+msgid "Medium"
+msgstr ""
+
+#: incs/settings-popup.php:1095
+#: incs/settings-slider.php:260
+msgid "Small"
+msgstr ""
+
+#: incs/settings-popup.php:1122
+msgid "Card options"
+msgstr ""
+
+#: incs/settings-popup.php:1125
+msgid "Cleanup"
+msgstr ""
+
+#: incs/settings-popup.php:1128
+msgid "keep only the core CSS classes when outputting the cards, and remove the third-party ones (added through `post_class` filter)"
+msgstr ""
+
+#: incs/settings-popup.php:1133
+msgid "Aignment"
+msgstr ""
+
+#: incs/settings-popup.php:1135
+#: incs/settings-slider.php:33
+msgid "horizontal"
+msgstr ""
+
+#: incs/settings-popup.php:1143
+#: incs/settings-slider.php:34
+msgid "vertical"
+msgstr ""
+
+#: incs/settings-popup.php:1146
+msgid "start"
+msgstr ""
+
+#: incs/settings-popup.php:1147
+msgid "end"
+msgstr ""
+
+#: incs/settings-popup.php:1149
+#: incs/settings-popup.php:1344
+#: incs/settings-popup.php:1364
+#: incs/settings-slider.php:90
+msgid "auto"
+msgstr ""
+
+#: incs/settings-popup.php:1150
+msgid "first top"
+msgstr ""
+
+#: incs/settings-popup.php:1151
+msgid "last bottom"
+msgstr ""
+
+#: incs/settings-popup.php:1156
+msgid "Font Size"
+msgstr ""
+
+#: incs/settings-popup.php:1158
+#: incs/settings-popup.php:1175
+msgid "text"
+msgstr ""
+
+#: incs/settings-popup.php:1159
+#: incs/settings-popup.php:1163
+#: incs/settings-popup.php:1177
+#: incs/settings-popup.php:1184
+#: incs/settings-popup.php:1191
+#: incs/settings-popup.php:1242
+#: incs/settings-popup.php:1249
+#: incs/settings-popup.php:1335
+msgid "inherit"
+msgstr ""
+
+#: incs/settings-popup.php:1162
+#: incs/settings-popup.php:1182
+#: incs/settings-slider.php:132
+#: incs/settings-slider.php:133
+#: latest-post-shortcode.php:345
+#: latest-post-shortcode.php:350
+#: latest-post-shortcode.php:419
+msgid "title"
+msgstr ""
+
+#: incs/settings-popup.php:1169
+msgid "Ex: 1rem, 24px, 2em, clamp(1rem, 0.6rem + 1.25vw, 1.4rem), etc."
+msgstr ""
+
+#: incs/settings-popup.php:1169
+msgid "Use px, %, vw or vh as units."
+msgstr ""
+
+#: incs/settings-popup.php:1173
+msgid "Colors"
+msgstr ""
+
+#: incs/settings-popup.php:1189
+msgid "background"
+msgstr ""
+
+#: incs/settings-popup.php:1199
+msgid "Ex: #fff, rbga(255,255,255, 0.5), etc."
+msgstr ""
+
+#: incs/settings-popup.php:1200
+msgid "Also, if you want to apply the colors, you should remove the card generic aspect."
+msgstr ""
+
+#: incs/settings-popup.php:1204
+msgid "Shadow"
+msgstr ""
+
+#: incs/settings-popup.php:1206
+msgid "card shadow"
+msgstr ""
+
+#: incs/settings-popup.php:1213
+msgid "title shadow"
+msgstr ""
+
+#: incs/settings-popup.php:1221
+msgid "Hover Effect"
+msgstr ""
+
+#: incs/settings-popup.php:1223
+msgid "image zoom"
+msgstr ""
+
+#: incs/settings-popup.php:1230
+msgid "card highlight"
+msgstr ""
+
+#: incs/settings-popup.php:1238
+msgid "Title Options"
+msgstr ""
+
+#: incs/settings-popup.php:1240
+msgid "no decoration"
+msgstr ""
+
+#: incs/settings-popup.php:1247
+msgid "uppercase"
+msgstr ""
+
+#: incs/settings-popup.php:1255
+msgid "Aspect"
+msgstr ""
+
+#: incs/settings-popup.php:1257
+msgid "generic aspect"
+msgstr ""
+
+#: incs/settings-popup.php:1260
+#: latest-post-shortcode.php:647
+msgid "-- unspecified --"
+msgstr ""
+
+#: incs/settings-popup.php:1263
+msgid "dark"
+msgstr ""
+
+#: incs/settings-popup.php:1266
+msgid "light"
+msgstr ""
+
+#: incs/settings-popup.php:1269
+msgid "no overlay"
+msgstr ""
+
+#: incs/settings-popup.php:1274
+msgid "border radius"
+msgstr ""
+
+#: incs/settings-popup.php:1283
+msgid "Image Opacity"
+msgstr ""
+
+#: incs/settings-popup.php:1300
+msgid "Tall Card"
+msgstr ""
+
+#: incs/settings-popup.php:1311
+msgid "Image Spacing"
+msgstr ""
+
+#: incs/settings-popup.php:1322
+msgid "Stacked on Mobile"
+msgstr ""
+
+#: incs/settings-popup.php:1333
+msgid "Image Size"
+msgstr ""
+
+#: incs/settings-popup.php:1341
+#: incs/settings-slider.php:87
+msgid "Card Aspect Ratio"
+msgstr ""
+
+#: incs/settings-popup.php:1345
+#: incs/settings-popup.php:1366
+#: incs/settings-slider.php:92
+msgid "square"
+msgstr ""
+
+#: incs/settings-popup.php:1346
+#: incs/settings-popup.php:1367
+#: incs/settings-slider.php:93
+msgid "landscape"
+msgstr ""
+
+#: incs/settings-popup.php:1351
+#: incs/settings-popup.php:1372
+#: incs/settings-slider.php:98
+msgid "portrait"
+msgstr ""
+
+#: incs/settings-popup.php:1361
+msgid "Image Aspect Ratio"
+msgstr ""
+
+#: incs/settings-popup.php:1365
+#: incs/settings-slider.php:91
+msgid "none"
+msgstr ""
+
+#: incs/settings-slider.php:17
+msgid "Slider Settings"
+msgstr ""
+
+#: incs/settings-slider.php:20
+msgid "Wrapper Element"
+msgstr ""
+
+#: incs/settings-slider.php:30
+msgid "Slides Transition"
+msgstr ""
+
+#: incs/settings-slider.php:35
+msgid "fade"
+msgstr ""
+
+#: incs/settings-slider.php:41
+msgid "Center Mode"
+msgstr ""
+
+#: incs/settings-slider.php:45
+msgid "center mode"
+msgstr ""
+
+#: incs/settings-slider.php:55
+msgid "The center mode is intended to works for the cases when you are showing more slides per row, and works better when you use an odd number of slides (3, 5, etc.), so, if your slider is presenting one slide at a time, you might want to switch this option off."
+msgstr ""
+
+#: incs/settings-slider.php:58
+msgid "Center Mode Padding"
+msgstr ""
+
+#: incs/settings-slider.php:61
+#: incs/settings-slider.php:145
+msgid "This is the value in pixels."
+msgstr ""
+
+#: incs/settings-slider.php:69
+msgid "Auto Play"
+msgstr ""
+
+#: incs/settings-slider.php:79
+msgid "Speed"
+msgstr ""
+
+#: incs/settings-slider.php:82
+msgid "Autoplay speed in milliseconds."
+msgstr ""
+
+#: incs/settings-slider.php:103
+msgid "In order to get a more consistent appearance, it is reccommended to use aspect ratio options, instead of the height options."
+msgstr ""
+
+#: incs/settings-slider.php:107
+msgid "Height"
+msgstr ""
+
+#: incs/settings-slider.php:111
+msgid "adaptive"
+msgstr ""
+
+#: incs/settings-slider.php:112
+msgid "fixed"
+msgstr ""
+
+#: incs/settings-slider.php:114
+msgid "This depends on the image size you select"
+msgstr ""
+
+#: incs/settings-slider.php:119
+msgid "Maximum Height"
+msgstr ""
+
+#: incs/settings-slider.php:123
+msgid "Provide the value in pixels for the maximum height of the slider."
+msgstr ""
+
+#: incs/settings-slider.php:128
+msgid "Show Slide Overlay"
+msgstr ""
+
+#: incs/settings-slider.php:132
+#: incs/settings-slider.php:134
+#: latest-post-shortcode.php:422
+msgid "trimmed excerpt"
+msgstr ""
+
+#: incs/settings-slider.php:135
+msgid "no overlay, just the image"
+msgstr ""
+
+#: incs/settings-slider.php:137
+msgid "The slide will display over the image the title and few chars from the excerpt (what you define for the Post Appearance > Chars Limit below)."
+msgstr ""
+
+#: incs/settings-slider.php:141
+msgid "Slides Gaps"
+msgstr ""
+
+#: incs/settings-slider.php:145
+msgid "This is useful when you want to display more visible slides in the row."
+msgstr ""
+
+#: incs/settings-slider.php:157
+msgid "next/previous"
+msgstr ""
+
+#: incs/settings-slider.php:165
+msgid "responsive"
+msgstr ""
+
+#: incs/settings-slider.php:176
+#: incs/settings-slider.php:233
+#: incs/settings-slider.php:271
+msgid "slides to show"
+msgstr ""
+
+#: incs/settings-slider.php:181
+#: incs/settings-slider.php:237
+#: incs/settings-slider.php:275
+msgid "slides to scroll"
+msgstr ""
+
+#: incs/settings-slider.php:189
+#: incs/settings-slider.php:244
+#: incs/settings-slider.php:282
+msgid "show dots"
+msgstr ""
+
+#: incs/settings-slider.php:208
+msgid "respond to"
+msgstr ""
+
+#: incs/settings-slider.php:211
+msgid "window"
+msgstr ""
+
+#: incs/settings-slider.php:213
+msgid "min"
+msgstr ""
+
+#: incs/settings-slider.php:216
+msgid "Width that responsive object responds to, the min (default) option means the smaller of the window or slider."
+msgstr ""
+
+#: incs/settings-slider.php:223
+#: incs/settings-slider.php:261
+msgid "resolution"
+msgstr ""
+
+#: incs/settings-slider.php:226
+#: incs/settings-slider.php:264
+msgid "breakpoint"
+msgstr ""
+
+#: latest-post-shortcode.php:259
+msgid "The Latest Post Shortcode Slider Extension is no longer supported, and it has been deactivated. If you need to display posts as a slider you can find the settings integrated in the Latest Post Shortcode plugin"
+msgstr ""
+
+#: latest-post-shortcode.php:298
+msgid "months"
+msgstr ""
+
+#: latest-post-shortcode.php:299
+msgid "weeks"
+msgstr ""
+
+#: latest-post-shortcode.php:300
+msgid "days"
+msgstr ""
+
+#: latest-post-shortcode.php:301
+msgid "hours"
+msgstr ""
+
+#: latest-post-shortcode.php:315
+#: latest-post-shortcode.php:320
+#: latest-post-shortcode.php:418
+msgid "date"
+msgstr ""
+
+#: latest-post-shortcode.php:325
+#: latest-post-shortcode.php:330
+msgid "modified date"
+msgstr ""
+
+#: latest-post-shortcode.php:335
+#: latest-post-shortcode.php:340
+msgid "menu order"
+msgstr ""
+
+#: latest-post-shortcode.php:355
+#: latest-post-shortcode.php:360
+msgid "ID"
+msgstr ""
+
+#: latest-post-shortcode.php:365
+#: latest-post-shortcode.php:370
+msgid "text meta value"
+msgstr ""
+
+#: latest-post-shortcode.php:375
+#: latest-post-shortcode.php:380
+msgid "numeric meta value"
+msgstr ""
+
+#: latest-post-shortcode.php:385
+msgid "random *"
+msgstr ""
+
+#: latest-post-shortcode.php:390
+msgid "relevance *"
+msgstr ""
+
+#: latest-post-shortcode.php:397
+msgid "before title"
+msgstr ""
+
+#: latest-post-shortcode.php:398
+msgid "after title"
+msgstr ""
+
+#: latest-post-shortcode.php:399
+msgid "before image"
+msgstr ""
+
+#: latest-post-shortcode.php:400
+msgid "after image"
+msgstr ""
+
+#: latest-post-shortcode.php:401
+msgid "before text"
+msgstr ""
+
+#: latest-post-shortcode.php:402
+msgid "after text"
+msgstr ""
+
+#: latest-post-shortcode.php:403
+msgid "before `read more`"
+msgstr ""
+
+#: latest-post-shortcode.php:404
+msgid "after `read more`"
+msgstr ""
+
+#: latest-post-shortcode.php:405
+msgid "before date"
+msgstr ""
+
+#: latest-post-shortcode.php:406
+msgid "after date"
+msgstr ""
+
+#: latest-post-shortcode.php:420
+msgid "excerpt"
+msgstr ""
+
+#: latest-post-shortcode.php:421
+msgid "content"
+msgstr ""
+
+#: latest-post-shortcode.php:423
+msgid "trimmed content"
+msgstr ""
+
+#: latest-post-shortcode.php:648
+msgid "vertical card"
+msgstr ""
+
+#: latest-post-shortcode.php:649
+msgid "horizontal card: image + info"
+msgstr ""
+
+#: latest-post-shortcode.php:650
+msgid "horizontal card: info + image"
+msgstr ""
+
+#: latest-post-shortcode.php:651
+msgid "overlay"
+msgstr ""
+
+#: latest-post-shortcode.php:1004
+#: latest-post-shortcode.php:1052
+#: latest-post-shortcode.php:1054
+msgid "Page"
+msgstr ""
+
+#: latest-post-shortcode.php:1004
+msgid "of"
+msgstr ""
+
+#: latest-post-shortcode.php:1021
+#: latest-post-shortcode.php:1023
+#: latest-post-shortcode.php:1040
+#: latest-post-shortcode.php:1047
+#: latest-post-shortcode.php:1049
+msgid "First"
+msgstr ""
+
+#: latest-post-shortcode.php:1030
+#: latest-post-shortcode.php:1032
+#: latest-post-shortcode.php:1035
+msgid "Previous"
+msgstr ""
+
+#: latest-post-shortcode.php:1061
+#: latest-post-shortcode.php:1063
+msgid "Next"
+msgstr ""
+
+#: latest-post-shortcode.php:1068
+#: latest-post-shortcode.php:1070
+#: latest-post-shortcode.php:1076
+msgid "Last"
+msgstr ""
+
+#. Translators: %s the date difference.
+#: latest-post-shortcode.php:1115
+msgctxt "%s = human-readable time difference"
+msgid "%s ago"
+msgstr ""
+
+#: latest-post-shortcode.php:2275
+msgid "By"
+msgstr ""
+
+#: latest-post-shortcode.php:3160
+msgid "Plugin URL"
+msgstr ""
+
+#: latest-post-shortcode.php:3215
+msgid "A huge thanks in advance!"
+msgstr ""
+
+#. Translators: %1$s - donate URL, %2$s - rating, %3$s - thanks.
+#: latest-post-shortcode.php:3219
+msgid "If you find the plugin useful and would like to support my work, please consider making a <a href=\"%1$s\" target=\"_blank\">donation</a>. It would make me very happy if you would leave a %2$s rating. %3$s"
+msgstr ""
+
+#. Translators: %1$s - plugin name.
+#: latest-post-shortcode.php:3245
+msgid "%1$s plugin was activated!"
+msgstr ""
+
+#. Translators: %1$s - plugins URL, %2$s - heart, %3$s - extensions URL, %4$s - star, %5$s - pro.
+#: latest-post-shortcode.php:3249
+msgid "%5$sCheck out my other <a href=\"%1$s\" target=\"_blank\" rel=\"noreferrer\">%2$s free plugins</a> on WordPress.org and the <a href=\"%3$s\" target=\"_blank\" rel=\"noreferrer\">%4$s other extensions</a> available!"
+msgstr ""
+
+#: latest-post-shortcode.php:3269
+msgid "Dismiss this notice."
+msgstr ""
+
+#: latest-post-shortcode.php:3410
+msgid "let WordPress decide when to load the LPS assets"
+msgstr ""
+
+#: latest-post-shortcode.php:3411
+msgid "(recommended)"
+msgstr ""
+
+#: latest-post-shortcode.php:3415
+msgid "always load the LPS assets"
+msgstr ""
+
+#: latest-post-shortcode.php:3416
+msgid "(sometimes needed for compatibility with other editors)"
+msgstr ""
+
+#: latest-post-shortcode.php:3420
+msgid "load the legacy styles"
+msgstr ""
+
+#: latest-post-shortcode.php:3421
+msgid "(version 1 is deprecated, used it only for backward compatibility)"
+msgstr ""
+
+#. Translators: %s - plugin icon.
+#: latest-post-shortcode.php:3429
+msgid "hide the %s LPS button in the Classic editor for the specified roles (if multiple, separate by comma)"
+msgstr ""
+
+#: lps-block/block-preview.php:202
+msgid "The shortcode found no results. If you provided a fallback message that will be shown on the front-end."
+msgstr ""
+
+#: lps-block/build/index.js:1
+msgid "Inner blocks use wide width"
+msgstr ""
+
+#: lps-block/build/index.js:1
+msgid "Click the button below to use the shortcode UI, or change the attributes manually."
+msgstr ""
+
+#: lps-block/build/index.js:1
+msgid "Shortcode Options"
+msgstr ""
+
+#: lps-block/build/index.js:1
+msgid "Refresh"
+msgstr ""
+
+#: lps-block/build/index.js:1
+msgid "Overlay Cards"
+msgstr ""
+
+#: lps-block/build/index.js:1
+msgid "Vertical Cards"
+msgstr ""
+
+#: lps-block/build/index.js:1
+msgid "Horizontal Cards"
+msgstr ""
+
+#: lps-block/build/block.json
+msgctxt "block title"
+msgid "Latest Post Shortcode"
+msgstr ""
+
+#: lps-block/build/block.json
+msgctxt "block keyword"
+msgid "lps"
+msgstr ""
+
+#: lps-block/build/block.json
+msgctxt "block keyword"
+msgid "grid"
+msgstr ""
+
+#: lps-block/build/block.json
+msgctxt "block keyword"
+msgid "card"
+msgstr ""
+
+#: lps-block/build/block.json
+msgctxt "block keyword"
+msgid "overlay"
+msgstr ""
+
+#: lps-block/build/block.json
+msgctxt "block keyword"
+msgid "column"
+msgstr ""
+
+#: lps-block/build/block.json
+msgctxt "block keyword"
+msgid "latest"
+msgstr ""
+
+#: lps-block/build/block.json
+msgctxt "block keyword"
+msgid "post"
+msgstr ""
+
+#: lps-block/build/block.json
+msgctxt "block keyword"
+msgid "shortcode"
+msgstr ""

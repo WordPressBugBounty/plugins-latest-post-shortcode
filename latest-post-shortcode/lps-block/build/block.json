@@ -1,0 +1,64 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "latest-post-shortcode/lps-block",
+  "title": "Latest Post Shortcode",
+  "textdomain": "lps",
+  "category": "widgets",
+  "keywords": [
+    "lps",
+    "grid",
+    "card",
+    "overlay",
+    "column",
+    "latest",
+    "post",
+    "shortcode"
+  ],
+  "supports": {
+    "html": false,
+    "align": [
+      "center",
+      "wide",
+      "full"
+    ],
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true,
+      "text": true
+    },
+    "spacing": {
+      "margin": [
+        "bottom",
+        "top"
+      ],
+      "padding": true
+    }
+  },
+  "attributes": {
+    "lpsContent": {
+      "type": "string",
+      "default": ""
+    },
+    "clientId": {
+      "type": "string",
+      "default": ""
+    },
+    "nthOfType": {
+      "type": "string",
+      "default": "0"
+    },
+    "constrained": {
+      "type": "boolean"
+    }
+  },
+  "usesContext": [
+    "postId",
+    "postType"
+  ],
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "viewScript": "file:./view.js",
+  "style": "file:./style-view.css"
+}
