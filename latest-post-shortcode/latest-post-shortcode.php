@@ -1,11 +1,11 @@
-<?php // phpcs:ignore
+<?php //phpcs:ignore Generic.Files.LineEndings.InvalidEOLChar
 /**
  * Plugin Name: Latest Post Shortcode
  * Plugin URI:  https://iuliacazan.ro/latest-post-shortcode/
- * Description: This plugin allows you to create a dynamic content selection from your posts, pages and custom post types that can be embedded with a UI configurable shortcode. When used with WordPress >= 5.0 + Gutenberg, the plugin shortcode can be configured from the LPS block or any Classic block, using the plugin button.
+ * Description: This plugin allows you to display a dynamic content selection from your posts and pages. This can be embedded as a shortcode, as a Gutenberg block, or as an Elementor widget.
  * Text Domain: lps
  * Domain Path: /langs
- * Version:     13.0.3
+ * Version:     14.0.0
  * Author:      Iulia Cazan
  * Author URI:  https://profiles.wordpress.org/iulia-cazan
  * Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JJA37EHZXWUTJ
@@ -13,7 +13,7 @@
  *
  * @package LPS
  *
- * Copyright (C) 2015-2024 Iulia Cazan
+ * Copyright (C) 2015-2025 Iulia Cazan
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as
@@ -30,7 +30,7 @@
  */
 
 // Define the plugin version.
-define( 'LPS_PLUGIN_VERSION', 13.03 );
+define( 'LPS_PLUGIN_VERSION', 14.0 );
 define( 'LPS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LPS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'LPS_PLUGIN_SLUG', 'lps' );
@@ -167,9 +167,14 @@ class Latest_Post_Shortcode {
 	public static $assets_version = '';
 
 	/**
-	 * Get active object instance
+	 * Shortcode instance arguments.
 	 *
-	 * @return object
+	 * @var object
+	 */
+	public static $args = null;
+
+	/**
+	 * Get active object instance.
 	 */
 	public static function get_instance(): object {
 		if ( ! self::$instance ) {
@@ -191,12 +196,14 @@ class Latest_Post_Shortcode {
 	private function init() {
 		$class = get_called_class();
 
+		self::$args = new stdClass();
+
 		add_action( 'init', [ $class, 'tile_pattern_setup' ], 1 ); // Hook into tile patterns.
 		add_action( 'plugins_loaded', [ $class, 'load_textdomain' ] ); // Text domain load.
 		add_shortcode( 'latest-selected-content', [ $class, 'latest_selected_content' ] );
 
 		if ( is_admin() ) {
-			add_action( 'admin_footer', [ $class, 'add_shortcode_popup_container' ] );
+			add_action( 'admin_footer', [ $class, 'add_settings_modal' ] );
 			add_action( 'admin_enqueue_scripts', [ $class, 'load_admin_assets' ] );
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), [ $class, 'plugin_action_links' ] );
 		} else {
@@ -241,25 +248,12 @@ class Latest_Post_Shortcode {
 
 	/**
 	 * Define the tile patterns.
-	 *
-	 * @return void
 	 */
 	public static function tile_pattern_setup() {
 		self::get_assets_version();
 
 		if ( class_exists( 'Latest_Post_Shortcode_Slider' ) ) {
-			// Deactivate the extension, it is no longer supported.
-			if ( function_exists( 'deactivate_plugins' ) ) {
-				deactivate_plugins( '/latest-post-shortcode-slider-extension/latest-post-shortcode-slider.php' );
-			}
-
-			// Mention to the user that the extension is not supported anymore.
-			add_action( 'admin_notices', function () {
-				$class   = 'notice notice-error';
-				$message = __( 'The Latest Post Shortcode Slider Extension is no longer supported, and it has been deactivated. If you need to display posts as a slider you can find the settings integrated in the Latest Post Shortcode plugin', 'lps' );
-
-				printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
-			}, 99 );
+			include_once __DIR__ . '/incs/deprecated-extension.php';
 		}
 
 		self::$tile_pattern = [
@@ -477,10 +471,8 @@ class Latest_Post_Shortcode {
 
 	/**
 	 * Assess if the current user role maches the restriction settings.
-	 *
-	 * @return bool
 	 */
-	public static function allow_icon_for_roles() {
+	public static function allow_icon_for_roles(): bool {
 		$opt = get_option( 'lps-classic-exclude-role', '' );
 		if ( empty( $opt ) ) {
 			// No restriction.
@@ -508,10 +500,9 @@ class Latest_Post_Shortcode {
 	/**
 	 * Load the slider assets from local files instead of CDN, to make it faster, and available offline.
 	 *
-	 * @param  bool $forced Load the assets without checking if it's necessary.
-	 * @return void
+	 * @param bool $forced Load the assets without checking if it's necessary.
 	 */
-	public static function load_slider_assets( bool $forced = false ): void {
+	public static function load_slider_assets( bool $forced = false ) {
 		$is_block_rendering = defined( 'REST_REQUEST' ) && REST_REQUEST;
 		$in_the_editor      = self::is_in_the_editor();
 		$in_the_preview     = is_preview();
@@ -533,7 +524,7 @@ class Latest_Post_Shortcode {
 					self::lps_assess_page_content();
 				}
 
-				$text  = ( ! empty( $post->post_content ) ) ? $post->post_content : '';
+				$text  = ! empty( $post->post_content ) ? $post->post_content : '';
 				$text .= $lps_assess_cpa;
 				$text .= serialize( get_option( 'widget_text' ) ) . serialize( get_option( 'widget_custom_html' ) ); // phpcs:ignore
 				$text  = str_replace( '\u0022', '"', $text );
@@ -556,12 +547,10 @@ class Latest_Post_Shortcode {
 
 	/**
 	 * Return all private and all public statuses defined.
-	 *
-	 * @return array
 	 */
 	public static function get_statuses(): array {
 		global $wp_post_statuses;
-		$arr = [
+		$statuses = [
 			'public'  => [],
 			'private' => [],
 		];
@@ -570,40 +559,55 @@ class Latest_Post_Shortcode {
 			$exclude = [ 'auto-draft', 'request-confirmed', 'request-pending', 'request-failed', 'request-completed', 'trash', 'wc-pending', 'wc-processing', 'wc-on-hold', 'wc-completed', 'wc-cancelled', 'wc-refunded', 'wc-failed', 'wc-checkout-draft', 'flamingo-spam', 'in-progress', 'failed' ];
 			foreach ( $wp_post_statuses as $t => $v ) {
 				if ( $v->public ) {
-					$arr['public'][ $t ] = $v->label;
+					$statuses['public'][ $t ] = $v->label;
 				} elseif ( ! in_array( $t, $exclude, true ) ) {
-						$arr['private'][ $t ] = $v->label;
+					$statuses['private'][ $t ] = $v->label;
 				}
 			}
 		}
-		self::get_ctps();
+		self::get_cpts();
 
-		return $arr;
+		/**
+		 * Allow external scripts to alter the usable statuses.
+		 *
+		 * @since 14.0.0
+		 *
+		 * @param array $statuses Filtered public and private statuses.
+		 */
+		$statuses = apply_filters( 'lps/filter_statuses', $statuses );
+
+		return $statuses;
 	}
 
 	/**
 	 * Return the defined and filtered CPTs.
-	 *
-	 * @return array
 	 */
-	public static function get_ctps(): array {
-		$cpts   = [];
-		$ptypes = get_post_types( [], 'objects' );
-		if ( ! empty( $ptypes ) ) {
+	public static function get_cpts(): array {
+		$types   = [];
+		$objects = get_post_types( [], 'objects' );
+		if ( ! empty( $objects ) ) {
 			$exclude = [ 'revision', 'nav_menu_item', 'oembed_cache', 'custom_css', 'customize_changeset', 'user_request', 'wp_block', 'wpcf7_contact_form', 'amp_validated_url', 'scheduled-action', 'shop_order', 'shop_order_refund', 'shop_coupon', 'shop_order_placehold', 'wp_template', 'wp_template_part', 'wp_global_styles', 'wp_navigation', 'e-landing-page', 'elementor_library', 'patterns_ai_data', 'wp_font_family', 'wp_font_face' ];
-			foreach ( $ptypes as $t => $v ) {
+			foreach ( $objects as $t => $v ) {
 				if ( ! in_array( $t, $exclude, true ) ) {
-					$cpts[ $t ] = $v->label;
+					$types[ $t ] = $v->label;
 				}
 			}
 		}
-		return $cpts;
+
+		/**
+		 * Allow external scripts to alter the usable post types.
+		 *
+		 * @since 14.0.0
+		 *
+		 * @param array $types Filtered post types.
+		 */
+		$types = apply_filters( 'lps/filter_types', $types );
+
+		return $types;
 	}
 
 	/**
 	 * Return the available sites.
-	 *
-	 * @return array
 	 */
 	public static function get_sites(): array {
 		if ( ! is_multisite() ) {
@@ -626,23 +630,20 @@ class Latest_Post_Shortcode {
 	/**
 	 * The custom patterns start with _custom_.
 	 *
-	 * @param  string $tile_pattern A tile pattern.
-	 * @return bool
+	 * @param string $tile_pattern A tile pattern.
 	 */
 	public static function tile_markup_is_custom( string $tile_pattern = '' ): bool {
-		$use_custom_markup = false;
 		if ( '_custom_' === substr( $tile_pattern, 1, 8 ) ) {
-			$use_custom_markup = true;
+			return true;
 		}
-		return $use_custom_markup;
+
+		return false;
 	}
 
 	/**
 	 * Get the filtered card output types.
-	 *
-	 * @return array
 	 */
-	public static function get_card_output_types() {
+	public static function get_card_output_types(): array {
 		$list = \apply_filters( 'lps/card_output_types', [
 			''             => esc_html__( '-- unspecified --', 'lps' ),
 			'as-column'    => esc_html__( 'vertical card', 'lps' ),
@@ -661,10 +662,9 @@ class Latest_Post_Shortcode {
 	/**
 	 * Get the filtered card output types.
 	 *
-	 * @param  array $args Shortcode arguments.
-	 * @return string
+	 * @param array $args Shortcode arguments.
 	 */
-	public static function get_card_output_type_from_args( array $args = [] ): string {
+	public static function get_card_type( array $args = [] ): string {
 		if ( empty( $args['css'] ) ) {
 			// Fail-fast, nothing to compare.
 			return '';
@@ -678,30 +678,37 @@ class Latest_Post_Shortcode {
 
 	/**
 	 * The list of filtered taxonomies.
-	 *
-	 * @return array
 	 */
 	public static function filtered_taxonomies(): array {
-		$list = [];
-		$tax  = get_taxonomies( [], 'objects' );
+		$taxonomies = [];
+		$tax        = get_taxonomies( [], 'objects' );
 		if ( ! empty( $tax ) ) {
 			$exclude = [ 'post_tag', 'nav_menu', 'link_category', 'post_format', 'amp_template', 'elementor_library_type', 'elementor_library_category', 'elementor_library', 'wp_theme' ];
 			foreach ( $tax as $k => $v ) {
 				if ( ! in_array( $k, $exclude, true ) ) {
 					if ( ! empty( $v->public ) ) {
-						$list[ $k ] = $v;
+						$taxonomies[ $k ] = $v;
 					}
 				}
 			}
 		}
-		return $list;
+
+		/**
+		 * Allow external scripts to alter the usable taxonomies.
+		 *
+		 * @since 14.0.0
+		 *
+		 * @param array $taxonomies Filtered taxonomies.
+		 */
+		$taxonomies = apply_filters( 'lps/filter_taxonomies', $taxonomies );
+
+		return $taxonomies;
 	}
 
 	/**
-	 * Add some content to the bottom of the page.
-	 * This will be shown in the inline modal.
+	 * Add some settings modal to the bottom of the page.
 	 */
-	public static function add_shortcode_popup_container() {
+	public static function add_settings_modal() {
 		if ( true === self::$wrapper_was_set ) {
 			// Fail-fast, this was used.
 			return;
@@ -710,7 +717,7 @@ class Latest_Post_Shortcode {
 		self::$wrapper_was_set = true;
 		$display_posts_list    = self::$tile_content;
 
-		include_once __DIR__ . '/incs/settings-popup.php';
+		include_once __DIR__ . '/incs/settings-modal.php';
 	}
 
 	/**
@@ -723,26 +730,23 @@ class Latest_Post_Shortcode {
 	/**
 	 * Get short text of maximum x chars.
 	 *
-	 * @param  string $text       Text.
-	 * @param  int    $limit      Limit of chars.
-	 * @param  bool   $is_excerpt True if this represents an excerpt.
-	 * @param  string $trimmore   Maybe some trailing extra chars for truncated string.
-	 * @return string
+	 * @param string $text    Text.
+	 * @param int    $limit   Limit of chars.
+	 * @param bool   $excerpt True if this represents an excerpt.
+	 * @param string $suffix  Maybe some trailing extra chars for truncated string.
 	 */
-	public static function get_short_text( $text, $limit, $is_excerpt = false, $trimmore = '' ) { // phpcs:ignore
+	public static function get_short_text( $text, $limit, $excerpt = false, $suffix = '' ): string { // phpcs:ignore
 		if ( empty( $text ) ) {
 			// Fail-fast.
 			return '';
 		}
 
-		$filter = ( $is_excerpt ) ? 'the_excerpt' : 'the_content';
-
+		$hook = $excerpt ? 'the_excerpt' : 'the_content';
 		$text = wp_strip_all_tags( $text );
 		$text = preg_replace( '~\[[^\]]+\]~', '', $text );
 		$text = strip_shortcodes( $text );
-		$text = apply_filters( $filter, strip_shortcodes( $text ) );
+		$text = apply_filters( $hook, strip_shortcodes( $text ) );
 		$text = preg_replace( '~\[[^\]]+\]~', '', $text );
-
 		if ( empty( $text ) ) {
 			// Fail-fast.
 			return '';
@@ -756,7 +760,6 @@ class Latest_Post_Shortcode {
 		$text = preg_replace( '/\s\s+/', ' ', $text );
 		$text = preg_replace( '/\s+/', ' ', $text );
 		$text = trim( $text );
-
 		if ( empty( $text ) ) {
 			// Fail-fast.
 			return '';
@@ -765,7 +768,7 @@ class Latest_Post_Shortcode {
 		$init_len = mb_strlen( $text );
 		if ( $init_len <= $limit ) {
 			// The text length is smaller than the limit.
-			$text = apply_filters( $filter, $text );
+			$text = apply_filters( $hook, $text );
 			$text = str_replace( ']]>', ']]&gt;', $text );
 			return $text;
 		}
@@ -790,12 +793,12 @@ class Latest_Post_Shortcode {
 			$text = preg_replace( '/\[.+\]/', '', $text );
 			$text = self::cleanup_tralining_punctuation( $text );
 			$text = trim( $text );
-			if ( ! empty( $trimmore ) && ! empty( $text ) && mb_strlen( $text ) !== $init_len ) {
-				$text .= $trimmore;
+			if ( ! empty( $suffix ) && ! empty( $text ) && mb_strlen( $text ) !== $init_len ) {
+				$text .= $suffix;
 				$text  = trim( $text );
 			}
 
-			$text = apply_filters( $filter, $text );
+			$text = apply_filters( $hook, $text );
 			$text = str_replace( ']]>', ']]&gt;', $text );
 		}
 
@@ -805,13 +808,13 @@ class Latest_Post_Shortcode {
 	/**
 	 * Cleanup tralining punctuation.
 	 *
-	 * @param  string $text Initial string.
-	 * @return string
+	 * @param string $text Initial string.
 	 */
-	public static function cleanup_tralining_punctuation( $text = '' ) { //phpcs:ignore
+	public static function cleanup_tralining_punctuation( $text = '' ): string { //phpcs:ignore
 		if ( ! empty( $text ) && is_string( $text ) ) {
 			$text = trim( $text, " \t\n\r\0\x0B-.,:|?!-_`'…" );
 		}
+
 		return $text;
 	}
 
@@ -889,7 +892,7 @@ class Latest_Post_Shortcode {
 				}
 			} else {
 				$_args = stripslashes( stripslashes( $args ) );
-				$args  = ( ! empty( $_args ) ) ? json_decode( $_args ) : false;
+				$args  = ! empty( $_args ) ? json_decode( $_args ) : false;
 			}
 
 			$ppage = filter_input( INPUT_POST, 'page', FILTER_DEFAULT );
@@ -913,18 +916,17 @@ class Latest_Post_Shortcode {
 	/**
 	 * Return the content generated for plugin pagination with the specific arguments.
 	 *
-	 * @param  int    $total         Total of records.
-	 * @param  int    $per_page      How many per page.
-	 * @param  int    $range         Range size.
-	 * @param  string $shortcode_id  Shortcode id (element selector).
-	 * @param  string $class         Pagination CSS class.
-	 * @param  array  $args          Load more text, total text, show total.
-	 * @param  int    $maxpg         Maximum number of total pages (leave 0 for default).
-	 * @param  int    $site_initial  Initial site.
-	 * @param  int    $site_expected Expected/requested site.
-	 * @return string
+	 * @param int    $total         Total of records.
+	 * @param int    $per_page      How many per page.
+	 * @param int    $range         Range size.
+	 * @param string $shortcode_id  Shortcode id (element selector).
+	 * @param string $class         Pagination CSS class.
+	 * @param array  $args          Load more text, total text, show total.
+	 * @param int    $maxpg         Maximum number of total pages (leave 0 for default).
+	 * @param int    $site_initial  Initial site.
+	 * @param int    $site_expected Expected/requested site.
 	 */
-	public static function lps_pagination( $total = 1, $per_page = 10, $range = 4, $shortcode_id = '', $class = '', $args = [], $maxpg = 0, $site_initial = 0, $site_expected = 0 ) { // phpcs:ignore
+	public static function lps_pagination( $total = 1, $per_page = 10, $range = 4, $shortcode_id = '', $class = '', $args = [], $maxpg = 0, $site_initial = 0, $site_expected = 0 ): string { // phpcs:ignore
 		$current_page = self::get_current_page();
 		wp_reset_postdata();
 
@@ -935,9 +937,9 @@ class Latest_Post_Shortcode {
 		$body     = '';
 		$total    = (int) $total;
 		$all      = $total;
-		$per_page = ( ! empty( $per_page ) ) ? (int) $per_page : 1;
+		$per_page = ! empty( $per_page ) ? (int) $per_page : 1;
 		$range    = abs( (int) $range );
-		$range    = ( empty( $range ) ) ? 1 : $range;
+		$range    = empty( $range ) ? 1 : $range;
 		$total    = ceil( $total / $per_page );
 		if ( ! empty( $maxpg ) && $maxpg < $total ) {
 			$total = $maxpg;
@@ -946,12 +948,12 @@ class Latest_Post_Shortcode {
 		$is_prevnext = 1 === $range;
 
 		if ( $total > 1 ) {
-			if ( 0 === ( $current_page % $range ) ) {
+			if ( 0 === $current_page % $range ) {
 				$start = $current_page - $range + 1;
 			} else {
 				$start = $current_page - $current_page % $range + 1;
 			}
-			$start = ( $start <= 1 ) ? 1 : $start;
+			$start = $start <= 1 ? 1 : $start;
 			$end   = $start + $range - 1;
 			if ( $end >= $total ) {
 				$end = $total;
@@ -977,7 +979,7 @@ class Latest_Post_Shortcode {
 
 					$more_class = ! empty( $args['hide_more'] ) ? ' hide-more' : '';
 
-					$text  = ( ! empty( $more_text ) ) ? $more_text : __( 'Load more', 'lps' );
+					$text  = ! empty( $more_text ) ? $more_text : __( 'Load more', 'lps' );
 					$body .= '<li class="go-to-next lps-load-more' . $more_class . '"><a class="page-item" href="' . get_pagenum_link( $current_page + 1 ) . '" data-page="' . ( $current_page + 1 ) . '" title="' . esc_attr( $text ) . '">' . esc_html( $text ) . '</a></li>';
 				}
 				$body .= '</ul>';
@@ -1001,79 +1003,82 @@ class Latest_Post_Shortcode {
 				if ( $is_prevnext ) {
 					$body_pags .= '<li class="pages-info current-info"><span>' . $current_page . '</span><span> / </span><span>' . $total . '</span></li>';
 				} else {
-					$body_pags .= '<li class="pages-info">' . __( 'Page', 'lps' ) . ' ' . $current_page . ' ' . __( 'of', 'lps' ) . ' ' . $total . '</li>';
+					// Translators: %1$d - current page, %2$d - total pages.
+					$body_pags .= '<li class="pages-info">' . esc_html( sprintf( __( 'Page %1$d of %2$d', 'lps' ), $current_page, $total ) ) . '</li>';
 				}
 
 				$item_text_first = apply_filters( 'lps/override_pagination_display/first', '&lsaquo;&nbsp;' );
-				$item_icon_first = apply_filters( 'lps/override_pagination_display/first_icon', '<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M224 128a8 8 0 0 1-8 8H59.31l58.35 58.34a8 8 0 0 1-11.32 11.32l-72-72a8 8 0 0 1 0-11.32l72-72a8 8 0 0 1 11.32 11.32L59.31 120H216a8 8 0 0 1 8 8"/></svg>' );
+				$item_icon_first = apply_filters( 'lps/override_pagination_display/first_icon', '<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-label="' . __( 'First page', 'lps' ) . '"><path fill="currentColor" d="M224 128a8 8 0 0 1-8 8H59.31l58.35 58.34a8 8 0 0 1-11.32 11.32l-72-72a8 8 0 0 1 0-11.32l72-72a8 8 0 0 1 11.32 11.32L59.31 120H216a8 8 0 0 1 8 8"/></svg>' );
 
 				$item_text_prev = apply_filters( 'lps/override_pagination_display/prev', '&laquo;' );
-				$item_icon_prev = apply_filters( 'lps/override_pagination_display/prev_icon', '<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="M165.66 202.34a8 8 0 0 1-11.32 11.32l-80-80a8 8 0 0 1 0-11.32l80-80a8 8 0 0 1 11.32 11.32L91.31 128Z"/></svg>' );
+				$item_icon_prev = apply_filters( 'lps/override_pagination_display/prev_icon', '<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-label="' . __( 'Previous page', 'lps' ) . '"><path fill="currentColor" d="M165.66 202.34a8 8 0 0 1-11.32 11.32l-80-80a8 8 0 0 1 0-11.32l80-80a8 8 0 0 1 11.32 11.32L91.31 128Z"/></svg>' );
 
 				$item_text_next = apply_filters( 'lps/override_pagination_display/next', '&raquo;' );
-				$item_icon_next = apply_filters( 'lps/override_pagination_display/next_icon', '<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="m181.66 133.66l-80 80a8 8 0 0 1-11.32-11.32L164.69 128L90.34 53.66a8 8 0 0 1 11.32-11.32l80 80a8 8 0 0 1 0 11.32"/></svg>' );
+				$item_icon_next = apply_filters( 'lps/override_pagination_display/next_icon', '<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-label="' . __( 'Next page', 'lps' ) . '"><path fill="currentColor" d="m181.66 133.66l-80 80a8 8 0 0 1-11.32-11.32L164.69 128L90.34 53.66a8 8 0 0 1 11.32-11.32l80 80a8 8 0 0 1 0 11.32"/></svg>' );
 
 				$item_text_last = apply_filters( 'lps/override_pagination_display/last', '&nbsp;&rsaquo;' );
-				$item_icon_last = apply_filters( 'lps/override_pagination_display/last_icon', '<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path fill="currentColor" d="m221.66 133.66l-72 72a8 8 0 0 1-11.32-11.32L196.69 136H40a8 8 0 0 1 0-16h156.69l-58.35-58.34a8 8 0 0 1 11.32-11.32l72 72a8 8 0 0 1 0 11.32"/></svg>' );
+				$item_icon_last = apply_filters( 'lps/override_pagination_display/last_icon', '<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-label="' . __( 'Last page', 'lps' ) . '"><path fill="currentColor" d="m221.66 133.66l-72 72a8 8 0 0 1-11.32-11.32L196.69 136H40a8 8 0 0 1 0-16h156.69l-58.35-58.34a8 8 0 0 1 11.32-11.32l72 72a8 8 0 0 1 0 11.32"/></svg>' );
 
 				if ( ! $is_prevnext ) {
 					if ( $total > $range && $start > $range ) {
-						$body_prev .= '<li class="go-to-first"><a class="page-item" href="' . $root_url . '" data-page="1" title="' . esc_attr__( 'First', 'lps' ) . '">' . $item_text_first . '</a></li>';
+						$body_prev .= '<li class="go-to-first"><a class="page-item" href="' . $root_url . '" data-page="1" title="' . esc_attr__( 'First page', 'lps' ) . '">' . $item_text_first . '</a></li>';
 					} elseif ( $total > $range ) {
-						$body_prev .= '<li class="go-to-first disabled"><a class="page-item" data-page="' . $current_page . '" title="' . esc_attr__( 'First', 'lps' ) . '">' . $item_text_first . '</a></li>';
+						$body_prev .= '<li class="go-to-first disabled"><a class="page-item" data-page="' . $current_page . '" title="' . esc_attr__( 'First page', 'lps' ) . '">' . $item_text_first . '</a></li>';
 					}
 				}
 
 				$prev = ! $is_prevnext ? $item_text_prev : $item_icon_prev;
 				if ( $current_page > 1 ) {
 					if ( 2 === $current_page ) {
-						$body_prev .= '<li class="go-to-prev"><a class="page-item" href="' . $root_url . '" data-page="1" title="' . esc_attr__( 'Previous', 'lps' ) . '">' . $prev . '</a></li>';
+						$body_prev .= '<li class="go-to-prev"><a class="page-item" href="' . $root_url . '" data-page="1" title="' . esc_attr__( 'Previous page', 'lps' ) . '">' . $prev . '</a></li>';
 					} else {
 						$body_prev .= '<li class="go-to-prev"><a class="page-item" href="' . get_pagenum_link( $current_page - 1 ) . '" data-page="' . ( $current_page - 1 ) . '" title="' . esc_attr__( 'Previous', 'lps' ) . '">' . $prev . '</a></li>';
 					}
 				} else {
-					$body_prev .= '<li class="go-to-prev disabled"><a class="page-item" data-page="' . $current_page . '" title="' . esc_attr__( 'Previous', 'lps' ) . '">' . $prev . '</a></li>';
+					$body_prev .= '<li class="go-to-prev disabled"><a class="page-item" data-page="' . $current_page . '" title="' . esc_attr__( 'Previous page', 'lps' ) . '">' . $prev . '</a></li>';
 				}
 
 				if ( $is_prevnext ) {
 					$first_cl  = $current_page > 1 ? '' : ' disabled';
-					$body_prev = '<li class="go-to-prev go-to-first' . $first_cl . '"><a class="page-item" href="' . $root_url . '" data-page="1" title="' . esc_attr__( 'First', 'lps' ) . '">' . $item_icon_first . '</a></li>' . $body_prev;
+					$body_prev = '<li class="go-to-prev go-to-first' . $first_cl . '"><a class="page-item" href="' . $root_url . '" data-page="1" title="' . esc_attr__( 'First page', 'lps' ) . '">' . $item_icon_first . '</a></li>' . $body_prev;
 				}
 
 				if ( ! $is_prevnext ) {
 					for ( $i = $start; $i <= $end; $i++ ) {
 						if ( 1 === $i ) {
 							if ( $current_page === $i ) {
-								$body_list .= '<li class="current"><a class="page-item item-number" href="' . $root_url . '" data-page="1" title="' . esc_attr__( 'First', 'lps' ) . '">' . $i . '</a></li>';
+								$body_list .= '<li class="current"><a class="page-item item-number" href="' . $root_url . '" data-page="1" title="' . esc_attr__( 'First page', 'lps' ) . '">' . $i . '</a></li>';
 							} else {
-								$body_list .= '<li><a class="page-item item-number" href="' . $root_url . '" data-page="1" title="' . esc_attr__( 'First', 'lps' ) . '">' . $i . '</a></li>';
+								$body_list .= '<li><a class="page-item item-number" href="' . $root_url . '" data-page="1" title="' . esc_attr__( 'First page', 'lps' ) . '">' . $i . '</a></li>';
 							}
 						} elseif ( $current_page === $i ) {
-								$body_list .= '<li class="current"><a class="page-item item-number" data-page="' . $i . '" title="' . esc_attr__( 'Page', 'lps' ) . ' ' . $i . '">' . $i . '</a></li>';
+							// Translators: %1$d - page number.
+							$body_list .= '<li class="current"><a class="page-item item-number" data-page="' . $i . '" title="' . esc_html( sprintf( __( 'Page %1$d', 'lps' ), $i ) ) . '">' . $i . '</a></li>';
 						} else {
-							$body_list .= '<li><a class="page-item item-number" href="' . get_pagenum_link( $i ) . '" data-page="' . $i . '" title="' . esc_attr__( 'Page', 'lps' ) . ' ' . $i . '">' . $i . '</a></li>';
+							// Translators: %1$d - page number.
+							$body_list .= '<li><a class="page-item item-number" href="' . get_pagenum_link( $i ) . '" data-page="' . $i . '" title="' . esc_html( sprintf( __( 'Page %1$d', 'lps' ), $i ) ) . '">' . $i . '</a></li>';
 						}
 					}
 				}
 
 				$next = ! $is_prevnext ? $item_text_next : $item_icon_next;
 				if ( $current_page < $total ) {
-					$body_next .= '<li class="go-to-next"><a class="page-item" href="' . get_pagenum_link( $current_page + 1 ) . '" data-page="' . ( $current_page + 1 ) . '" title="' . esc_attr__( 'Next', 'lps' ) . '">' . $next . '</a></li>';
+					$body_next .= '<li class="go-to-next"><a class="page-item" href="' . get_pagenum_link( $current_page + 1 ) . '" data-page="' . ( $current_page + 1 ) . '" title="' . esc_attr__( 'Next page', 'lps' ) . '">' . $next . '</a></li>';
 				} else {
-					$body_next .= '<li class="go-to-next disabled"><a class="page-item" data-page="' . $current_page . '" title="' . esc_attr__( 'Next', 'lps' ) . '">' . $next . '</a></li>';
+					$body_next .= '<li class="go-to-next disabled"><a class="page-item" data-page="' . $current_page . '" title="' . esc_attr__( 'Next page', 'lps' ) . '">' . $next . '</a></li>';
 				}
 
 				if ( ! $is_prevnext ) {
 					if ( $end < $total ) {
-						$body_next .= '<li class="go-to-last"><a class="page-item" href="' . get_pagenum_link( $total ) . '" data-page="' . $total . '" title="' . esc_attr__( 'Last', 'lps' ) . '">' . $item_text_last . '</a></li>';
+						$body_next .= '<li class="go-to-last"><a class="page-item" href="' . get_pagenum_link( $total ) . '" data-page="' . $total . '" title="' . esc_attr__( 'Last page', 'lps' ) . '">' . $item_text_last . '</a></li>';
 					} elseif ( $total > $range ) {
-						$body_next .= '<li class="go-to-last disabled"><a class="page-item" data-page="' . $current_page . '" title="' . esc_attr__( 'Last', 'lps' ) . '">' . $item_text_last . '</a></li>';
+						$body_next .= '<li class="go-to-last disabled"><a class="page-item" data-page="' . $current_page . '" title="' . esc_attr__( 'Last page', 'lps' ) . '">' . $item_text_last . '</a></li>';
 					}
 				}
 
 				if ( $is_prevnext ) {
 					$last_cl    = $end < $total ? '' : ' disabled';
-					$body_next .= '<li class="go-to-next go-to-last' . $last_cl . '"><a class="page-item" href="' . get_pagenum_link( $total ) . '" data-page="' . $total . '" title="' . esc_attr__( 'Last', 'lps' ) . '">' . $item_icon_last . '</a></li>';
+					$body_next .= '<li class="go-to-next go-to-last' . $last_cl . '"><a class="page-item" href="' . get_pagenum_link( $total ) . '" data-page="' . $total . '" title="' . esc_attr__( 'Last page', 'lps' ) . '">' . $item_icon_last . '</a></li>';
 				}
 
 				if ( ! $is_prevnext ) {
@@ -1085,7 +1090,7 @@ class Latest_Post_Shortcode {
 			}
 
 			if ( ! empty( $body ) ) {
-				$body = '<div class="lps-pagination-wrap ' . trim( $class ) . '">' . $body . '</div>';
+				$body = '<!-- lps/pagination-start --><div class="lps-pagination-wrap ' . trim( $class ) . '">' . $body . '</div><!-- lps/pagination-end -->';
 			}
 		}
 
@@ -1099,13 +1104,12 @@ class Latest_Post_Shortcode {
 	/**
 	 * Dynamic relative time.
 	 *
-	 * @param  int $id The post ID.
-	 * @return string
+	 * @param int $id The post ID.
 	 */
-	public static function relative_time( $id = null ) { // phpcs:ignore
+	public static function relative_time( $id = null ): string { // phpcs:ignore
 		if ( function_exists( 'current_datetime' ) ) {
 			$date = current_datetime();
-			$now  = ( ! empty( $date->date ) ) ? strtotime( $date->date ) : current_time( 'timestamp' ); // phpcs:ignore
+			$now  = ! empty( $date->date ) ? strtotime( $date->date ) : current_time( 'timestamp' ); // phpcs:ignore
 		} else {
 			$now = current_time( 'timestamp' ); // phpcs:ignore
 		}
@@ -1119,8 +1123,6 @@ class Latest_Post_Shortcode {
 
 	/**
 	 * Get the current page for pagination.
-	 *
-	 * @return int
 	 */
 	public static function get_current_page(): int {
 		global $wp;
@@ -1154,8 +1156,6 @@ class Latest_Post_Shortcode {
 
 	/**
 	 * Returns true if the execution is triggered in the editor.
-	 *
-	 * @return bool
 	 */
 	public static function is_in_the_editor(): bool {
 		// phpcs:disable
@@ -1204,10 +1204,9 @@ class Latest_Post_Shortcode {
 	/**
 	 * Return the content generated by a shortcode with the specific arguments.
 	 *
-	 * @param  array $args Array of shortcode arguments.
-	 * @return string
+	 * @param array $args Array of shortcode arguments.
 	 */
-	public static function latest_selected_content( $args ) { // phpcs:ignore
+	public static function latest_selected_content( $args ): string { // phpcs:ignore
 		if ( empty( $args ) ) {
 			// Fail-fast, too bad, this is used wrong, there is no argument.
 			return '';
@@ -1353,21 +1352,43 @@ class Latest_Post_Shortcode {
 		$args = apply_filters( 'lps/shortcode_arguments', $args );
 		$args = apply_filters_deprecated( 'lps_filter_use_custom_shortcode_arguments', [ $args ], '12.1.0', 'lps/shortcode_arguments' );
 
-		$args['ver'] = isset( $args['ver'] ) ? abs( (int) $args['ver'] ) : 1;
-		$args['ver'] = $args['ver'] >= 2 ? 2 : 1;
+		self::$args->shortcode_id = ! empty( $is_ajax_shortcode_id ) ? $is_ajax_shortcode_id : 'lps-' . md5( wp_json_encode( $args ) . microtime() );
+
+		// Initial version assessment.
+		self::$args->ver     = isset( $args['ver'] ) ? abs( (int) $args['ver'] ) : 1;
+		self::$args->ver     = self::$args->ver >= 2 ? 2 : 1;
+		self::$args->is_ver2 = 2 === self::$args->ver;
+
+		// CSS classes.
+		self::$args->css = ! empty( $args['css'] ) ? trim( $args['css'] ) : '';
+
+		// Markup helpers.
+		self::$args->sep_s = '#1$*#'; // Start.
+		self::$args->sep_e = '#3$*#'; // End.
+		self::$args->sep_d = '#7$*#'; // Delimiter.
 
 		// Maybe use the site id.
-		$args['site_id'] = is_multisite() && ! empty( $args['site_id'] ) ? (int) $args['site_id'] : 0;
-
-		$site_switched = false;
-		$site_initial  = 0;
-		$site_expected = 0;
-		if ( ! empty( $args['site_id'] ) && \get_current_blog_id() !== $args['site_id'] ) {
-			$site_initial  = \get_current_blog_id();
-			$site_expected = $args['site_id'];
-			$site_switched = true;
-			\switch_to_blog( $args['site_id'] );
+		self::$args->site_id       = is_multisite() && ! empty( $args['site_id'] ) ? (int) $args['site_id'] : 0;
+		self::$args->site_switched = false;
+		self::$args->site_initial  = 0;
+		self::$args->site_expected = 0;
+		if ( ! empty( self::$args->site_id ) && \get_current_blog_id() !== self::$args->site_id ) {
+			self::$args->site_initial  = \get_current_blog_id();
+			self::$args->site_expected = self::$args->site_id;
+			self::$args->site_switched = true;
+			\switch_to_blog( self::$args->site_id );
 		}
+
+		// Nav position.
+		self::$args->nav_above = ! empty( $args['showpages'] );
+		self::$args->nav_below = false;
+		if ( ! empty( $args['pagespos'] ) ) {
+			self::$args->nav_above = empty( $args['pagespos'] ) || 2 === (int) $args['pagespos'];
+			self::$args->nav_below = ! empty( (int) $args['pagespos'] );
+		}
+
+		self::$args->image_subsize     = ! empty( $args['image'] ) ? trim( $args['image'] ) : '';
+		self::$args->image_placeholder = ! empty( $args['image_placeholder'] ) ? trim( $args['image_placeholder'] ) : '';
 
 		$maxpg = 0;
 		if ( empty( $args['output'] ) && ! empty( $args['limit'] ) && ! empty( $args['perpage'] ) ) {
@@ -1381,175 +1402,133 @@ class Latest_Post_Shortcode {
 		}
 
 		// Get the post arguments from shortcode arguments.
-		$ids         = ( ! empty( $args['id'] ) ) ? explode( ',', $args['id'] ) : [];
-		$exclude_ids = ( ! empty( $args['excludeid'] ) ) ? explode( ',', $args['excludeid'] ) : [];
+		$ids         = ! empty( $args['id'] ) ? explode( ',', $args['id'] ) : [];
+		$exclude_ids = ! empty( $args['excludeid'] ) ? explode( ',', $args['excludeid'] ) : [];
 		if ( ! empty( $args['dparent'] ) ) {
 			$parent = ! empty( $current_object->post_parent ) ? [ (int) $current_object->post_parent ] : [ -9999 ];
 		} else {
-			$parent = ( ! empty( $args['parent'] ) ) ? explode( ',', $args['parent'] ) : [];
+			$parent = ! empty( $args['parent'] ) ? explode( ',', $args['parent'] ) : [];
 		}
 
 		if ( ! empty( $args['dauthor'] ) ) {
 			$author = ! empty( $current_object->post_author ) ? [ (int) $current_object->post_author ] : [ -9999 ];
 		} else {
-			$author = ( ! empty( $args['author'] ) ) ? explode( ',', $args['author'] ) : [];
+			$author = ! empty( $args['author'] ) ? explode( ',', $args['author'] ) : [];
 		}
-		$exclude_authors = ( ! empty( $args['excludeauthor'] ) ) ? explode( ',', $args['excludeauthor'] ) : [];
+		$exclude_authors = ! empty( $args['excludeauthor'] ) ? explode( ',', $args['excludeauthor'] ) : [];
 
-		$type = ( ! empty( $args['type'] ) ) ? $args['type'] : 'post';
+		$type = ! empty( $args['type'] ) ? $args['type'] : 'post';
 		if ( substr_count( $type, ',' ) ) {
 			$type = explode( ',', $type );
 		}
 
-		$titletag      = ( ! empty( $args['titletag'] ) && in_array( $args['titletag'], self::$title_tags, true ) ) ? $args['titletag'] : 'h3';
-		$chrlimit      = ( ! empty( $args['chrlimit'] ) ) ? intval( $args['chrlimit'] ) : 120;
-		$trimmore      = ( ! empty( $args['more'] ) ) ? $args['more'] : '';
-		$extra_display = ( ! empty( $args['display'] ) ) ? explode( ',', $args['display'] ) : [ 'title' ];
-		$linkurl       = ( ! empty( $args['url'] ) && ( 'yes' === $args['url'] || 'yes_blank' === $args['url'] ) ) ? true : false;
-		$linkmedia     = ( ! empty( $args['url'] ) && ( 'yes_media' === $args['url'] || 'yes_media_blank' === $args['url'] || 'yes_media_lightbox' === $args['url'] ) ) ? true : false;
-		$lightbox_size = ( $linkmedia && ! empty( $args['lightbox_size'] ) ) ? $args['lightbox_size'] : '';
-		$lightbox_attr = ( $linkmedia && ! empty( $args['lightbox_attr'] ) ) ? $args['lightbox_attr'] : '';
-		$lightbox_val  = ( $linkmedia && ! empty( $args['lightbox_val'] ) ) ? $args['lightbox_val'] : '';
-		$linkblank     = ( ! empty( $args['url'] ) && ( 'yes_blank' === $args['url'] || 'yes_media_blank' === $args['url'] || 'yes_media_lightbox' === $args['url'] ) ) ? true : false;
+		self::$args->titletag = ! empty( $args['titletag'] ) && in_array( $args['titletag'], self::$title_tags, true ) ? $args['titletag'] : 'h3';
+		self::$args->chrlimit = ! empty( $args['chrlimit'] ) ? intval( $args['chrlimit'] ) : 120;
+		self::$args->trimmore = ! empty( $args['more'] ) ? $args['more'] : '';
+		self::$args->linkurl  = ! empty( $args['url'] ) && ( 'yes' === $args['url'] || 'yes_blank' === $args['url'] ) ? true : false;
 
-		$tile_type = 0;
-		if ( $linkurl || $linkmedia ) {
-			$linktext = ( ! empty( $args['linktext'] ) ) ? $args['linktext'] : '';
-		}
+		self::$args->linkmedia     = ! empty( $args['url'] ) && ( 'yes_media' === $args['url'] || 'yes_media_blank' === $args['url'] || 'yes_media_lightbox' === $args['url'] ) ? true : false;
+		self::$args->lightbox_size = self::$args->linkmedia && ! empty( $args['lightbox_size'] ) ? $args['lightbox_size'] : '';
+		self::$args->lightbox_attr = self::$args->linkmedia && ! empty( $args['lightbox_attr'] ) ? $args['lightbox_attr'] : '';
+		self::$args->lightbox_val  = self::$args->linkmedia && ! empty( $args['lightbox_val'] ) ? $args['lightbox_val'] : '';
+		self::$args->linkblank     = ! empty( $args['url'] ) && ( 'yes_blank' === $args['url'] || 'yes_media_blank' === $args['url'] || 'yes_media_lightbox' === $args['url'] ) ? true : false;
 
-		$tile_type = ( ! empty( $args['elements'] ) && ! empty( self::$tile_pattern[ $args['elements'] ] ) ) ? $args['elements'] : 0;
-
-		if ( $args['ver'] >= 2 ) {
-			// Version >= 2 markup.
-			if ( ! substr_count( '_custom_', $tile_type )
-				&& ! in_array( $tile_type, self::$tile_pattern_ver2, true ) ) {
-				$tile_type = 0;
-			}
+		self::$args->linktext = '';
+		if ( self::$args->linkurl || self::$args->linkmedia ) {
+			self::$args->linktext = ! empty( $args['linktext'] ) ? $args['linktext'] : '';
 		}
 
-		$tile_pattern = ( ! empty( self::$tile_pattern[ $tile_type ] ) ) ? self::$tile_pattern[ $tile_type ] : 'title';
-
-		$link_class      = ' class="main-link"';
-		$read_more_class = ' class="read-more"';
-
-		$tiles_custom_style_vars = '';
-		if ( ! empty( $args['default_height'] ) ) {
-			$tiles_custom_style_vars .= ' --default-tile-height: ' . esc_attr( $args['default_height'] ) . ';';
-		}
-		if ( ! empty( $args['default_padding'] ) ) {
-			$tiles_custom_style_vars .= ' --default-tile-padding: ' . esc_attr( $args['default_padding'] ) . ';';
-		}
-		if ( ! empty( $args['default_gap'] ) ) {
-			$tiles_custom_style_vars .= ' --default-tile-gap: ' . esc_attr( $args['default_gap'] ) . ';';
-		}
-		if ( ! empty( $args['default_overlay_padding'] ) ) {
-			$tiles_custom_style_vars .= ' --default-overlay-padding: ' . esc_attr( $args['default_overlay_padding'] ) . ';';
+		// Tile type -> card type (numeric or _custom_ type).
+		self::$args->card_display = ! empty( $args['display'] ) ? $args['display'] : 'title';
+		self::$args->card_type    = 0;
+		if ( ! empty( $args['elements'] ) && ! empty( self::$tile_pattern[ $args['elements'] ] ) ) {
+			self::$args->card_type = $args['elements'];
 		}
 
-		if ( ! empty( $args['tablet_height'] ) ) {
-			$tiles_custom_style_vars .= ' --tablet-tile-height: ' . esc_attr( $args['tablet_height'] ) . ';';
-		}
-		if ( ! empty( $args['tablet_padding'] ) ) {
-			$tiles_custom_style_vars .= ' --tablet-tile-padding: ' . esc_attr( $args['tablet_padding'] ) . ';';
-		}
-		if ( ! empty( $args['tablet_gap'] ) ) {
-			$tiles_custom_style_vars .= ' --tablet-tile-gap: ' . esc_attr( $args['tablet_gap'] ) . ';';
-		}
-		if ( ! empty( $args['tablet_overlay_padding'] ) ) {
-			$tiles_custom_style_vars .= ' --tablet-overlay-padding: ' . esc_attr( $args['tablet_overlay_padding'] ) . ';';
+		self::$args->card_custom = false;
+		self::$args->card_filter = 'elements-' . (int) $args['elements'];
+
+		$custom = trim( str_replace( '[', '', str_replace( ']', '', str_replace( '][', '_', self::$args->card_display ) ) ) );
+		if ( '_custom_' === substr( $custom, 0, 8 ) ) {
+			self::$args->card_custom = true;
+			self::$args->card_filter = $custom;
 		}
 
-		if ( ! empty( $args['mobile_height'] ) ) {
-			$tiles_custom_style_vars .= ' --mobile-tile-height: ' . esc_attr( $args['mobile_height'] ) . ';';
-		}
-		if ( ! empty( $args['mobile_padding'] ) ) {
-			$tiles_custom_style_vars .= ' --mobile-tile-padding: ' . esc_attr( $args['mobile_padding'] ) . ';';
-		}
-		if ( ! empty( $args['mobile_gap'] ) ) {
-			$tiles_custom_style_vars .= ' --mobile-tile-gap: ' . esc_attr( $args['mobile_gap'] ) . ';';
-		}
-		if ( ! empty( $args['mobile_overlay_padding'] ) ) {
-			$tiles_custom_style_vars .= ' --mobile-overlay-padding: ' . esc_attr( $args['mobile_overlay_padding'] ) . ';';
+		if ( self::$args->is_ver2 && ! self::$args->card_custom
+			&& ! in_array( self::$args->card_type, self::$tile_pattern_ver2, true ) ) {  // Version >= 2 markup.
+			self::$args->card_type = 0;
 		}
 
-		if ( ! empty( $args['color_text'] ) ) {
-			$tiles_custom_style_vars .= ' --article-text-color: ' . esc_attr( $args['color_text'] ) . ';';
-		}
-		if ( ! empty( $args['color_title'] ) ) {
-			$tiles_custom_style_vars .= ' --article-title-color: ' . esc_attr( $args['color_title'] ) . ';';
-		}
-		if ( ! empty( $args['color_bg'] ) ) {
-			$tiles_custom_style_vars .= ' --article-bg-color: ' . esc_attr( $args['color_bg'] ) . ';';
-		}
-		if ( ! empty( $args['size_text'] ) ) {
-			$tiles_custom_style_vars .= ' --article-size-text: ' . esc_attr( $args['size_text'] ) . ';';
-		}
-		if ( ! empty( $args['size_title'] ) ) {
-			$tiles_custom_style_vars .= ' --article-size-title: ' . esc_attr( $args['size_title'] ) . ';';
-		}
-		if ( ! empty( $args['image_opacity'] ) ) {
-			$tiles_custom_style_vars .= ' --article-image-opacity: ' . esc_attr( $args['image_opacity'] ) . ';';
-		}
-		if ( ! empty( $args['size_image'] ) ) {
-			$args['css'] .= ' has-image-size';
-			$args['css']  = trim( $args['css'] );
+		// Tile pattern -> card pattern ([title][text]).
+		self::$args->card_pattern = ! empty( self::$tile_pattern[ self::$args->card_type ] ) ? self::$tile_pattern[ self::$args->card_type ] : 'title';
+		self::init_css_vars( $args );
 
-			$tiles_custom_style_vars .= ' --article-image-size: ' . esc_attr( $args['size_image'] ) . ';';
+		self::$args->card_attributes = '';
+		self::$args->card_link_class = 'class="article__link main-link"';
+		self::$args->card_more_class = 'class="article__link read-more"';
+		if ( in_array( (int) self::$args->card_type, [ 3, 11, 14, 19 ], true ) ) {
+			self::$args->card_link_class = 'class="article__link main-link read-more-wrap"';
+			self::$args->card_more_class = '';
 		}
-		if ( ! empty( $args['image_ratio'] ) ) {
-			if ( 'contain' === $args['image_ratio'] ) {
-				$args['css'] .= ' has-image-contain';
-			} else {
-				$args['css'] .= ' has-image-ratio';
-
-				$tiles_custom_style_vars .= ' --article-image-ratio: ' . esc_attr( $args['image_ratio'] ) . ';';
-			}
-
-			$args['css'] = trim( $args['css'] );
-		}
-		if ( ! empty( $args['card_ratio'] ) ) {
-			$tiles_custom_style_vars .= ' --article-ratio: ' . esc_attr( $args['card_ratio'] ) . ';';
-		}
-
-		$lightbox_extra = '';
-		if ( in_array( (int) $tile_type, [ 3, 11, 14, 19 ], true ) ) {
-			$link_class      = ' class="main-link read-more-wrap"';
-			$read_more_class = '';
-		}
-		if ( ! empty( $lightbox_attr ) ) {
-			if ( 'class' === $lightbox_attr ) {
-				if ( $link_class ) {
-					$link_class = str_replace( 'class="', 'class="' . esc_attr( $lightbox_val ) . ' ', $link_class );
+		if ( ! empty( self::$args->lightbox_attr ) ) {
+			if ( 'class' === self::$args->lightbox_attr ) {
+				if ( self::$args->card_link_class ) {
+					self::$args->card_link_class = str_replace( 'class="', 'class="' . esc_attr( self::$args->lightbox_val ) . ' ', self::$args->card_link_class );
 				}
-				if ( $read_more_class ) {
-					$read_more_class = str_replace( 'class="', 'class="' . esc_attr( $lightbox_val ) . ' ', $read_more_class );
+				if ( self::$args->card_more_class ) {
+					self::$args->card_more_class = str_replace( 'class="', 'class="' . esc_attr( self::$args->lightbox_val ) . ' ', self::$args->card_more_class );
 				}
 			} else {
-				$lightbox_extra = ' ' . esc_attr( $lightbox_attr ) . '="' . esc_attr( $lightbox_val ) . '"';
+				self::$args->card_attributes = ' ' . esc_attr( self::$args->lightbox_attr ) . '="' . esc_attr( self::$args->lightbox_val ) . '"';
 			}
 		}
 
-		$show_extra  = ( ! empty( $args['show_extra'] ) ) ? explode( ',', $args['show_extra'] ) : [];
-		$raw_content = ( in_array( 'raw', $show_extra, true ) ) ? true : false;
-		$trim_text   = ( in_array( 'trim', $show_extra, true ) ) ? true : false;
-		$is_scroller = ( in_array( 'scroller', $show_extra, true ) ) ? true : false;
+		self::$args->extra      = ! empty( $args['show_extra'] ) ? trim( $args['show_extra'] ) : '';
+		self::$args->extra_list = ! empty( self::$args->extra ) ? explode( ',', self::$args->extra ) : [];
+		self::$args->text_raw   = self::in_extra( 'raw' );
+		self::$args->text_trim  = self::in_extra( 'trim' );
 
-		if ( ! empty( $is_scroller ) ) {
-			$args['css']  = str_replace( ' hover-highlight', '', $args['css'] );
-			$args['css'] .= ' scroller';
-			if ( in_array( 'with_counter', $show_extra, true ) ) {
-				$args['css'] .= ' with-counter';
+		self::$args->display      = ! empty( $args['display'] ) ? trim( $args['display'] ) : 'title';
+		self::$args->display_list = explode( ',', self::$args->display );
+		self::$args->is_scroller  = self::in_extra( 'scroller' );
+		if ( ! empty( self::$args->is_scroller ) ) {
+			self::$args->css  = str_replace( ' hover-highlight', '', self::$args->css );
+			self::$args->css .= ' scroller';
+			if ( self::in_extra( 'with_counter' ) ) {
+				self::$args->css .= ' with-counter';
 
-				if ( in_array( 'reverse_counter', $show_extra, true ) ) {
-					$args['css'] .= ' reverse-counter';
+				if ( self::in_extra( 'reverse_counter' ) ) {
+					self::$args->css .= ' reverse-counter';
 				}
 			}
-			$args['css'] = trim( $args['css'] );
 		}
 
-		$reset_post_css = in_array( 'reset_css', $show_extra, true ) ? true : false;
-		$inherit_style  = in_array( 'inherit_style', $show_extra, true ) ? true : false;
+		self::$args->section_class  = ! empty( self::$args->css ) ? ' ' . self::$args->css : '';
+		self::$args->section_class .= self::$args->is_ver2 ? ' ver2' : '';
+		if ( self::in_extra( 'ajax_pagination' ) ) {
+			self::$args->section_class .= ' ajax_pagination';
+		}
 
+		self::$args->elements   = (int) $args['elements'];
+		self::$args->card_type  = self::get_card_type( $args );
+		self::$args->kses       = [];
+		self::$args->kses['br'] = [];
+		foreach ( self::$title_tags as $k ) {
+			self::$args->kses[ $k ] = [
+				'class' => 1,
+				'id'    => 1,
+			];
+		}
+		self::$args->kses[ self::$args->titletag ] = [
+			'class' => 1,
+			'id'    => 1,
+		];
+
+		self::$args->card_pattern = self::card_pattern_extra();
+
+		$reset_post_css = self::in_extra( 'reset_css' );
+
+		// Query arguments start.
 		$qargs = [
 			'numberposts' => 1,
 			'post_status' => 'publish',
@@ -1567,12 +1546,12 @@ class Latest_Post_Shortcode {
 			}
 		}
 		if ( empty( $qargs['post_status'] ) ) {
-			return;
+			return '';
 		}
 
 		self::$current_query_statuses_list = $qargs['post_status'];
 
-		$orderby          = ( ! empty( $args['orderby'] ) ) ? $args['orderby'] : 'dateD';
+		$orderby          = ! empty( $args['orderby'] ) ? $args['orderby'] : 'dateD';
 		$qargs['order']   = 'DESC';
 		$qargs['orderby'] = 'date';
 		if ( ! empty( $orderby ) && ! empty( self::$orderby_options[ $orderby ] ) ) {
@@ -1603,7 +1582,7 @@ class Latest_Post_Shortcode {
 			}
 		}
 
-		if ( ! empty( $show_extra ) && in_array( 'exclude_previous_content', $show_extra, true ) ) {
+		if ( self::in_extra( 'exclude_previous_content' ) ) {
 			// Exclude the previous ID embedded through the plugin shortcodes on this page.
 			if ( ! isset( $qargs['post__not_in'] ) ) {
 				$qargs['post__not_in'] = [];
@@ -1612,6 +1591,7 @@ class Latest_Post_Shortcode {
 			if ( is_scalar( $qargs['post__not_in'] ) ) {
 				$qargs['post__not_in'] = [ $qargs['post__not_in'] ];
 			}
+
 			if ( empty( $lps_current_post_embedded_item_ids ) ) {
 				$lps_current_post_embedded_item_ids = [];
 			}
@@ -1670,7 +1650,7 @@ class Latest_Post_Shortcode {
 		if ( $force_type ) {
 			$qargs['post_type'] = $type;
 		} elseif ( ! empty( $args['type'] ) ) {
-				$qargs['post_type'] = $args['type'];
+			$qargs['post_type'] = $args['type'];
 		}
 
 		if ( $is_lps_archive || $is_lps_search ) {
@@ -1721,150 +1701,109 @@ class Latest_Post_Shortcode {
 					$args['archive_tax'] = wp_strip_all_tags( $archive_taxonomy );
 					$args['archive_id']  = (int) $archive_term_id;
 
-					array_push(
-						$qargs['tax_query'],
-						[
-							'relation' => 'AND',
-						]
-					);
+					array_push( $qargs['tax_query'], [
+						'relation' => 'AND',
+					] );
 
-					array_push(
-						$qargs['tax_query'],
-						[
-							'taxonomy' => $archive_taxonomy,
-							'field'    => 'term_id',
-							'terms'    => [ (int) $archive_term_id ],
-						]
-					);
+					array_push( $qargs['tax_query'], [
+						'taxonomy' => $archive_taxonomy,
+						'field'    => 'term_id',
+						'terms'    => [ (int) $archive_term_id ],
+					] );
 				}
 			}
 		} else {
 			if ( ! empty( $args['tag'] ) ) {
-				array_push(
-					$qargs['tax_query'],
-					[
-						'taxonomy' => 'post_tag',
-						'field'    => 'slug',
-						'terms'    => ( ! empty( $args['tag'] ) ) ? explode( ',', $args['tag'] ) : 'homenews',
-					]
-				);
+				array_push( $qargs['tax_query'], [
+					'taxonomy' => 'post_tag',
+					'field'    => 'slug',
+					'terms'    => ! empty( $args['tag'] ) ? explode( ',', $args['tag'] ) : 'homenews',
+				] );
 			}
 			if ( ! empty( $args['dtag'] ) && ! empty( $post->ID ) ) {
-				$tag_ids = wp_get_post_tags(
-					$post->ID,
-					[
-						'fields' => 'ids',
-					]
-				);
+				$tag_ids = wp_get_post_tags( $post->ID, [
+					'fields' => 'ids',
+				] );
+
 				if ( ! empty( $tag_ids ) && is_array( $tag_ids ) ) {
 					if ( ! empty( $qargs['tax_query'] ) ) {
-						array_push(
-							$qargs['tax_query'],
-							[
-								'relation' => 'AND',
-							]
-						);
+						array_push( $qargs['tax_query'], [
+							'relation' => 'AND',
+						] );
 					}
-					array_push(
-						$qargs['tax_query'],
-						[
-							'taxonomy' => 'post_tag',
-							'field'    => 'term_id',
-							'terms'    => $tag_ids,
-							'operator' => 'IN',
-						]
-					);
+					array_push( $qargs['tax_query'], [
+						'taxonomy' => 'post_tag',
+						'field'    => 'term_id',
+						'terms'    => $tag_ids,
+						'operator' => 'IN',
+					] );
 				}
 			}
 			if ( ! empty( $args['taxonomy'] ) && ! empty( $args['term'] ) ) {
 				$include_children = true;
-				if ( ! empty( $show_extra ) && in_array( 'term_strict', $show_extra, true ) ) {
+				if ( self::in_extra( 'term_strict' ) ) {
 					$include_children = false;
 				}
 				if ( ! empty( $qargs['tax_query'] ) ) {
-					array_push(
-						$qargs['tax_query'],
-						[
-							'relation' => 'AND',
-						]
-					);
+					array_push( $qargs['tax_query'], [
+						'relation' => 'AND',
+					] );
 				}
-				array_push(
-					$qargs['tax_query'],
-					[
-						'taxonomy'         => $args['taxonomy'],
-						'field'            => 'slug',
-						'terms'            => explode( ',', $args['term'] ),
-						'include_children' => $include_children,
-					]
-				);
+				array_push( $qargs['tax_query'], [
+					'taxonomy'         => $args['taxonomy'],
+					'field'            => 'slug',
+					'terms'            => explode( ',', $args['term'] ),
+					'include_children' => $include_children,
+				] );
 			}
 			if ( ! empty( $args['taxonomy2'] ) && ! empty( $args['term2'] ) ) {
 				$include_children = true;
-				if ( ! empty( $show_extra ) && in_array( 'term2_strict', $show_extra, true ) ) {
+				if ( self::in_extra( 'term2_strict' ) ) {
 					$include_children = false;
 				}
 				if ( ! empty( $qargs['tax_query'] ) ) {
-					array_push(
-						$qargs['tax_query'],
-						[
-							'relation' => 'AND',
-						]
-					);
+					array_push( $qargs['tax_query'], [
+						'relation' => 'AND',
+					] );
 				}
-				array_push(
-					$qargs['tax_query'],
-					[
-						'taxonomy'         => $args['taxonomy2'],
-						'field'            => 'slug',
-						'terms'            => explode( ',', $args['term2'] ),
-						'include_children' => $include_children,
-					]
-				);
+				array_push( $qargs['tax_query'], [
+					'taxonomy'         => $args['taxonomy2'],
+					'field'            => 'slug',
+					'terms'            => explode( ',', $args['term2'] ),
+					'include_children' => $include_children,
+				] );
 			}
 		}
 
 		if ( ! empty( $args['exclude_tags'] ) ) {
 			if ( ! empty( $qargs['tax_query'] ) ) {
-				array_push(
-					$qargs['tax_query'],
-					[
-						'relation' => 'AND',
-					]
-				);
+				array_push( $qargs['tax_query'], [
+					'relation' => 'AND',
+				] );
 			}
-			array_push(
-				$qargs['tax_query'],
-				[
-					'taxonomy' => 'post_tag',
-					'field'    => 'slug',
-					'terms'    => explode( ',', $args['exclude_tags'] ),
-					'operator' => 'NOT IN',
-				]
-			);
+			array_push( $qargs['tax_query'], [
+				'taxonomy' => 'post_tag',
+				'field'    => 'slug',
+				'terms'    => explode( ',', $args['exclude_tags'] ),
+				'operator' => 'NOT IN',
+			] );
 		}
 		if ( ! empty( $args['exclude_categories'] ) ) {
 			if ( ! empty( $qargs['tax_query'] ) ) {
-				array_push(
-					$qargs['tax_query'],
-					[
-						'relation' => 'AND',
-					]
-				);
+				array_push( $qargs['tax_query'], [
+					'relation' => 'AND',
+				] );
 			}
-			array_push(
-				$qargs['tax_query'],
-				[
-					'taxonomy' => 'category',
-					'field'    => 'slug',
-					'terms'    => explode( ',', $args['exclude_categories'] ),
-					'operator' => 'NOT IN',
-				]
-			);
+			array_push( $qargs['tax_query'], [
+				'taxonomy' => 'category',
+				'field'    => 'slug',
+				'terms'    => explode( ',', $args['exclude_categories'] ),
+				'operator' => 'NOT IN',
+			] );
 		}
 
 		if ( ! empty( $args['date_limit'] ) && ( ! empty( $args['date_start'] ) || ! empty( $args['date_start_type'] ) ) ) {
-			$drange = ( ! empty( $args['date_start_type'] ) && in_array( $args['date_start_type'], self::$date_limit_units, true ) ) ? $args['date_start_type'] : 'months';
+			$drange = ! empty( $args['date_start_type'] ) && in_array( $args['date_start_type'], self::$date_limit_units, true ) ? $args['date_start_type'] : 'months';
 			$s_date = strtotime( gmdate( 'Y-m-d' ) . ' -' . abs( (int) $args['date_start'] ) . $drange );
 			if ( ! empty( $s_date ) ) {
 				$args['date_after'] = gmdate( 'Y-m-d', $s_date );
@@ -1880,18 +1819,15 @@ class Latest_Post_Shortcode {
 			}
 			$qargs['date_query'] = [
 				[
-					array_merge(
-						$drange,
-						[
-							'inclusive' => true,
-						]
-					),
+					array_merge( $drange, [
+						'inclusive' => true,
+					] ),
 				],
 			];
 		}
 
-		if ( ! empty( $show_extra ) ) {
-			if ( in_array( 'nosticky', $show_extra, true ) ) {
+		if ( ! empty( self::$args->extra_list ) ) {
+			if ( self::in_extra( 'nosticky' ) ) {
 				$qargs['ignore_sticky_posts'] = true;
 
 				$sticky_ids = get_option( 'sticky_posts' );
@@ -1902,7 +1838,7 @@ class Latest_Post_Shortcode {
 						$qargs['post__not_in'] = $sticky_ids;
 					}
 				}
-			} elseif ( in_array( 'sticky', $show_extra, true ) ) {
+			} elseif ( self::in_extra( 'sticky' ) ) {
 				$qargs['ignore_sticky_posts'] = false;
 
 				$sticky_ids = get_option( 'sticky_posts' );
@@ -1929,7 +1865,7 @@ class Latest_Post_Shortcode {
 			add_filter( 'posts_join', [ get_called_class(), 'attachment_custom_join' ], 50, 2 );
 		}
 
-		$use_cache     = ( in_array( 'cache', $show_extra, true ) ) ? true : false;
+		$use_cache     = self::in_extra( 'cache' );
 		$in_the_editor = self::is_in_the_editor();
 		if ( ! empty( $use_cache ) ) {
 			// Maybe cache the results.
@@ -1942,7 +1878,7 @@ class Latest_Post_Shortcode {
 
 		$posts = get_posts( $qargs );
 
-		// If the slider extension is enabled and the shortcode is configured to output the slider, let's do that and return.
+		// If the slider is enabled and the shortcode is configured to output the slider, let's do that and return.
 		if ( ! empty( $posts ) && ! empty( $args['output'] ) && 'slider' === $args['output'] ) {
 			ob_start();
 			if ( $reset_post_css ) {
@@ -1956,7 +1892,7 @@ class Latest_Post_Shortcode {
 				set_transient( $trans_id, $result, 30 * DAY_IN_SECONDS );
 			}
 
-			if ( $site_switched ) {
+			if ( self::$args->site_switched ) {
 				restore_current_blog();
 			}
 
@@ -1967,32 +1903,36 @@ class Latest_Post_Shortcode {
 			return $result;
 		}
 
+		self::$args->card_tax = self::filtered_taxonomies();
+		if ( ! empty( self::$args->card_tax ) ) {
+			self::$args->card_tax = wp_list_pluck( self::$args->card_tax, 'label' );
+			self::$args->card_tax = array_keys( self::$args->card_tax );
+		}
+
 		$is_lps_ajax = (int) filter_input( INPUT_POST, 'lps_ajax', FILTER_DEFAULT );
 		if ( empty( $is_lps_ajax ) ) {
 			$is_lps_ajax = (int) filter_input( INPUT_GET, 'lps_ajax', FILTER_DEFAULT );
 		}
-
-		$shortcode_id = ! empty( $is_ajax_shortcode_id ) ? $is_ajax_shortcode_id : 'lps-' . md5( wp_json_encode( $args ) . microtime() );
 
 		ob_start();
 
 		$forced_end  = '';
 		$closing_tag = '';
 		if ( ! empty( $qargs['posts_per_page'] ) && ! empty( $args['showpages'] ) ) {
-			$pagination_class  = in_array( 'pagination_all', $show_extra, true ) ? 'all-elements' : '';
-			$pagination_class .= ( 'more' === $args['showpages'] ) ? ' lps-load-more' : '';
-			$pagination_class .= ( 'scroll' === $args['showpages'] ) ? ' lps-load-more-scroll' : '';
-			if ( ! empty( $args['css'] ) ) {
-				if ( substr_count( $args['css'], 'pagination-center' ) ) {
+			$pagination_class  = self::in_extra( 'pagination_all' ) ? 'all-elements' : '';
+			$pagination_class .= 'more' === $args['showpages'] ? ' lps-load-more' : '';
+			$pagination_class .= 'scroll' === $args['showpages'] ? ' lps-load-more-scroll' : '';
+			if ( ! empty( self::$args->css ) ) {
+				if ( substr_count( self::$args->css, 'pagination-center' ) ) {
 					$pagination_class .= ' pagination-center';
-				} elseif ( substr_count( $args['css'], 'pagination-right' ) ) {
+				} elseif ( substr_count( self::$args->css, 'pagination-right' ) ) {
 					$pagination_class .= ' pagination-right';
-				} elseif ( substr_count( $args['css'], 'pagination-space-between' ) ) {
+				} elseif ( substr_count( self::$args->css, 'pagination-space-between' ) ) {
 					$pagination_class .= ' pagination-space-between';
 				}
 			}
 
-			if ( ! empty( $lightbox_attr ) ) {
+			if ( ! empty( self::$args->lightbox_attr ) ) {
 				$pagination_class .= ' lps-lightbox';
 			}
 
@@ -2007,17 +1947,17 @@ class Latest_Post_Shortcode {
 				$found_posts,
 				$pagination_per_page,
 				intval( $args['showpages'] ),
-				$shortcode_id,
+				self::$args->shortcode_id,
 				$pagination_class,
 				[
 					'loadtext'   => ! empty( $args['loadtext'] ) ? $args['loadtext'] : '',
 					'total_text' => ! empty( $args['total_text'] ) ? $args['total_text'] : '',
-					'show_total' => in_array( 'show_total', $show_extra, true ),
-					'hide_more'  => in_array( 'hide_more', $show_extra, true ),
+					'show_total' => self::in_extra( 'show_total' ),
+					'hide_more'  => self::in_extra( 'hide_more' ),
 				],
 				$maxpg,
-				$site_initial,
-				$site_expected
+				self::$args->site_initial,
+				self::$args->site_expected
 			);
 
 			if ( ! empty( $is_lps_ajax ) ) { // phpcs:ignore
@@ -2029,15 +1969,15 @@ class Latest_Post_Shortcode {
 					&& ( 'more' === $args['showpages'] || 'scroll' === $args['showpages'] ) ) {
 					$use_data_args = true;
 				}
-				if ( in_array( 'ajax_pagination', $show_extra, true ) && ! empty( $args ) && is_array( $args ) ) {
+				if ( self::in_extra( 'ajax_pagination' ) && ! empty( $args ) && is_array( $args ) ) {
 					$use_data_args = true;
 				}
 
 				if ( true === $use_data_args ) {
 					$maybe_spinner = '';
-					if ( in_array( 'light_spinner', $show_extra, true ) ) {
+					if ( self::in_extra( 'light_spinner' ) ) {
 						$maybe_spinner = ' light_spinner';
-					} elseif ( in_array( 'dark_spinner', $show_extra, true ) ) {
+					} elseif ( self::in_extra( 'dark_spinner' ) ) {
 						$maybe_spinner = ' dark_spinner';
 					}
 
@@ -2047,95 +1987,89 @@ class Latest_Post_Shortcode {
 						$data_args_string = wp_json_encode( $min_args );
 					}
 
-					if ( is_multisite() && $site_initial !== $site_expected ) {
-						switch_to_blog( $site_initial );
+					if ( is_multisite() && self::$args->site_initial !== self::$args->site_expected ) {
+						switch_to_blog( self::$args->site_initial );
 					}
 
 					$data_exclude = '';
-					if ( ! empty( $show_extra ) && in_array( 'exclude_previous_content', $show_extra, true ) ) {
+					if ( self::in_extra( 'exclude_previous_content' ) ) {
 						global $lps_current_post_embedded_item_ids;
 
 						$data_exclude = ' data-exclude="' . esc_js( implode( ',', $lps_current_post_embedded_item_ids ) ) . '"';
 					}
 
-					echo '<!-- lps/start --><div id="' . esc_attr( $shortcode_id ) . '-wrap" data-args="' . esc_js( $data_args_string ) . '" data-current="' . get_the_ID() . '" data-perpage="' . $pagination_per_page . '" data-total="' . $found_posts . '" class="lps-top-section-wrap' . $maybe_spinner . '" data-url="' . esc_url( \get_pagenum_link( 1 ) ) . '"' . $data_exclude . '>'; // phpcs:ignore
+					echo '<!-- lps/start --><div id="' . esc_attr( self::$args->shortcode_id ) . '-wrap" data-args="' . esc_js( $data_args_string ) . '" data-current="' . get_the_ID() . '" data-perpage="' . $pagination_per_page . '" data-total="' . $found_posts . '" class="lps-top-section-wrap' . $maybe_spinner . '" data-url="' . esc_url( \get_pagenum_link( 1 ) ) . '"' . $data_exclude . '>'; // phpcs:ignore
 
-					if ( is_multisite() && $site_initial !== $site_expected ) {
-						switch_to_blog( $site_expected );
+					if ( is_multisite() && self::$args->site_initial !== self::$args->site_expected ) {
+						switch_to_blog( self::$args->site_expected );
 					}
 				} else {
-					echo '<!-- lps/start --><div id="' . esc_attr( $shortcode_id ) . '-wrap" class="lps-top-section-wrap">';
+					echo '<!-- lps/start --><div id="' . esc_attr( self::$args->shortcode_id ) . '-wrap" class="lps-top-section-wrap">';
 				}
 			}
 
-			if ( empty( $args['pagespos'] ) || ( ! empty( $args['pagespos'] ) && 2 === (int) $args['pagespos'] ) ) {
+			if ( self::$args->nav_above ) {
 				echo str_replace( 'lps-pagination-wrap', 'before lps-pagination-wrap', $pagination_html ); // phpcs:ignore
 			}
 		}
 
+		/**
+		 * Allow external scripts to output content in the wrapper element, after the pagination.
+		 *
+		 * @since 14.0.0
+		 *
+		 * @param object $args        Precomputed arguments.
+		 * @param boolk  $is_lps_ajax Is executed inside the LPS AJAX or not.
+		 */
+		do_action( 'lps/before_check_posts', self::$args, $is_lps_ajax );
 		if ( $reset_post_css ) {
 			self::maybe_remove_post_class_filters();
 		}
 
 		if ( ! empty( $posts ) ) {
-			if ( in_array( 'date', $extra_display, true ) ) {
-				$date_format = get_option( 'date_format' ) . ' \<\i\>' . get_option( 'time_format' ) . '\<\/\i\>';
+			if ( self::in_display( 'date' ) ) {
+				self::$args->date_format = get_option( 'date_format' ) . ' \<\i\>' . get_option( 'time_format' ) . '\<\/\i\>';
 			}
 
-			$class  = ( ! empty( $args['css'] ) ) ? ' ' . $args['css'] : '';
-			$class .= ( ! empty( $args['ver'] ) && 2 === $args['ver'] ) ? ' ver2' : '';
-			if ( in_array( 'ajax_pagination', $show_extra, true ) ) {
-				$class .= ' ajax_pagination';
-			}
-
-			$use_custom_markup   = false;
-			$filter_element_type = 'elements-' . (int) $args['elements'];
-
-			$maybe_custom = trim( str_replace( '[', '', str_replace( ']', '', str_replace( '][', '_', $args['display'] ) ) ) );
-			if ( '_custom_' === substr( $maybe_custom, 0, 8 ) ) {
-				$use_custom_markup   = true;
-				$filter_element_type = $maybe_custom;
-			}
-
-			if ( in_array( 'with_counter', $show_extra, true ) ) {
-				$is_reverse = in_array( 'reverse_counter', $show_extra, true );
+			if ( self::in_extra( 'with_counter' ) ) {
+				$is_reverse = self::in_extra( 'reverse_counter' );
 				if ( ! empty( $pagination_per_page ) ) {
 					// Has some pagination.
 					if ( 'more' !== $args['showpages'] && 'scroll' !== $args['showpages'] ) {
 						// The inline pagination responses.
 						$pagination_current_page = self::get_current_page();
 						if ( $is_reverse ) {
-							$tiles_custom_style_vars .= ' --lpscontor-start: ' . ( $found_posts + 1 - intval( ( $pagination_current_page - 1 ) * $pagination_per_page ) ) . ';';
+							self::$args->css_vars .= ' --lpscontor-start: ' . ( $found_posts + 1 - intval( ( $pagination_current_page - 1 ) * $pagination_per_page ) ) . ';';
 						} else {
-							$tiles_custom_style_vars .= ' --lpscontor-start: ' . intval( ( $pagination_current_page - 1 ) * $pagination_per_page ) . ';';
+							self::$args->css_vars .= ' --lpscontor-start: ' . intval( ( $pagination_current_page - 1 ) * $pagination_per_page ) . ';';
 						}
 					} elseif ( $is_reverse ) {
-						$tiles_custom_style_vars .= ' --lpscontor-start: ' . ( $found_posts + 1 ) . ';';
+						self::$args->css_vars .= ' --lpscontor-start: ' . ( $found_posts + 1 ) . ';';
 					}
 				} elseif ( $is_reverse ) {
 					// No pagination involved but using reverse counter.
 					$max = ! empty( $found_posts ) ? $found_posts : (int) $args['limit'];
 
-					$tiles_custom_style_vars .= ' --lpscontor-start: ' . ( $max + 1 ) . ';';
+					self::$args->css_vars .= ' --lpscontor-start: ' . ( $max + 1 ) . ';';
 				}
 			}
 
 			// Section start.
 			$section_start = apply_filters(
 				'lps/override_section_start',
-				'<section class="latest-post-selection' . esc_attr( $class ) . '" id="' . esc_attr( $shortcode_id ) . '" style="' . $tiles_custom_style_vars . '">',
-				$shortcode_id,
-				$class,
-				$filter_element_type,
+				'<section class="latest-post-selection' . esc_attr( self::$args->section_class ) . '" id="' . esc_attr( self::$args->shortcode_id ) . '" style="' . self::$args->css_vars . '" role="list">',
+				self::$args->shortcode_id,
+				self::$args->section_class,
+				self::$args->card_filter,
 				$is_lps_ajax_call,
 				$args
 			);
 
-			if ( $use_custom_markup && $args['ver'] < 2 ) {
+			if ( self::$args->card_custom && ! self::$args->is_ver2 ) {
 				// Legacy markup.
-				$start = apply_filters_deprecated( 'lps_filter_use_custom_section_markup_start', [ $tile_pattern, $shortcode_id, $class, $args ], '11.4.0', 'lps/override_section_start' );
-				if ( ! substr_count( $start, esc_attr( $shortcode_id ) ) ) {
-					$start       = '<div id="' . esc_attr( $shortcode_id ) . '" class="' . trim( esc_attr( $class ) ) . '">' . $start;
+				$start = apply_filters_deprecated( 'lps_filter_use_custom_section_markup_start', [ self::$args->card_pattern, self::$args->shortcode_id, self::$args->section_class, $args ], '11.4.0', 'lps/override_section_start' );
+				if ( ! substr_count( $start, esc_attr( self::$args->shortcode_id ) ) ) {
+					$start       = '<div id="' . esc_attr( self::$args->shortcode_id ) . '" class="' . trim( esc_attr( self::$args->section_class ) ) . '">' . $start;
 					$forced_end .= '</div>';
 				}
 				echo $start; // phpcs:ignore
@@ -2147,332 +2081,101 @@ class Latest_Post_Shortcode {
 			}
 			echo $section_start; // phpcs:ignore
 
-			$tile_pattern      = self::positions_from_extra( $show_extra, $tile_pattern, $args, $extra_display );
-			$tile_elements     = (int) $args['elements'];
-			$markup_info_start = '#1$*#';
-			$markup_info_end   = '#3$*#';
-			if ( $args['ver'] >= 2 ) {
-
-				// Version >= 2 markup.
-				if ( substr_count( $tile_pattern, '[image][' ) ) {
-					// Image first, info second.
-					$tile_pattern = str_replace( '[image][', '[image]' . $markup_info_start . '[', $tile_pattern ) . $markup_info_end;
-				} elseif ( substr_count( $tile_pattern, '][image]' ) ) {
-					// Info first, image second.
-					$tile_pattern = $markup_info_start . str_replace( '][image]', ']' . $markup_info_end . '[image]', $tile_pattern );
-				}
-			}
-
-			$markup_sep     = '#7$*#';
-			$tile_keep_tags = [];
-			foreach ( self::$title_tags as $k ) {
-				$tile_keep_tags[ $k ] = [
-					'class' => 1,
-					'id'    => 1,
-				];
-			}
-			$tile_keep_tags[ $titletag ] = [
-				'class' => 1,
-				'id'    => 1,
-			];
-
-			$tile_keep_tags['br'] = [];
-
-			$card_output_type_from_args = self::get_card_output_type_from_args( $args );
-
 			global $last_tiles_img;
 			foreach ( $posts as $postobj ) {
 				$post = $postobj; // phpcs:ignore
+
 				// Collect the IDs for the current page from the shortcode results.
 				array_push( $lps_current_post_embedded_item_ids, $postobj->ID );
-				$tile = $tile_pattern;
 
-				if ( $use_custom_markup ) {
-					if ( 1 === $args['ver'] ) {
-						// Legacy markup.
-						echo apply_filters_deprecated( 'lps_filter_use_custom_tile_markup', [ $tile_pattern, $postobj, $args ], '11.4.0', 'lps/override_card' ); // phpcs:ignore
-					} else {
-						// Card markup.
-						$card_markup = apply_filters(
-							'lps/override_card',
-							'',
-							$filter_element_type,
-							$postobj,
-							$args,
-							$card_output_type_from_args
-						);
-
-						echo $card_markup; // phpcs:ignore
+				if ( self::$args->card_custom ) {
+					if ( ! self::$args->is_ver2 ) { // Legacy custom card markup.
+						$card_markup = apply_filters_deprecated( 'lps_filter_use_custom_tile_markup', [ self::$args->card_pattern, $postobj, $args ], '11.4.0', 'lps/override_card' ); // phpcs:ignore
+					} else { // Custom card markup.
+						$card_markup = apply_filters( 'lps/override_card', '', self::$args->card_filter, $postobj, $args, self::$args->card_type );
 					}
+					echo $card_markup; // phpcs:ignore
 				} else {
+					$tile = self::$args->card_pattern;
+
 					$a_start   = '';
 					$ar_start  = '';
 					$a_end     = '';
 					$title_str = self::cleanup_title( $postobj->post_title );
-
-					if ( $linkurl || $linkmedia || substr_count( $class, 'as-overlay' ) ) {
-						$link_target = ( ! empty( $linkblank ) ) ? ' target="_blank"' : '';
-						if ( $linkmedia ) {
-							$mediaurl = wp_get_attachment_image_src( $postobj->ID, $lightbox_size );
-							$mediaurl = ( ! empty( $mediaurl[0] ) ) ? $mediaurl[0] : '';
-							$hr       = ( ! empty( $mediaurl ) ) ? ' href="' . esc_url( $mediaurl ) . '"' : '';
+					if ( self::$args->card_link ) {
+						$href = '';
+						if ( self::$args->linkmedia ) {
+							$mediaurl = wp_get_attachment_image_src( $postobj->ID, self::$args->lightbox_size );
+							$mediaurl = ! empty( $mediaurl[0] ) ? $mediaurl[0] : '';
+							$href     = $mediaurl;
 						} else {
-							$hr = ( ! empty( $linkurl ) ) ? ' href="' . esc_url( get_permalink( $postobj->ID ) ) . '"' : '';
+							$href = get_permalink( $postobj->ID );
 						}
 
-						if ( ! empty( $lightbox_attr ) ) {
-							$hr .= ' rel="' . $shortcode_id . '"';
-						}
-
-						$a_start  = '<a' . $hr . $link_class . $lightbox_extra . $link_target . ' title="' . esc_attr( $title_str ) . '">';
-						$ar_start = '<a' . $hr . $read_more_class . $lightbox_extra . $link_target . ' title="' . esc_attr( $title_str ) . '">';
+						$a_start  = self::$args->a_start;
+						$a_start  = str_replace( 'href=""', 'href="' . esc_url( $href ) . '"', $a_start );
+						$a_start  = str_replace( 'title=""', 'title="' . esc_attr( $title_str ) . '"', $a_start );
+						$ar_start = self::$args->ar_start;
+						$ar_start = str_replace( 'href=""', 'href="' . esc_url( $href ) . '"', $ar_start );
+						$ar_start = str_replace( 'title=""', 'title="' . esc_attr( $title_str ) . '"', $ar_start );
 						$a_end    = '</a>';
 					}
 
-					if ( $args['ver'] < 2 ) {
-						// Legacy markup.
+					// Recompute links.
+					if ( ! self::$args->is_ver2 ) { // Legacy markup.
 						$tile = str_replace( '[a]', $a_start, $tile );
 						$tile = str_replace( '[a-r]', $ar_start, $tile );
 						$tile = str_replace( '[/a]', $a_end, $tile );
 					}
 
-					// Tile replace image markup.
-					$tile = self::set_tile_image( $postobj, $args, $tile );
-
-					// Tile date markup.
-					if ( in_array( 'date', $extra_display, true ) ) {
-						if ( in_array( 'date_diff', $show_extra, true ) ) {
-							$date_value = self::relative_time( $postobj->ID );
-						} else {
-							$date_value = date_i18n( $date_format, strtotime( $postobj->post_date ), true );
-						}
-						$tile = str_replace( '[date]', $markup_sep . '<em class="item-date">' . $date_value . '</em>', $tile );
-					}
-					$tile = str_replace( '[date]', '', $tile );
-
-					// Tile tags markup.
-					if ( in_array( 'tags', $show_extra, true ) ) {
-						$one_term = in_array( 'oneterm_tags', $show_extra, true );
-						$no_label = in_array( 'nolabel_tags', $show_extra, true );
-						$no_link  = in_array( 'nolink_tags', $show_extra, true );
-						$tags     = self::get_post_visible_term( (int) $postobj->ID, 'post_tag', $one_term, false, $no_label, $no_link, $class );
-
-						if ( ! empty( $tags ) ) {
-							$tags = str_replace( 'post_tag', 'post_tag tags', $tags );
-							$tags = $markup_sep . '<span class="lps-tags-wrap">' . $tags . '</span>';
-							$tags = apply_filters( 'lps/override_card_terms', $tags, (int) $postobj->ID, 'post_tag', $shortcode_id );
-							$tile = str_replace( '[tags]', $tags, $tile );
-						}
-					}
-					$tile = str_replace( '[tags]', '', $tile );
-
-					// Tile author markup.
-					if ( in_array( 'author', $show_extra, true ) ) {
-						$no_label = in_array( 'nolabel_author', $show_extra, true );
-						$no_link  = in_array( 'nolink_author', $show_extra, true );
-						$author   = $markup_sep . '<div class="lps-author-wrap">';
-						if ( ! $no_label ) {
-							$author .= '<span class="lps-author">' . esc_html__( 'By', 'lps' ) . '</span> ';
-						}
-						if ( $no_link ) {
-							$author .= esc_html( get_the_author_meta( 'display_name', $postobj->post_author ) );
-						} else {
-							$author .= '<a href="' . esc_url( get_author_posts_url( $postobj->post_author ) ) . '" class="lps-author-link">' . esc_html( get_the_author_meta( 'display_name', $postobj->post_author ) ) . '</a>';
-						}
-						$author .= '</div>';
-						$tile    = str_replace( '[author]', $author, $tile );
-					}
-					$tile = str_replace( '[author]', '', $tile );
-
-					if ( ( 'product' === $post->post_type || 'product_variation' === $post->post_type ) && function_exists( '\wc_get_product' ) ) {
-						// Tile price markup.
-						if ( in_array( 'price', $show_extra, true ) ) {
-							$prod = \wc_get_product( (int) $post->ID );
-							$info = $markup_sep . '<div class="lps-price-wrap">' . $prod->get_price_html() . '</div>';
-							$tile = str_replace( '[price]', $info, $tile );
-						}
-
-						// Tile add to cart markup.
-						if ( in_array( 'add_to_cart', $show_extra, true ) ) {
-							$info = $markup_sep . '<div class="lps-add_to_cart-wrap">' . \do_shortcode( '[add_to_cart id="' . (int) $post->ID . '" style="" show_price="false"]' ) . '</div>';
-							$tile = str_replace( '[add_to_cart]', $info, $tile );
-						}
-
-						// Tile price + add to cart markup.
-						if ( in_array( 'price_add_to_cart', $show_extra, true ) ) {
-							$info = $markup_sep . '<div class="lps-add_to_cart-wrap">' . \do_shortcode( '[add_to_cart id="' . (int) $post->ID . '" style=""]' ) . '</div>';
-							$tile = str_replace( '[price_add_to_cart]', $info, $tile );
-						}
-					}
-					$tile = str_replace( '[price]', '', $tile );
-					$tile = str_replace( '[add_to_cart]', '', $tile );
-					$tile = str_replace( '[price_add_to_cart]', '', $tile );
-
-					$mime_css = '';
-					if ( 'attachment' === $postobj->post_type ) {
-						// Attachment tile mime type markup.
-						if ( in_array( 'show_mime', $show_extra, true ) ) {
-							$mime     = trim( strstr( $postobj->post_mime_type, '/' ), '/' );
-							$mime_css = 'item-mime-type mime-' . esc_attr( $mime ) . ' mime-' . str_replace( '/', '-', esc_attr( $postobj->post_mime_type ) );
-
-							$mime_label = ! in_array( 'nolabel_show_mime', $show_extra, true )
-								? '<span>' . esc_html__( 'Mime Type', 'lps' ) . ':</span> ' : '';
-
-							$tile = str_replace( '[show_mime]', '<span class="' . $mime_css . '">' . $mime_label . $mime . '</span>', $tile );
-						}
-
-						// Maybe prepare the mime type class.
-						if ( in_array( 'show_mime_class', $show_extra, true ) ) {
-							if ( empty( $mime_css ) ) {
-								$mime     = trim( strstr( $postobj->post_mime_type, '/' ), '/' );
-								$mime_css = 'item-mime-type mime-' . esc_attr( $mime ) . ' mime-' . str_replace( '/', '-', esc_attr( $postobj->post_mime_type ) );
-							}
-						} else {
-							$mime_css = '';
-						}
-
-						// Attachment tile caption type markup.
-						if ( in_array( 'caption', $show_extra, true ) ) {
-							$caption = wp_get_attachment_caption( $postobj->ID );
-							if ( ! empty( $caption ) ) {
-								$caption = $markup_sep . '<div class="lps-caption-wrap"><span>' . esc_html__( 'Caption', 'lps' ) . ':</span> ' . esc_html( $caption ) . '</div>';
-							}
-							$tile = str_replace( '[caption]', $caption, $tile );
-						}
-					}
-					$tile = str_replace( '[show_mime]', '', $tile );
-					$tile = str_replace( '[caption]', '', $tile );
-
-					// Tile taxonomies markup.
-					$taxonomies = array_diff( $show_extra, [ 'tags', 'author', 'show_mime', 'caption', 'ajax_pagination', 'hide_uncategorized_category', 'show_total' ] );
-					if ( ! empty( $taxonomies ) ) {
-						foreach ( $taxonomies as $tax ) {
-							$one_term = in_array( 'oneterm_' . $tax, $show_extra, true );
-							$no_label = in_array( 'nolabel_' . $tax, $show_extra, true );
-							$no_uncat = 'category' === $tax && in_array( 'hide_uncategorized_category', $show_extra, true );
-							$no_link  = in_array( 'nolink_' . $tax, $show_extra, true );
-
-							$terms = self::get_post_visible_term( (int) $postobj->ID, $tax, $one_term, $no_uncat, $no_label, $no_link, $class );
-							$terms = apply_filters( 'lps/override_card_terms', $terms, (int) $postobj->ID, $tax, $shortcode_id );
-							$tile  = str_replace( '[' . $tax . ']', $markup_sep . $terms, $tile );
-						}
-					}
-
-					// Tile title markup.
-					if ( in_array( 'title', $extra_display, true ) ) {
-						if ( $args['ver'] >= 2 ) {
-							// Version >= 2 markup.
-
-							$visible_title_str = $title_str;
-							if ( $trim_text ) {
-								$visible_title_str = self::get_short_text( $visible_title_str, $chrlimit, false, $trimmore );
-								if ( ! empty( $visible_title_str ) ) {
-									$visible_title_str = wp_strip_all_tags( $visible_title_str );
-								}
-							}
-
-							$tile = empty( $args['url'] ) ? str_replace( '[a][title][/a]', '[title]', $tile ) : $tile;
-							if ( ! empty( $args['url'] ) ) {
-								if ( 5 !== (int) $tile_elements && 22 !== (int) $tile_elements ) {
-									$tile = str_replace( '[title]', '<' . $titletag . ' class="item-title-tag">' . $a_start . $visible_title_str . $a_end . '</' . $titletag . '>', $tile );
-								}
-							}
-							// Fallback to no link on title.
-							$tile = str_replace( '[title]', '<' . $titletag . ' class="item-title-tag">' . $visible_title_str . '</' . $titletag . '>', $tile );
-						} else {
-							// Legacy markup.
-							$tile = str_replace( '[title]', '<' . $titletag . ' class="item-title-tag">' . $title_str . '</' . $titletag . '>', $tile );
-						}
-					}
-					$tile = str_replace( '[title]', '', $tile );
-
-					// Tile text markup.
-					$text = '';
-					if ( ! empty( $args['display'] )
-						&& ( substr_count( $args['display'], 'content' ) || substr_count( $args['display'], 'excerpt' ) ) ) {
-						$lim = $chrlimit;
-						if ( $trim_text ) {
-							$lim -= mb_strlen( $title_str );
-							if ( $lim < 0 ) {
-								$lim = 0;
-							}
-						}
-						$text = '<div class="item-text">' . self::compute_tile_text( $postobj, $extra_display, $lim, $raw_content, $trimmore ) . '</div>';
-					}
-					$tile = str_replace( '[text]', $markup_sep . $text, $tile );
-
-					if ( ! empty( $linktext ) ) {
-						if ( $args['ver'] >= 2 ) {
-							// Version >= 2 markup.
-							if ( ! empty( $args['url'] ) ) {
-								if ( 5 === (int) $tile_elements
-									|| 22 === (int) $tile_elements
-									|| 26 === (int) $tile_elements ) {
-
-									if ( substr_count( $tile, 'main-link' ) ) {
-										$tile = str_replace( '[read_more_text]', $markup_sep . '<span class="read-more">' . str_replace( 'main-link', '', $a_start ) . $linktext . $a_end . '</span>', $tile );
-									} else {
-										$tile = str_replace( '[read_more_text]', $markup_sep . '<span class="read-more">' . $a_start . $linktext . $a_end . '</span>', $tile );
-									}
-								}
-							}
-							// Fallback to replacing just the string.
-							$tile = str_replace( '[read_more_text]', $markup_sep . '<span class="read-more">' . $linktext . '</span>', $tile );
-						} else {
-							// Legacy markup.
-							$tile = str_replace( '[read_more_text]', $markup_sep . '<span class="read-more">' . $linktext . '</span>', $tile );
-						}
-					} else {
-						$tile = str_replace( '[read_more_text]', '', $tile );
-					}
+					// Tile replace card markup.
+					$tile = self::card_image( $postobj, $args, $tile );
+					$tile = self::card_date( $postobj, $tile );
+					$tile = self::card_tags( $postobj, $tile );
+					$tile = self::card_author( $postobj, $tile );
+					$tile = self::card_product( $postobj, $tile );
+					$tile = self::card_attachment( $postobj, $tile );
+					$tile = self::card_taxonomy( $postobj, $tile );
+					$tile = self::card_title( $title_str, $tile, $a_start, $a_end );
+					$tile = self::card_text( $postobj, $tile, $title_str );
+					$tile = self::card_read_more( $tile, $ar_start, $a_end );
 
 					// Cleanup the remanining tags.
-					$maybe_tile  = str_replace( $markup_info_start, '<div class="article__info">', $tile );
-					$maybe_tile  = str_replace( $markup_info_end, '</div>', $maybe_tile );
-					$maybe_tile  = preg_replace( '/\[(.*)\]/', '', $maybe_tile );
-					$card_markup = '';
+					$tile = str_replace( self::$args->sep_s, '<div class="article__info">', $tile );
+					$tile = str_replace( self::$args->sep_e, '</div>', $tile );
+					$tile = preg_replace( '/\[(.*)\]/', '', $tile );
 
-					$article_class = get_post_class( $mime_css, $postobj->ID );
-					$article_class = apply_filters( 'lps/override_post_class', $article_class, $shortcode_id, $args, (int) $postobj->ID );
+					$card_markup   = '';
+					$article_class = get_post_class( self::$args->mime_css, $postobj->ID );
+					$article_class = apply_filters( 'lps/override_post_class', $article_class, self::$args->shortcode_id, $args, (int) $postobj->ID );
 
-					if ( substr_count( $maybe_tile, 'main-link' ) ) {
+					if ( substr_count( $tile, 'main-link' ) ) {
 						$article_class[] = 'has-link';
 					}
-					$article_class = ( ! empty( $article_class ) ) ? ' class="' . implode( ' ', $article_class ) . '"' : '';
-					if ( substr_count( $class, 'as-overlay' ) && $args['ver'] < 2 ) {
-						// Legacy markup.
+					$article_class = ! empty( $article_class ) ? ' class="' . implode( ' ', $article_class ) . '"' : '';
+					if ( 'as-overlay' === self::$args->card_type && ! self::$args->is_ver2 ) { // Legacy markup.
 						if ( ! empty( $last_tiles_img ) ) {
 							$last_tiles_img = esc_url( $last_tiles_img );
 						}
-						$maybe_tile = str_replace( $markup_sep, ' ', $maybe_tile );
-						$maybe_tile = wp_kses( $maybe_tile, $tile_keep_tags );
+						$tile = str_replace( self::$args->sep_d, ' ', $tile );
+						$tile = wp_kses( $tile, self::$args->kses );
 
-						$card_markup = '<article' . $article_class . ' style="background-image:url(\'' . $last_tiles_img . '\')" data-lps-id="' . (int) $postobj->ID . '"><div class="lps-ontopof-overlay">' . $a_start . $maybe_tile . $a_end . '</div></article>';
+						$card_markup = '<article' . $article_class . ' style="background-image:url(\'' . $last_tiles_img . '\')" data-lps-id="' . (int) $postobj->ID . '"><div class="lps-ontopof-overlay" role="listitem">' . $a_start . $tile . $a_end . '</div></article>';
 					} else {
-						$maybe_tile  = str_replace( $markup_sep, '', $maybe_tile );
-						$card_markup = '<article' . $article_class . ' data-lps-id="' . (int) $postobj->ID . '">' . $maybe_tile . '</article>';
-					}
+						$tile = str_replace( self::$args->sep_d, '', $tile );
 
-					if ( $args['ver'] >= 2 && $a_start && ! substr_count( $tile, $a_start ) ) {
-						// Version >= 2 markup.
-						$card_markup = str_replace( '<div class="article__info">', '<div class="article__info">' . str_replace( 'main-link', 'main-link hidden', $a_start ) . $a_end, $card_markup );
+						$card_markup = '<article' . $article_class . ' data-lps-id="' . (int) $postobj->ID . '" role="listitem">' . $tile . '</article>';
 					}
 
 					// Card markup.
 					$card_markup = apply_filters(
 						'lps/override_card',
 						$card_markup,
-						$tile_pattern,
+						self::$args->card_pattern,
 						$postobj,
 						$args,
-						$card_output_type_from_args
+						self::$args->card_type
 					);
-
-					if ( substr_count( $class, 'content-first-top' ) ) {
-						$card_markup = self::maybe_info_row_template( $card_markup, 'first' );
-					} elseif ( substr_count( $class, 'content-last-bottom' ) ) {
-						$card_markup = self::maybe_info_row_template( $card_markup, 'last' );
-					}
 
 					echo $card_markup; // phpcs:ignore
 				}
@@ -2482,16 +2185,15 @@ class Latest_Post_Shortcode {
 			$section_end = apply_filters(
 				'lps/override_section_end',
 				'</section>',
-				$shortcode_id,
-				$class,
-				$filter_element_type,
+				self::$args->shortcode_id,
+				self::$args->section_class,
+				self::$args->card_filter,
 				$is_lps_ajax_call,
 				$args
 			);
 
-			if ( $use_custom_markup && $args['ver'] < 2 ) {
-				// Legacy markup.
-				echo apply_filters_deprecated( 'lps_filter_use_custom_section_markup_end', [ $tile_pattern, $shortcode_id, $class, $args ], '11.4.0', 'lps/override_section_end' ); // phpcs:ignore
+			if ( self::$args->card_custom && ! self::$args->is_ver2 ) { // Legacy markup.
+				echo apply_filters_deprecated( 'lps_filter_use_custom_section_markup_end', [ self::$args->card_pattern, self::$args->shortcode_id, self::$args->section_class, $args ], '11.4.0', 'lps/override_section_end' ); // phpcs:ignore
 				if ( ! empty( $forced_end ) ) {
 					echo $forced_end; // phpcs:ignore
 				}
@@ -2505,8 +2207,9 @@ class Latest_Post_Shortcode {
 		} elseif ( ! empty( $args['fallback'] ) ) {
 				echo '<div class="lps-placeholder">' . wp_kses_post( $args['fallback'] ) . '</div>';
 		}
+
 		if ( ! empty( $qargs['posts_per_page'] ) && ! empty( $args['showpages'] ) ) {
-			if ( ! empty( $args['pagespos'] ) && ( 1 === (int) $args['pagespos'] || 2 === (int) $args['pagespos'] ) ) {
+			if ( self::$args->nav_below ) {
 				echo str_replace( 'lps-pagination-wrap', 'after lps-pagination-wrap', $pagination_html ); // phpcs:ignore
 			}
 		}
@@ -2520,6 +2223,10 @@ class Latest_Post_Shortcode {
 			self::maybe_restore_post_class_filters();
 		}
 
+		// Reset the properties, these were already used.
+		self::$args->css_vars      = '';
+		self::$args->section_class = '';
+
 		if ( ! empty( $use_cache ) && ! empty( $trans_id ) ) {
 			if ( $in_the_editor ) {
 				$result = str_replace( 'lps-top-section-wrap', 'lps-top-section-wrap lps-cached', $result );
@@ -2529,75 +2236,141 @@ class Latest_Post_Shortcode {
 			}
 		}
 
-		if ( $site_switched ) {
+		if ( self::$args->site_switched ) {
 			restore_current_blog();
 		}
 		return $result;
 	}
 
 	/**
-	 * Maybe append info row template.
+	 * Has extra property.
 	 *
-	 * @param  string $html Initial card markup.
-	 * @param  string $type Alignment type.
-	 * @return string
+	 * @param string $prop Property slug.
 	 */
-	public static function maybe_info_row_template( $html, $type = 'first' ) {
-		if ( empty( $html ) ) {
-			// Fail-fast.
-			return '';
+	public static function in_extra( $prop ): bool {
+		if ( empty( $prop ) || empty( self::$args->extra_list ) ) {
+			return false;
 		}
 
-		$dom = new DOMDocument();
-		libxml_use_internal_errors( true );
-		$dom->loadHTML( '<?xml encoding="UTF-8">' . $html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
-		libxml_use_internal_errors( false );
+		if ( ! is_array( self::$args->extra_list ) ) {
+			self::$args->extra_list = explode( ',', self::$args->extra_list );
+		}
 
-		$changed  = false;
-		$xpath    = new DOMXPath( $dom );
-		$elements = $xpath->query( '//div[contains(@class, "article__info")]' );
-		foreach ( $elements as $el ) {
-			// Note: $el->childNodes->length does not work properly with … .
-			$count = 0;
-			if ( $el->childNodes ) { // phpcs:ignore
-				foreach ( $el->childNodes as $child ) { // phpcs:ignore
-					if ( ! empty( $child->tagName ) ) { // phpcs:ignore
-						++$count;
-					}
-				}
+		return in_array( $prop, self::$args->extra_list, true );
+	}
+
+	/**
+	 * Has display property.
+	 *
+	 * @param string $prop Property slug.
+	 */
+	public static function in_display( $prop ): bool {
+		if ( empty( $prop ) || empty( self::$args->display_list ) ) {
+			return false;
+		}
+
+		if ( ! is_array( self::$args->display_list ) ) {
+			self::$args->display_list = explode( ',', self::$args->display_list );
+		}
+
+		return in_array( $prop, self::$args->display_list, true );
+	}
+
+	/**
+	 * Init the instance css variables.
+	 *
+	 * @param array $args Instance arguments.
+	 */
+	public static function init_css_vars( $args ) {
+		if ( ! isset( self::$args->css ) ) {
+			self::$args->css = '';
+		}
+
+		if ( ! isset( self::$args->css_vars ) ) {
+			self::$args->css_vars = '';
+		}
+
+		if ( ! empty( $args['default_height'] ) ) {
+			self::$args->css_vars .= ' --default-tile-height: ' . esc_attr( $args['default_height'] ) . ';';
+		}
+		if ( ! empty( $args['default_padding'] ) ) {
+			self::$args->css_vars .= ' --default-tile-padding: ' . esc_attr( $args['default_padding'] ) . ';';
+		}
+		if ( ! empty( $args['default_gap'] ) ) {
+			self::$args->css_vars .= ' --default-tile-gap: ' . esc_attr( $args['default_gap'] ) . ';';
+		}
+		if ( ! empty( $args['default_overlay_padding'] ) ) {
+			self::$args->css_vars .= ' --default-overlay-padding: ' . esc_attr( $args['default_overlay_padding'] ) . ';';
+		}
+
+		if ( ! empty( $args['tablet_height'] ) ) {
+			self::$args->css_vars .= ' --tablet-tile-height: ' . esc_attr( $args['tablet_height'] ) . ';';
+		}
+		if ( ! empty( $args['tablet_padding'] ) ) {
+			self::$args->css_vars .= ' --tablet-tile-padding: ' . esc_attr( $args['tablet_padding'] ) . ';';
+		}
+		if ( ! empty( $args['tablet_gap'] ) ) {
+			self::$args->css_vars .= ' --tablet-tile-gap: ' . esc_attr( $args['tablet_gap'] ) . ';';
+		}
+		if ( ! empty( $args['tablet_overlay_padding'] ) ) {
+			self::$args->css_vars .= ' --tablet-overlay-padding: ' . esc_attr( $args['tablet_overlay_padding'] ) . ';';
+		}
+
+		if ( ! empty( $args['mobile_height'] ) ) {
+			self::$args->css_vars .= ' --mobile-tile-height: ' . esc_attr( $args['mobile_height'] ) . ';';
+		}
+		if ( ! empty( $args['mobile_padding'] ) ) {
+			self::$args->css_vars .= ' --mobile-tile-padding: ' . esc_attr( $args['mobile_padding'] ) . ';';
+		}
+		if ( ! empty( $args['mobile_gap'] ) ) {
+			self::$args->css_vars .= ' --mobile-tile-gap: ' . esc_attr( $args['mobile_gap'] ) . ';';
+		}
+		if ( ! empty( $args['mobile_overlay_padding'] ) ) {
+			self::$args->css_vars .= ' --mobile-overlay-padding: ' . esc_attr( $args['mobile_overlay_padding'] ) . ';';
+		}
+
+		if ( ! empty( $args['color_text'] ) ) {
+			self::$args->css_vars .= ' --article-text-color: ' . esc_attr( $args['color_text'] ) . ';';
+		}
+		if ( ! empty( $args['color_title'] ) ) {
+			self::$args->css_vars .= ' --article-title-color: ' . esc_attr( $args['color_title'] ) . ';';
+		}
+		if ( ! empty( $args['color_bg'] ) ) {
+			self::$args->css_vars .= ' --article-bg-color: ' . esc_attr( $args['color_bg'] ) . ';';
+		}
+		if ( ! empty( $args['size_text'] ) ) {
+			self::$args->css_vars .= ' --article-size-text: ' . esc_attr( $args['size_text'] ) . ';';
+		}
+		if ( ! empty( $args['size_title'] ) ) {
+			self::$args->css_vars .= ' --article-size-title: ' . esc_attr( $args['size_title'] ) . ';';
+		}
+		if ( ! empty( $args['image_opacity'] ) ) {
+			self::$args->css_vars .= ' --article-image-opacity: ' . esc_attr( $args['image_opacity'] ) . ';';
+		}
+		if ( ! empty( $args['size_image'] ) ) {
+			self::$args->css      .= ' has-image-size';
+			self::$args->css_vars .= ' --article-image-size: ' . esc_attr( $args['size_image'] ) . ';';
+		}
+		if ( ! empty( $args['image_ratio'] ) ) {
+			if ( 'contain' === $args['image_ratio'] ) {
+				self::$args->css .= ' has-image-contain';
+			} else {
+				self::$args->css      .= ' has-image-ratio';
+				self::$args->css_vars .= ' --article-image-ratio: ' . esc_attr( $args['image_ratio'] ) . ';';
 			}
-
-			if ( $count > 1 ) {
-				if ( 'first' === $type ) {
-					$template = '--info-rows-template: 1fr' . str_repeat( ' auto', $count - 1 );
-				} else {
-					$repeat    = 2 === $count ? 2 : $count - 2;
-					$template  = '--info-rows-align: space-between;';
-					$template .= '--info-rows-template: ' . str_repeat( 'auto ', $repeat ) . '1fr';
-				}
-
-				$changed = true;
-				$el->setAttribute( 'style', $template );
-			}
 		}
-
-		if ( $changed ) {
-			// Get the modified HTML.
-			$html = $dom->saveHTML();
+		if ( ! empty( $args['card_ratio'] ) ) {
+			self::$args->css_vars .= ' --article-ratio: ' . esc_attr( $args['card_ratio'] ) . ';';
 		}
-
-		$html = str_replace( '<?xml encoding="UTF-8">', '', $html );
-		return $html;
 	}
 
 	/**
 	 * Alter the query where for attachment use.
 	 *
-	 * @param  string $where The where statement.
-	 * @param  object $obj   The query object.
-	 * @return string
+	 * @param string $where The where statement.
+	 * @param object $obj   The query object.
 	 */
-	public static function attachment_custom_where( $where, $obj ) { // phpcs:ignore
+	public static function attachment_custom_where( $where, $obj ): string { // phpcs:ignore
 		global $wpdb;
 		if ( is_scalar( self::$current_query_statuses_list ) ) {
 			$list = explode( ',', self::$current_query_statuses_list );
@@ -2621,11 +2394,10 @@ class Latest_Post_Shortcode {
 	/**
 	 * Alter the query join for attachment use.
 	 *
-	 * @param  string $join The join statement.
-	 * @param  object $obj  The query object.
-	 * @return string
+	 * @param string $join The join statement.
+	 * @param object $obj  The query object.
 	 */
-	public static function attachment_custom_join( $join, $obj ) { // phpcs:ignore
+	public static function attachment_custom_join( $join, $obj ): string { // phpcs:ignore
 		global $wpdb;
 		$join = str_replace( 'LEFT JOIN ' . $wpdb->posts . ' AS p2 ON (' . $wpdb->posts . '.post_parent = p2.ID) ', '', $join );
 		return $join;
@@ -2634,21 +2406,19 @@ class Latest_Post_Shortcode {
 	/**
 	 * Return empty for the attachment paragraph that embeds the image in the content.
 	 *
-	 * @param  string $p The paragraph.
-	 * @return string
+	 * @param string $p The paragraph.
 	 */
-	public static function remove_attachment_content_p( $p ) { // phpcs:ignore
+	public static function remove_attachment_content_p( $p ): string { // phpcs:ignore
 		return '';
 	}
 
 	/**
 	 * Compute a post usable excerpt.
 	 *
-	 * @param  object $post The post object.
-	 * @param  bool   $raw  Use or not raw content.
-	 * @return string
+	 * @param object $post The post object.
+	 * @param bool   $raw  Use or not raw content.
 	 */
-	public static function maybe_post_excerpt( $post, $raw = false ) { // phpcs:ignore
+	public static function maybe_post_excerpt( $post, $raw = false ): string { // phpcs:ignore
 		if ( $raw ) {
 			$excerpt = wp_kses_post( strip_shortcodes( $post->post_excerpt ) );
 		} else {
@@ -2660,11 +2430,10 @@ class Latest_Post_Shortcode {
 	/**
 	 * Compute a post usable content.
 	 *
-	 * @param  object $post The post object.
-	 * @param  bool   $raw  Use or not raw content.
-	 * @return string
+	 * @param object $post The post object.
+	 * @param bool   $raw  Use or not raw content.
 	 */
-	public static function maybe_post_content( $post, $raw = false ) { // phpcs:ignore
+	public static function maybe_post_content( $post, $raw = false ): string { // phpcs:ignore
 		if ( $raw ) {
 			$content = wp_kses_post( $post->post_content );
 		} else {
@@ -2677,10 +2446,9 @@ class Latest_Post_Shortcode {
 	/**
 	 * Strip out possible quotation marks and quotation-like characters
 	 *
-	 * @param  string $text Initial text.
-	 * @return string
+	 * @param string $text Initial text.
 	 */
-	public static function strip_quotes( $text ) {
+	public static function strip_quotes( $text ): string {
 		// phpcs:disable
 		$quotes = [
 			// "'", '"', // Straight quotes.
@@ -2701,14 +2469,13 @@ class Latest_Post_Shortcode {
 	/**
 	 * Compute a item text.
 	 *
-	 * @param  object $post     The post object.
-	 * @param  array  $extra    The elements display list.
-	 * @param  int    $limit    Chars limit.
-	 * @param  bool   $raw      Use or not raw content.
-	 * @param  string $trimmore Maybe some trailing extra chars for truncated string.
-	 * @return string
+	 * @param object $post     The post object.
+	 * @param array  $extra    The elements display list.
+	 * @param int    $limit    Chars limit.
+	 * @param bool   $raw      Use or not raw content.
+	 * @param string $trimmore Maybe some trailing extra chars for truncated string.
 	 */
-	public static function compute_tile_text( $post, $extra = [], $limit = 120, $raw = false, $trimmore = '' ) { // phpcs:ignore
+	public static function compute_tile_text( $post, $extra = [], $limit = 120, $raw = false, $trimmore = '' ): string { // phpcs:ignore
 		if ( 'attachment' === $post->post_type ) {
 			add_filter( 'prepend_attachment', [ get_called_class(), 'remove_attachment_content_p' ] );
 		}
@@ -2731,9 +2498,9 @@ class Latest_Post_Shortcode {
 				return self::get_short_text( $post->post_content, $limit, false, $trimmore );
 			}
 		} elseif ( in_array( 'excerptcontent', $extra, true ) ) {
-			return '<div class="lps-excerpt">' . self::maybe_post_excerpt( $post, $raw ) . '</div><div class="lps-content">' . self::maybe_post_content( $post, $raw ) . '</div>';
+			return '<div class="article__excerpt lps-excerpt">' . self::maybe_post_excerpt( $post, $raw ) . '</div><div class="article__content lps-content">' . self::maybe_post_content( $post, $raw ) . '</div>';
 		} elseif ( in_array( 'contentexcerpt', $extra, true ) ) {
-			return '<div class="lps-content">' . self::maybe_post_content( $post, $raw ) . '</div><div class="lps-excerpt">' . self::maybe_post_excerpt( $post, $raw ) . '</div>';
+			return '<div class="article__content lps-content">' . self::maybe_post_content( $post, $raw ) . '</div><div class="article__excerpt lps-excerpt">' . self::maybe_post_excerpt( $post, $raw ) . '</div>';
 		}
 		return '';
 	}
@@ -2741,12 +2508,11 @@ class Latest_Post_Shortcode {
 	/**
 	 * Trim a HTML string to length, keeping the tags.
 	 *
-	 * @param  string $title   String to be trimmed.
-	 * @param  int    $max_len Max chars.
-	 * @param  string $end     The ending string.
-	 * @return string
+	 * @param string $title   String to be trimmed.
+	 * @param int    $max_len Max chars.
+	 * @param string $end     The ending string.
 	 */
-	public static function trim_html_to_length( $title, $max_len = 30, $end = '...' ) { // phpcs:ignore
+	public static function trim_html_to_length( $title, $max_len = 30, $end = '...' ): string { // phpcs:ignore
 		$current_len = 0;
 
 		$title = strip_shortcodes( $title );
@@ -2830,14 +2596,13 @@ class Latest_Post_Shortcode {
 	/**
 	 * Get the post terms list.
 	 *
-	 * @param  int    $post_id The post ID.
-	 * @param  string $tax     Taxonomy slug.
-	 * @param  bool   $one     Get only one term.
-	 * @param  bool   $uncat   Exclude the uncategorizes term.
-	 * @param  bool   $label   Use the taxonomy name in front of the list.
-	 * @param  bool   $nolink  Use the terms links.
-	 * @param  string $css     Styles.
-	 * @return string
+	 * @param int    $post_id The post ID.
+	 * @param string $tax     Taxonomy slug.
+	 * @param bool   $one     Get only one term.
+	 * @param bool   $uncat   Exclude the uncategorizes term.
+	 * @param bool   $label   Use the taxonomy name in front of the list.
+	 * @param bool   $nolink  Use the terms links.
+	 * @param string $css     Styles.
 	 */
 	public static function get_post_visible_term( int $post_id = 0, string $tax = '', bool $one = false, bool $uncat = false, bool $label = true, bool $nolink = false, string $css = '' ): string {
 		if ( empty( $post_id ) || empty( $tax ) ) {
@@ -2870,7 +2635,7 @@ class Latest_Post_Shortcode {
 
 		$tax_obj = get_taxonomy( $tax );
 		if ( ! empty( $tax_obj ) && ! is_wp_error( $tax_obj ) ) {
-			$terms_list = get_the_term_list( $post_id, $tax, '<span class="lps-terms ' . esc_attr( $tax ) . '">', ', ', '</span>' );
+			$terms_list = get_the_term_list( $post_id, $tax, '<span class="article__terms ' . esc_attr( $tax ) . ' lps-terms">', ', ', '</span>' );
 
 			if ( ! empty( $nolink ) && $terms_list ) {
 				$terms_list = strip_tags( $terms_list, '<span>' );
@@ -2900,9 +2665,9 @@ class Latest_Post_Shortcode {
 			}
 
 			if ( ! empty( $terms_list ) ) {
-				$before = empty( $label ) ? '<span class="lps-taxonomy ' . esc_attr( $tax ) . '">' . esc_html( $tax_obj->label ) . ':</span> ' : '';
+				$before = empty( $label ) ? '<span class="article__terms-label ' . esc_attr( $tax ) . ' lps-taxonomy">' . esc_html( $tax_obj->label ) . ':</span> ' : '';
 
-				return '<div class="lps-taxonomy-wrap ' . esc_attr( $tax ) . ( $one ? ' one-term' : '' ) . ( ! $before ? ' no-label' : '' ) . '">' . $before . $terms_list . '</div>';
+				return '<div class="article__terms-wrap ' . esc_attr( $tax ) . ( $one ? ' one-term' : '' ) . ( ! $before ? ' no-label' : '' ) . ' lps-taxonomy-wrap">' . $before . $terms_list . '</div>';
 			}
 		}
 
@@ -2910,75 +2675,165 @@ class Latest_Post_Shortcode {
 	}
 
 	/**
-	 * Compute the position for the extra elements.
-	 *
-	 * @param  string $show_extra    The extra element list.
-	 * @param  string $tile_pattern  The tile pattern.
-	 * @param  array  $args          The shortcode arguments.
-	 * @param  array  $extra_display The extra elements to be shown.
-	 * @return string
+	 * Compute extra elements in the card patterns.
 	 */
-	public static function positions_from_extra( $show_extra = '', $tile_pattern = '', $args = [], $extra_display = [] ) { // phpcs:ignore
-		if ( in_array( 'date', $extra_display, true ) ) {
-			if ( in_array( 'title', $extra_display, true ) ) {
-				if ( ! empty( $args['display'] ) && substr_count( $args['display'], 'date,title' ) ) {
-					$tile_pattern = str_replace( '[title]', '[date][title]', $tile_pattern );
+	public static function card_pattern_extra(): string { // phpcs:ignore
+		$pattern = str_replace( '[a][title][/a]', '[atitlea]', self::$args->card_pattern );
+
+		if ( in_array( 'date', self::$args->display_list, true ) ) {
+			if ( in_array( 'title', self::$args->display_list, true ) ) {
+				if ( ! empty( self::$args->display ) && substr_count( self::$args->display, 'date,title' ) ) {
+					$pattern = str_replace( '[atitlea]', '[date][atitlea]', $pattern );
+					$pattern = str_replace( '[title]', '[date][title]', $pattern );
 				} else {
-					$tile_pattern = str_replace( '[title]', '[title][date]', $tile_pattern );
+					$pattern = str_replace( '[atitlea]', '[atitlea][date]', $pattern );
+					$pattern = str_replace( '[title]', '[title][date]', $pattern );
 				}
 			} else {
-				$tile_pattern = str_replace( '[title]', '[date]', $tile_pattern );
+				$pattern = str_replace( '[atitlea]', '[date]', $pattern );
+				$pattern = str_replace( '[title]', '[date]', $pattern );
 			}
 		}
 
-		if ( ! is_array( $show_extra ) ) {
-			$show_extra = explode( ',', $show_extra );
+		if ( ! is_array( self::$args->extra_list ) ) {
+			self::$args->extra_list = [];
 		}
-		if ( ! empty( $show_extra ) ) {
-			foreach ( $show_extra as $extra_tag ) {
-				if ( substr_count( $extra_tag, 'taxpos_' ) ) {
-					preg_match_all( '/taxpos\_(.*)\_(before|after)\-(.*)/', $extra_tag, $matches );
-					if ( ! empty( $matches[1][0] ) && in_array( $matches[1][0], $show_extra, true )
-						&& ! empty( $matches[2][0] ) ) {
-						if ( 'before' === $matches[2][0] ) {
-							$tile_pattern = str_replace( '[' . $matches[3][0] . ']', '[' . $matches[1][0] . '][' . $matches[3][0] . ']', $tile_pattern );
+
+		if ( ! empty( self::$args->extra_list ) ) {
+			foreach ( self::$args->extra_list as $term ) {
+				if ( substr_count( $term, 'taxpos_' ) ) {
+					preg_match_all( '/taxpos\_(.*)\_(before|after)\-(.*)/', $term, $matches );
+
+					$item = $matches[1][0] ?? '';
+					$pos  = $matches[2][0] ?? '';
+					$tag  = $matches[3][0] ?? '';
+					if ( empty( $item ) || empty( $tag ) || empty( $pos ) || ! in_array( $item, self::$args->extra_list, true ) ) {
+						continue;
+					}
+
+					if ( 'before' === $pos ) {
+						if ( substr_count( $pattern, '[a' . $tag . 'a]' ) ) {
+							$pattern = str_replace( '[a' . $tag . 'a]', '[' . $item . '][a' . $tag . 'a]', $pattern );
 						} else {
-							$tile_pattern = str_replace( '[' . $matches[3][0] . ']', '[' . $matches[3][0] . '][' . $matches[1][0] . ']', $tile_pattern );
+							$pattern = str_replace( '[' . $tag . ']', '[' . $item . '][' . $tag . ']', $pattern );
 						}
+					} elseif ( substr_count( $pattern, '[a' . $tag . 'a]' ) ) {
+						$pattern = str_replace( '[a' . $tag . 'a]', '[a' . $tag . 'a][' . $item . ']', $pattern );
+					} else {
+						$pattern = str_replace( '[' . $tag . ']', '[' . $tag . '][' . $item . ']', $pattern );
 					}
 				}
 			}
 		}
 
+		// Revert merge title link.
+		$pattern = str_replace( '[atitlea]', '[a][title][/a]', $pattern );
+
 		// Set the default positions for.
 		foreach ( self::$replaceable_tags as $tag ) {
-			if ( ! substr_count( $tile_pattern, '[' . $tag . ']' ) ) {
-				if ( in_array( $tag, $show_extra, true ) ) {
-					$tile_pattern = str_replace( '[text]', '[text][' . $tag . ']', $tile_pattern );
-				}
+			if ( ! substr_count( $pattern, '[' . $tag . ']' ) && in_array( $tag, self::$args->extra_list, true ) ) {
+				$pattern = str_replace( '[text]', '[text][' . $tag . ']', $pattern );
 			}
 		}
 
-		return $tile_pattern;
+		if ( self::$args->is_ver2 ) { // Version >= 2 markup.
+			if ( substr_count( $pattern, '[image][' ) ) { // Image first, info second.
+				$pattern = str_replace( '[image][', '[image]' . self::$args->sep_s . '[', $pattern ) . self::$args->sep_e;
+			} elseif ( substr_count( $pattern, '][image]' ) ) { // Info first, image second.
+				$pattern = self::$args->sep_s . str_replace( '][image]', ']' . self::$args->sep_e . '[image]', $pattern );
+			}
+		}
+
+		self::$args->a_start   = '';
+		self::$args->ar_start  = '';
+		self::$args->a_end     = '';
+		self::$args->card_link = false;
+
+		$attrs = [];
+		if ( self::$args->linkurl || self::$args->linkmedia
+			|| substr_count( self::$args->section_class, 'as-overlay' ) ) {
+
+			self::$args->card_link = true;
+
+			if ( self::$args->linkmedia ) {
+				$attrs[] = 'href=""';
+			} elseif ( ! empty( self::$args->linkurl ) ) {
+				$attrs[] = 'href=""';
+			}
+
+			$attrs[] = 'title=""';
+
+			if ( ! empty( self::$args->lightbox_attr ) ) {
+				$attrs[] = 'rel="' . self::$args->shortcode_id . '"';
+			}
+
+			if ( ! empty( self::$args->linkblank ) ) {
+				$attrs[] = 'target="_blank"';
+			}
+
+			$attrs = implode( ' ', $attrs ) . self::$args->card_attributes;
+
+			self::$args->a_start  = '<a ' . $attrs . ' ' . self::$args->card_link_class . '>';
+			self::$args->ar_start = '<a ' . $attrs . ' ' . self::$args->card_more_class . '>';
+			self::$args->a_end    = '</a>';
+		}
+
+		if ( in_array( self::$args->elements, [ 25, 26 ], true ) ) {
+			if ( empty( self::$args->linkurl ) ) {
+				$pattern = str_replace( '[a][title][/a]', '[title]', $pattern );
+			} elseif ( empty( self::$args->a_start ) ) {
+				// Link on title.
+				$pattern = str_replace( '[a][title][/a]', '[title]', $pattern );
+			} elseif ( ! substr_count( $pattern, '[a][title][/a]' ) ) {
+				$pattern = str_replace( '[title]', '[a][title][/a]', $pattern );
+			}
+		} elseif ( in_array( self::$args->elements, [ 5, 22, 26 ], true ) ) {
+			// Link on read more.
+			if ( empty( self::$args->ar_start ) ) {
+				$pattern = str_replace( '[a-r][read_more_text][/a]', '[read_more_text]', $pattern );
+			} elseif ( ! substr_count( $pattern, '[a-r][read_more_text][/a]' ) ) {
+				$pattern = str_replace( '[read_more_text]', '[a-r][read_more_text][/a]', $pattern );
+			}
+
+			// Should have only read more link.
+			if ( empty( self::$args->linktext ) ) {
+				// Cleanup read more element.
+				$pattern = str_replace( '[a-r][read_more_text][/a]', '', $pattern );
+				$pattern = str_replace( '[read_more_text]', '', $pattern );
+
+				// Set link to the title if possible.
+				$pattern = str_replace( '[a][title][/a]', '[title]', $pattern );
+				$pattern = str_replace( '[title]', '[a][title][/a]', $pattern );
+			}
+
+			if ( empty( self::$args->linkurl ) ) {
+				$pattern = str_replace( '[a][title][/a]', '[title]', $pattern );
+			}
+		} else {
+			// No links.
+			$pattern = str_replace( '[a]', '', $pattern );
+			$pattern = str_replace( '[a-r]', '', $pattern );
+			$pattern = str_replace( '[/a]', '', $pattern );
+		}
+
+		return $pattern;
 	}
 
 	/**
 	 * Clean the tile title.
 	 *
-	 * @param  string $str The string.
-	 * @return string
+	 * @param string $str The string.
 	 */
-	public static function cleanup_title( $str ) { // phpcs:ignore
+	public static function cleanup_title( string $str ): string { // phpcs:ignore
 		return ( ! empty( $str ) ) ? str_replace( ']', '', str_replace( '[', '', $str ) ) : '';
 	}
 
 	/**
 	 * Select a random placeholder.
 	 *
-	 * @param  string $string The list of placeholders separated by comma.
-	 * @return string
+	 * @param string $string The list of placeholders separated by comma.
 	 */
-	public static function select_random_placeholder( $string = '' ) { // phpcs:ignore
+	public static function select_random_placeholder( string $string = '' ): string { // phpcs:ignore
 		if ( empty( $string ) ) {
 			return '';
 		}
@@ -2989,7 +2844,7 @@ class Latest_Post_Shortcode {
 		}
 
 		global $select_random_placeholder;
-		$list   = ( ! is_array( $string ) ) ? explode( ',', $string ) : $string;
+		$list   = ! is_array( $string ) ? explode( ',', $string ) : $string;
 		$usable = $list;
 		if ( empty( $select_random_placeholder ) ) {
 			$select_random_placeholder = [];
@@ -3004,7 +2859,7 @@ class Latest_Post_Shortcode {
 			}
 		}
 		$index = array_rand( $list, 1 );
-		$item  = ( ! empty( $list[ $index ] ) ) ? $list[ $index ] : $usable[0];
+		$item  = ! empty( $list[ $index ] ) ? $list[ $index ] : $usable[0];
 
 		$select_random_placeholder[] = $item;
 		return $item;
@@ -3013,38 +2868,37 @@ class Latest_Post_Shortcode {
 	/**
 	 * Compute the tile image for a post, based on the arguments.
 	 *
-	 * @param  object $post The WP_Post object.
-	 * @param  array  $args The shortcode arguments.
-	 * @param  string $tile The tile pattern.
-	 * @return string
+	 * @param WP_Post $ob   The WP_Post object.
+	 * @param array   $args The instance argument, for backward compatibility.
+	 * @param string  $tile The tile pattern.
 	 */
-	public static function set_tile_image( $post, $args, $tile ) { // phpcs:ignore
+	public static function card_image( WP_Post $ob, array $args = [], string $tile = '' ): string {
 		global $last_tiles_img;
-		if ( empty( $post ) ) {
-			return;
+		if ( empty( $ob ) || ! is_string( $tile ) ) {
+			return str_replace( '[image]', '', $tile );
 		}
 		$last_tiles_img = '';
 
 		// Tile image markup.
-		if ( ! empty( $args['image'] ) ) {
+		if ( ! empty( self::$args->image_subsize ) ) {
 			$img_html = '';
 			$attr     = [
-				'class'   => 'lps-custom-' . $args['image'],
+				'class'   => 'lps-custom-' . self::$args->image_subsize,
 				'loading' => 'lazy',
 			];
 
-			if ( 'attachment' === $post->post_type ) {
-				$th_id       = $post->ID;
+			if ( 'attachment' === $ob->post_type ) {
+				$th_id       = $ob->ID;
 				$attr['alt'] = get_post_meta( $th_id, '_wp_attachment_image_alt', true );
 				if ( empty( $attr['alt'] ) ) {
-					$attr['alt'] = self::cleanup_title( $post->post_title );
+					$attr['alt'] = self::cleanup_title( $ob->post_title );
 				}
 			} else {
-				$th_id       = get_post_thumbnail_id( (int) $post->ID );
-				$attr['alt'] = self::cleanup_title( $post->post_title );
+				$th_id       = get_post_thumbnail_id( (int) $ob->ID );
+				$attr['alt'] = self::cleanup_title( $ob->post_title );
 			}
 
-			$image     = wp_get_attachment_image_src( $th_id, $args['image'] );
+			$image     = wp_get_attachment_image_src( $th_id, self::$args->image_subsize );
 			$img_url   = '';
 			$is_native = false;
 			if ( ! empty( $image[0] ) ) {
@@ -3052,13 +2906,13 @@ class Latest_Post_Shortcode {
 				$is_native      = true;
 				$attr['width']  = $image[1];
 				$attr['height'] = $image[2];
-			} elseif ( ! empty( $args['image_placeholder'] ) ) {
-				$img_url = self::select_random_placeholder( $args['image_placeholder'] );
+			} elseif ( ! empty( self::$args->image_placeholder ) ) {
+				$img_url = self::select_random_placeholder( self::$args->image_placeholder );
 			}
 
 			if ( ! empty( $img_url ) ) {
 				if ( true === $is_native ) {
-					$srcset = wp_get_attachment_image_srcset( $th_id, $args['image'] );
+					$srcset = wp_get_attachment_image_srcset( $th_id, self::$args->image_subsize );
 					if ( ! empty( $srcset ) ) {
 						$attr['srcset'] = $srcset;
 					}
@@ -3072,20 +2926,307 @@ class Latest_Post_Shortcode {
 					$attributes .= ' ' . esc_attr( $k ) . '="' . esc_attr( $v ) . '"';
 				}
 
-				if ( $args['ver'] < 2 ) {
-					// Legacy markup.
+				if ( ! self::$args->is_ver2 ) { // Legacy markup.
 					$img_html = '<img src="' . esc_url( $img_url ) . '"' . $attributes . '>';
-				} else {
-					// Ver >= 2 markup.
+				} else { // Ver >= 2 markup.
 					$img_html = '<figure class="article__image"><img src="' . esc_url( $img_url ) . '"' . $attributes . '></figure>';
 				}
 
 				$last_tiles_img = $img_url;
 			}
+
 			$tile = str_replace( '[image]', $img_html, $tile );
 		}
+
 		$tile = str_replace( '[image]', '', $tile );
+
 		return $tile;
+	}
+
+	/**
+	 * Adds the card date.
+	 *
+	 * @param WP_Post $ob   Post object.
+	 * @param string  $tile The card markup.
+	 */
+	public static function card_date( WP_Post $ob, string $tile ): string {
+		if ( ! self::in_display( 'date' ) ) {
+			return str_replace( '[date]', '', $tile );
+		}
+
+		if ( self::in_extra( 'date_diff' ) ) {
+			$value = self::relative_time( $ob->ID );
+		} else {
+			$value = date_i18n( self::$args->date_format, strtotime( $ob->post_date ), true );
+		}
+
+		return str_replace( '[date]', self::$args->sep_d . '<em class="article__date item-date">' . $value . '</em>', $tile );
+	}
+
+	/**
+	 * Adds the card terms.
+	 *
+	 * @param WP_Post $ob   Post object.
+	 * @param string  $tile The card markup.
+	 */
+	public static function card_tags( WP_Post $ob, string $tile ): string {
+		if ( ! self::in_extra( 'tags' ) ) {
+			return str_replace( '[tags]', '', $tile );
+		}
+
+		$one_term = self::in_extra( 'oneterm_tags' );
+		$no_label = self::in_extra( 'nolabel_tags' );
+		$no_link  = self::in_extra( 'nolink_tags' );
+		$tags     = self::get_post_visible_term( (int) $ob->ID, 'post_tag', $one_term, false, $no_label, $no_link, self::$args->section_class );
+
+		if ( ! empty( $tags ) ) {
+			$tags = str_replace( 'post_tag', 'post_tag tags', $tags );
+			$tags = self::$args->sep_d . $tags;
+			$tags = apply_filters( 'lps/override_card_terms', $tags, (int) $ob->ID, 'post_tag', self::$args->shortcode_id );
+			$tile = str_replace( '[tags]', $tags, $tile );
+		}
+
+		return str_replace( '[tags]', '', $tile );
+	}
+
+	/**
+	 * Adds the card author.
+	 *
+	 * @param WP_Post $ob   Post object.
+	 * @param string  $tile The card markup.
+	 */
+	public static function card_author( WP_Post $ob, string $tile ): string {
+		// Tile author markup.
+		if ( ! self::in_extra( 'author' ) ) {
+			return str_replace( '[author]', '', $tile );
+		}
+
+		$no_label = self::in_extra( 'nolabel_author' );
+		$no_link  = self::in_extra( 'nolink_author' );
+		$author   = '<div class="article__author-wrap lps-author-wrap">';
+		if ( ! $no_label ) {
+			$author .= '<span class="article__author-label lps-author">' . esc_html__( 'By', 'lps' ) . '</span> ';
+		}
+		if ( $no_link ) {
+			$author .= '<span class="article__author">' . esc_html( get_the_author_meta( 'display_name', $ob->post_author ) ) . '</span>';
+		} else {
+			$author .= '<a href="' . esc_url( get_author_posts_url( $ob->post_author ) ) . '" class="article__author-link lps-author-link">' . esc_html( get_the_author_meta( 'display_name', $ob->post_author ) ) . '</a>';
+		}
+		$author .= '</div>';
+
+		return str_replace( '[author]', self::$args->sep_d . $author, $tile );
+	}
+
+	/**
+	 * Adds the card product related elements.
+	 *
+	 * @param WP_Post $ob   Post object.
+	 * @param string  $tile The card markup.
+	 */
+	public static function card_product( WP_Post $ob, $tile ): string {
+		if ( empty( $ob->post_type ) || ! function_exists( '\wc_get_product' )
+			|| ! in_array( $ob->post_type, [ 'product', 'product_variation' ], true ) ) {
+			$tile = str_replace( '[price]', '', $tile );
+			$tile = str_replace( '[add_to_cart]', '', $tile );
+			return str_replace( '[price_add_to_cart]', '', $tile );
+		}
+
+		// Tile price markup.
+		if ( self::in_extra( 'price' ) ) {
+			$prod = \wc_get_product( (int) $ob->ID );
+			$info = self::$args->sep_d . '<div class="article__price lps-price-wrap">' . $prod->get_price_html() . '</div>';
+			$tile = str_replace( '[price]', $info, $tile );
+		}
+
+		// Tile add to cart markup.
+		if ( self::in_extra( 'add_to_cart' ) ) {
+			$info = self::$args->sep_d . '<div class="article__add-to-cart lps-add_to_cart-wrap">' . \do_shortcode( '[add_to_cart id="' . (int) $ob->ID . '" style="" show_price="false"]' ) . '</div>';
+			$tile = str_replace( '[add_to_cart]', $info, $tile );
+		}
+
+		// Tile price + add to cart markup.
+		if ( self::in_extra( 'price_add_to_cart' ) ) {
+			$info = self::$args->sep_d . '<div class="article__price-add-to-cart lps-add_to_cart-wrap">' . \do_shortcode( '[add_to_cart id="' . (int) $ob->ID . '" style=""]' ) . '</div>';
+			$tile = str_replace( '[price_add_to_cart]', $info, $tile );
+		}
+
+		$tile = str_replace( '[price]', '', $tile );
+		$tile = str_replace( '[add_to_cart]', '', $tile );
+
+		return str_replace( '[price_add_to_cart]', '', $tile );
+	}
+
+	/**
+	 * Adds the card attachment related elements.
+	 *
+	 * @param WP_Post $ob   Post object.
+	 * @param string  $tile The card markup.
+	 */
+	public static function card_attachment( WP_Post $ob, $tile ): string {
+		self::$args->mime_css = '';
+
+		if ( 'attachment' !== $ob->post_type ) {
+			$tile = str_replace( '[show_mime]', '', $tile );
+			return str_replace( '[caption]', '', $tile );
+		}
+
+		// Attachment tile mime type markup.
+		if ( self::in_extra( 'show_mime' ) ) {
+			$value = trim( strstr( $ob->post_mime_type, '/' ), '/' );
+			$label = ! self::in_extra( 'nolabel_show_mime' ) ? '<span class="article__mime-label">' . esc_html__( 'Mime Type', 'lps' ) . ':</span> ' : '';
+
+			self::$args->mime_css = 'article-mime item-mime-type mime-' . esc_attr( $value ) . ' mime-' . str_replace( '/', '-', esc_attr( $ob->post_mime_type ) );
+
+			$tile = str_replace( '[show_mime]', '<span class="article__mime-wrap ' . self::$args->mime_css . '">' . $label . $value . '</span>', $tile );
+		}
+		$tile = str_replace( '[show_mime]', '', $tile );
+
+		// Maybe prepare the mime type class.
+		if ( self::in_extra( 'show_mime_class' ) ) {
+			if ( empty( self::$args->mime_css ) ) {
+				$mime = trim( strstr( $ob->post_mime_type, '/' ), '/' );
+
+				self::$args->mime_css = 'item-mime-type mime-' . esc_attr( $mime ) . ' mime-' . str_replace( '/', '-', esc_attr( $ob->post_mime_type ) );
+			}
+		} else {
+			self::$args->mime_css = '';
+		}
+
+		// Attachment tile caption type markup.
+		if ( self::in_extra( 'caption' ) ) {
+			$value = wp_get_attachment_caption( $ob->ID );
+			if ( ! empty( $value ) ) {
+				$label = ! self::in_extra( 'nolabel_caption' )
+				? '<span class="article__caption-label">' . esc_html__( 'Caption', 'lps' ) . ':</span> ' : '';
+
+				$value = self::$args->sep_d . '<div class="article__caption-wrap lps-caption-wrap">' . $label . esc_html( $value ) . '</div>';
+			}
+			$tile = str_replace( '[caption]', $value, $tile );
+		}
+		$tile = str_replace( '[caption]', '', $tile );
+
+		return $tile;
+	}
+
+	/**
+	 * Adds the card taxonomy related elements.
+	 *
+	 * @param WP_Post $ob   Post object.
+	 * @param string  $tile The card markup.
+	 */
+	public static function card_taxonomy( WP_Post $ob, string $tile = '' ): string {
+		if ( empty( $ob ) || empty( self::$args->extra_list ) || empty( self::$args->card_tax ) ) {
+			return $tile;
+		}
+
+		if ( ! empty( self::$args->card_tax ) ) {
+			foreach ( self::$args->card_tax as $tax ) {
+				$one_term = self::in_extra( 'oneterm_' . $tax );
+				$no_label = self::in_extra( 'nolabel_' . $tax );
+				$no_uncat = 'category' === $tax && self::in_extra( 'hide_uncategorized_category' );
+				$no_link  = self::in_extra( 'nolink_' . $tax );
+				$terms    = self::get_post_visible_term( (int) $ob->ID, $tax, $one_term, $no_uncat, $no_label, $no_link, self::$args->section_class );
+				$terms    = apply_filters( 'lps/override_card_terms', $terms, (int) $ob->ID, $tax, self::$args->shortcode_id );
+
+				$tile = str_replace( '[' . $tax . ']', self::$args->sep_d . $terms, $tile );
+			}
+		}
+
+		return $tile;
+	}
+
+	/**
+	 * Adds the card title element.
+	 *
+	 * @param string $title Visible title.
+	 * @param string $tile  The card markup.
+	 * @param string $start Link start.
+	 * @param string $end   Link end.
+	 */
+	public static function card_title( string $title, string $tile, string $start = '', string $end = '' ): string {
+		if ( self::in_display( 'title' ) ) {
+			if ( self::$args->is_ver2 && self::$args->text_trim ) { // Version >= 2 markup.
+				$title = self::get_short_text( $title, self::$args->chrlimit, false, self::$args->trimmore );
+				if ( ! empty( $title ) ) {
+					$title = wp_strip_all_tags( $title );
+				}
+			}
+
+			if ( ! empty( self::$args->linkurl ) && substr_count( $tile, '[a][title][/a]' ) ) {
+				// Replace title with link.
+				$tile = str_replace( '[a][title][/a]', self::$args->sep_d . '<' . self::$args->titletag . ' class="article__title item-title-tag">' . $start . $title . $end . '</' . self::$args->titletag . '>', $tile );
+			} else {
+				$tile = str_replace( '[a][title][/a]', '[title]', $tile );
+			}
+
+			// Replace just title.
+			$tile = str_replace( '[title]', self::$args->sep_d . '<' . self::$args->titletag . ' class="article__title item-title-tag">' . $title . '</' . self::$args->titletag . '>', $tile );
+		}
+		$tile = str_replace( '[a][title][/a]', '', $tile );
+		$tile = str_replace( '[title]', '', $tile );
+
+		return $tile;
+	}
+
+	/**
+	 * Adds the card text elements.
+	 *
+	 * @param WP_Post $ob    Post object.
+	 * @param string  $tile  The card markup.
+	 * @param string  $title Visible title.
+	 */
+	public static function card_text( WP_Post $ob, string $tile, string $title ): string {
+		if ( empty( self::$args->display ) ) {
+			return str_replace( '[text]', '', $tile );
+		}
+
+		// Tile text markup.
+		$text = '';
+		if ( substr_count( self::$args->display, 'content' )
+			|| substr_count( self::$args->display, 'excerpt' ) ) {
+			$lim = self::$args->chrlimit;
+			if ( self::$args->text_trim ) {
+				$lim -= mb_strlen( $title );
+				if ( $lim < 0 ) {
+					$lim = 0;
+				}
+			}
+
+			$text = '<div class="article__text item-text">' . self::compute_tile_text( $ob, self::$args->display_list, $lim, self::$args->text_raw, self::$args->trimmore ) . '</div>';
+		}
+
+		$tile = str_replace( '[text]', self::$args->sep_d . $text, $tile );
+
+		return $tile;
+	}
+
+	/**
+	 * Adds the card read more element.
+	 *
+	 * @param string $tile  The card markup.
+	 * @param string $start Link start.
+	 * @param string $end   Link end.
+	 */
+	public static function card_read_more( string $tile, string $start = '', string $end = '' ): string {
+		if ( ! substr_count( $tile, '[read_more_text]' ) ) {
+			// Not used.
+			return $tile;
+		}
+
+		if ( empty( self::$args->linktext ) ) {
+			// Cleanup.
+			$tile = str_replace( '[a-r][read_more_text][/a]', '', $tile );
+			return str_replace( '[read_more_text]', '', $tile );
+		}
+
+		if ( ! empty( $start ) ) {
+			$elem = str_replace( 'article__link', 'article__link article__read-more main-link', $start );
+			$tile = str_replace( '[a-r][read_more_text][/a]', self::$args->sep_d . $elem . self::$args->linktext . $end, $tile );
+			$tile = str_replace( '[read_more_text]', self::$args->sep_d . '<span class="article__read-more read-more">' . self::$args->linktext . '</span>', $tile );
+		}
+
+		$tile = str_replace( '[a-r][read_more_text][/a]', '', $tile );
+		return str_replace( '[read_more_text]', '', $tile );
 	}
 
 	/**
@@ -3113,6 +3254,9 @@ class Latest_Post_Shortcode {
 	public static function custom_minify( $content, $is_css = false ) { // phpcs:ignore
 		// Minify the output.
 		$content = trim( $content );
+
+		// Remove all comments using a regex.
+		$content = preg_replace( '/\/\*[\s\S]*?\*\//', '', $content );
 
 		// Remove space after colons.
 		$content = str_replace( ': ', ':', $content );
@@ -3157,14 +3301,16 @@ class Latest_Post_Shortcode {
 	/**
 	 * Plugin action link.
 	 *
-	 * @param  array $links Plugin links.
-	 * @return array
+	 * @param array $links Plugin links.
 	 */
-	public static function plugin_action_links( $links ) { // phpcs:ignore
-		$all   = [];
-		$all[] = '<a href="https://iuliacazan.ro/latest-post-shortcode">' . esc_html__( 'Plugin URL', 'lps' ) . '</a>';
-		$all   = array_merge( $all, $links );
-		return $all;
+	public static function plugin_action_links( $links ): array { // phpcs:ignore
+		return array_merge(
+			[
+				'<a href="' . esc_url( admin_url( 'options-reading.php#lps-settings' ) ) . '">' . esc_html__( 'Settings', 'lps' ) . '</a>',
+				'<a href="https://iuliacazan.ro/latest-post-shortcode">' . esc_html__( 'Plugin URL', 'lps' ) . '</a>',
+			],
+			$links
+		);
 	}
 
 	/**
@@ -3210,21 +3356,23 @@ class Latest_Post_Shortcode {
 	}
 
 	/**
-	 * Donate text.
-	 *
-	 * @return string
+	 * Maybe donate or rate.
 	 */
-	public static function donate_text() {
-		$ptitle = __( 'Latest Post Shortcode', 'lps' );
-		$donate = 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JJA37EHZXWUTJ&item_name=Support for development and maintenance (' . rawurlencode( $ptitle ) . ')';
+	public static function donate_text(): string {
+		$title  = __( 'Latest Post Shortcode', 'lps' );
+		$donate = 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JJA37EHZXWUTJ&item_name=Support for development and maintenance (' . rawurlencode( $title ) . ')';
 		$thanks = __( 'A huge thanks in advance!', 'lps' );
 
-		return sprintf(
-				// Translators: %1$s - donate URL, %2$s - rating, %3$s - thanks.
-			__( 'If you find the plugin useful and would like to support my work, please consider making a <a href="%1$s" target="_blank">donation</a>. It would make me very happy if you would leave a %2$s rating. %3$s', 'lps' ),
-			$donate,
-			'<a href="' . self::PLUGIN_SUPPORT_URL . 'reviews/?rate=5#new-post" class="rating" target="_blank" rel="noreferrer" title="' . esc_attr( $thanks ) . '">★★★★★</a>',
-			$thanks
+		return trim(
+			sprintf(
+				// Translators: %s - donate URL.
+				__( 'If you find the plugin useful and would like to support my work, please consider making a <a href="%s" target="_blank">donation</a>.', 'lps' ),
+				$donate
+			) . ' ' . sprintf(
+				// Translators: %s - rating.
+				__( 'It would make me very happy if you would leave a %s rating.', 'lps' ),
+				'<a href="' . self::PLUGIN_SUPPORT_URL . 'reviews/?rate=5#new-post" class="rating" target="_blank" rel="noreferrer" title="' . esc_attr( $thanks ) . '">★★★★★</a>'
+			) . ' ' . $thanks
 		);
 	}
 
@@ -3291,17 +3439,9 @@ class Latest_Post_Shortcode {
 			return;
 		}
 		?>
-		<hr>
-		<table class="inline-donate-notice">
-			<tbody><tr>
-				<td valign="middle">
-					<img src="<?php echo esc_url( LPS_PLUGIN_URL . 'assets/images/icon-128x128.png' ); ?>" width="38" height="38">
-					<?php echo wp_kses_post( self::donate_text() ); ?>
-					<br><em>Iulia</em>
-				</td>
-			</tr></tbody>
-		</table>
-		<hr class="sep">
+		<div class="no-mobile inline-donate-notice">
+			<?php echo wp_kses_post( self::donate_text() ); ?>
+		</div>
 		<?php
 	}
 
@@ -3317,16 +3457,45 @@ class Latest_Post_Shortcode {
 			return;
 		}
 
-		if ( ! self::lps_current_page_contains( 'latest-selected-content' )
-			&& ! self::lps_current_page_contains( 'latest-post-selection' )
-			&& ! self::lps_current_page_contains( 'wp:latest-post-shortcode' ) ) {
+		if ( ! self::page_has_lps() ) {
 			// Dequeue the styles.
 			\wp_dequeue_style( 'lps-style-legacy' );
 			\wp_dequeue_style( 'lps-style' );
 
 			// Dequeue the scripts.
 			\wp_dequeue_script( 'lps-slick' );
+
+			// Dequeue the pagination.
+			\wp_dequeue_script( 'latest-post-shortcode-lps-block-view-script' );
+
+			// Fail-fast.
+			return;
 		}
+
+		if ( ! self::page_has_pagination() ) {
+			// Dequeue the pagination.
+			\wp_dequeue_script( 'latest-post-shortcode-lps-block-view-script' );
+		}
+	}
+
+	/**
+	 * The page content has LPS.
+	 */
+	public static function page_has_lps(): bool {
+		return self::lps_current_page_contains( 'latest-selected-content' )
+			|| self::lps_current_page_contains( 'latest-post-selection' )
+			|| self::lps_current_page_contains( 'wp:latest-post-shortcode' )
+			|| self::lps_current_page_contains( '<!-- lps/' );
+	}
+
+	/**
+	 * The page content has LPS pagination.
+	 */
+	public static function page_has_pagination(): bool {
+		return self::lps_current_page_contains( ' pagespos=' )
+			|| self::lps_current_page_contains( ' showpages=' )
+			|| self::lps_current_page_contains( 'lps-pagination-wrap' )
+			|| self::lps_current_page_contains( '<!-- lps/pagination' );
 	}
 
 	/**
@@ -3347,8 +3516,7 @@ class Latest_Post_Shortcode {
 	/**
 	 * Assess if the current rendering page contains a specific string.
 	 *
-	 * @param  string $something What to check.
-	 * @return bool
+	 * @param string $something What to check.
 	 */
 	public static function lps_current_page_contains( string $something = '' ): bool {
 		global $lps_assess_cpa;

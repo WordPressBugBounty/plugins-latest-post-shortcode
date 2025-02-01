@@ -11,14 +11,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $cards      = '';
-$imgsize    = ( empty( $args['image'] ) ) ? 'none' : $args['image'];
-$url        = ( ! empty( $args['url'] ) && substr_count( $args['url'], 'yes' ) ) ? 'true' : 'false';
-$chrlimit   = ( ! empty( $args['chrlimit'] ) ) ? intval( $args['chrlimit'] ) : 120;
-$trimmore   = ( ! empty( $args['more'] ) ) ? $args['more'] : '';
-$show_extra = ( ! empty( $args['show_extra'] ) ) ? explode( ',', $args['show_extra'] ) : [];
+$imgsize    = empty( $args['image'] ) ? 'none' : $args['image'];
+$url        = ! empty( $args['url'] ) && substr_count( $args['url'], 'yes' ) ? 'true' : 'false';
+$chrlimit   = ! empty( $args['chrlimit'] ) ? intval( $args['chrlimit'] ) : 120;
+$trimmore   = ! empty( $args['more'] ) ? $args['more'] : '';
+$show_extra = ! empty( $args['show_extra'] ) ? explode( ',', $args['show_extra'] ) : [];
 $use_trim   = in_array( 'trim', $show_extra, true ) ? true : false;
-$extra      = ( ! empty( $args['display'] ) ) ? explode( ',', $args['display'] ) : [ 'title' ];
-$overlay    = ( ! empty( $args['slideoverlay'] ) && 'no' === $args['slideoverlay'] ) ? 'false' : 'true';
+$extra      = ! empty( $args['display'] ) ? explode( ',', $args['display'] ) : [ 'title' ];
+$overlay    = ! empty( $args['slideoverlay'] ) && 'no' === $args['slideoverlay'] ? 'false' : 'true';
 $titletag   = ! empty( $args['titletag'] ) ? $args['titletag'] : 'h3';
 $otype      = '';
 if ( 'true' === $overlay ) {
@@ -33,9 +33,7 @@ foreach ( $posts as $item ) :
 		if ( 'none' === $imgsize ) {
 			$image[0] = LPS_PLUGIN_URL . 'assets/images/samples/0.svg';
 		} else {
-			$th_id = ( 'attachment' === $item->post_type )
-				? (int) $item->ID
-				: get_post_thumbnail_id( (int) $item->ID );
+			$th_id = 'attachment' === $item->post_type ? (int) $item->ID : get_post_thumbnail_id( (int) $item->ID );
 			$image = wp_get_attachment_image_src( $th_id, $imgsize );
 		}
 		if ( empty( $image[0] ) && ! empty( $args['image_placeholder'] ) ) {
@@ -46,7 +44,7 @@ foreach ( $posts as $item ) :
 			$a_end     = '</div>';
 			$title_str = self::cleanup_title( $item->post_title );
 			if ( $url ) {
-				$link_target = ( 'yes_blank' === $args['url'] ) ? ' target="_blank"' : '';
+				$link_target = 'yes_blank' === $args['url'] ? ' target="_blank"' : '';
 				$a_start     = '<a href="' . get_permalink( $item->ID ) . '"' . $link_target . ' title="' . esc_attr( $title_str ) . '" class="slide-inner">';
 				$a_end       = '</a>';
 			}
@@ -258,14 +256,24 @@ if ( ! empty( $gaps ) ) {
 }
 ?>
 
-{#}.has-radius .slick-slide { border-radius: 0.5rem; overflow: clip;}
+{#} .slick-slide { overflow: hidden; }
+{#}.has-radius .slick-slide { border-radius: 0.5rem; overflow: hidden;}
 
 <?php
 if ( 'true' === $ctrl ) {
 	?>
+	{#} .slick-prev, {#} .slick-next {--top: 50%; top: var(--top);}
 	{#} .slick-prev {left: var(--slider-gaps);}
 	{#} .slick-next {right: var(--slider-gaps);}
 	<?php
+	if ( 'true' === $dots ) {
+		?>
+		{#} .slick-prev,
+		{#} .slick-next {
+			--top: calc((100% - <?php echo ( (int) $gaps + 32 ); ?>px + 1rem) / 2);
+		}
+		<?php
+	}
 }
 
 if ( 'true' === $center ) {
@@ -288,6 +296,7 @@ if ( 'true' === $center ) {
 		padding: <?php echo (int) $padd; ?>px;
 		position: relative;
 	}
+
 	{#} .slick-slide .overlay {
 		max-width: calc(100% - <?php echo 2 * (int) $padd; ?>px);
 		margin-left: 0px;
@@ -301,12 +310,17 @@ if ( 'true' === $center ) {
 		display: block;
 	}
 	{#} .slick-center .img-wrap {
+		bottom: 0;
 		min-width: calc(100% + <?php echo 2 * (int) $padd; ?>px);
 		max-height: auto;
-		height: auto;
+		height: 100%;
 		margin-left: -<?php echo (int) $padd; ?>px;
 		margin-top: -<?php echo (int) $padd; ?>px;
+		position: absolute !important;
 	}
+
+	{#} .slick-slide .img-wrap { height: 100%; }
+	{#} .slick-slide .img-wrap img { height: 100%; }
 	<?php
 }
 
@@ -318,15 +332,31 @@ if ( 'true' === $dots ) {
 }
 
 if ( ! empty( $args['slideratio'] ) ) {
-	?>
-	{#} .slick-slide {
-		aspect-ratio: <?php echo esc_attr( $args['slideratio'] ); ?>;
+
+	if ( 'contain' === $args['slideratio'] ) {
+		?>
+		{#} .slick-slide {
+			aspect-ratio: 1;
+		}
+		{#} > div img {
+			aspect-ratio: 1;
+			object-fit: contain;
+		}
+		{#} .slick-center .img-wrap {
+			min-width: 100%;
+		}
+		<?php
+	} else {
+		?>
+		{#} .slick-slide {
+			aspect-ratio: <?php echo esc_attr( $args['slideratio'] ); ?>;
+		}
+		{#} > div img {
+			aspect-ratio: <?php echo esc_attr( $args['slideratio'] ); ?>;
+			object-fit: cover;
+		}
+		<?php
 	}
-	{#} > div img {
-		aspect-ratio: <?php echo esc_attr( $args['slideratio'] ); ?>;
-		object-fit: cover;
-	}
-	<?php
 }
 
 if ( ! $static && 'horizontal' === $mode && 'true' === $center && 'true' === $resp ) {
@@ -432,7 +462,7 @@ $sliderstyle = str_replace( '{#}', '#latest-post-selection-slider-' . esc_attr( 
 $sliderstyle = self::custom_minify( $sliderstyle, true );
 
 // Add a wrapper for better controll.
-echo '<div class="lps-slider-wrap">';
+echo '<!-- lps/slider-start --><div class="lps-slider-wrap">';
 
 // Output the inline styles.
 echo '<style id="lps-slider-' . $shortcode_id . '-style">' . $sliderstyle . '</style>'; // phpcs:ignore
@@ -454,7 +484,7 @@ $slider = preg_replace( '/(\r\n|\r|\n)+/', ' ', $slider );
 $slider = preg_replace( '/\s+/', ' ', $slider );
 
 echo $slider; // phpcs:ignore
-echo '</div>'; // Close the wrapper element.
+echo '</div><!-- lps/slider-end -->'; // Close the wrapper element.
 
 $script = '';
 ob_start();
@@ -518,7 +548,7 @@ jQuery(document).ready(function(){
 		<?php endif; ?>
 		<?php if ( 'true' === $center ) : ?>
 			centerMode: true,
-			centerPadding: '<?php echo (int) $padd; ?>px',
+			centerPadding: '<?php echo esc_attr( (int) $padd + 0.5 ); ?>px',
 		<?php endif; ?>
 		zIndex: 1000
 	});

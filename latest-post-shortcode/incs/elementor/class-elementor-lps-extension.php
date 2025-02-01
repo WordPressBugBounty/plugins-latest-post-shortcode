@@ -21,7 +21,7 @@ final class Elementor_LPS_Extension {
 	 *
 	 * @var string The plugin version.
 	 */
-	const VERSION = '8.7';
+	const VERSION = '14.0';
 
 	/**
 	 * Minimum Elementor Version
@@ -105,7 +105,7 @@ final class Elementor_LPS_Extension {
 			add_filter( 'lps/load_assets_on_page', '__return_true' );
 		}, 10 );
 
-		add_action( 'elementor/editor/before_enqueue_scripts', [ $lps, 'add_shortcode_popup_container' ], 20 );
+		add_action( 'elementor/editor/before_enqueue_scripts', [ $lps, 'add_settings_modal' ], 20 );
 		add_action( 'elementor/editor/before_enqueue_scripts', [ $lps, 'load_assets' ], 20 );
 		add_action( 'elementor/editor/before_enqueue_scripts', [ $lps, 'load_admin_assets' ], 20 );
 		add_action( 'elementor/editor/before_enqueue_scripts', [ $lps, 'load_slider_assets' ], 20 );

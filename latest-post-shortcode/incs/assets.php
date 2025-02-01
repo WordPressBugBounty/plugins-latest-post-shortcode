@@ -15,12 +15,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 \add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\use_script_inline', 0 );
 \add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\use_script_inline', 0 );
+\add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\fix_assets_ver', 90 );
 
 /**
  * Returns the assets version to be used.
  */
 function ver() {
-	return LPS_PLUGIN_VERSION . \get_option( 'lps_asset_version', LPS_PLUGIN_VERSION );
+	return 'lpsv' . LPS_PLUGIN_VERSION . \get_option( 'lps_asset_version', LPS_PLUGIN_VERSION );
 }
 
 /**
@@ -33,6 +34,17 @@ function use_script_inline() {
 		\wp_add_inline_script(
 			'lps-vars',
 			'const lpsSettings = {"ajaxUrl": "' . \esc_url( \admin_url( 'admin-ajax.php' ) ) . '"};'
+		);
+	}
+
+	$path = LPS_PLUGIN_DIR . 'lps-block/build/view.asset.php';
+	if ( file_exists( $path ) && ! \wp_script_is( 'latest-post-shortcode-lps-block-view-script' ) ) {
+		\wp_enqueue_script(
+			'latest-post-shortcode-lps-block-view-script',
+			LPS_PLUGIN_URL . 'lps-block/build/view.js',
+			[],
+			ver(),
+			false
 		);
 	}
 }
@@ -135,5 +147,36 @@ function use_style_slider() {
 function use_script_slider() {
 	if ( ! \wp_script_is( 'lps-slick' ) ) {
 		\wp_enqueue_script( 'lps-slick', LPS_PLUGIN_URL . 'assets/slick.js', [ 'jquery' ], ver(), false );
+	}
+}
+
+/**
+ * Register back the assets with proper version, because core version is not
+ * reflecting the blocks versions anymore.
+ */
+function fix_assets_ver() {
+	$styles = [
+		'latest-post-shortcode-lps-block-style' => LPS_PLUGIN_URL . 'lps-block/build/style-view.css',
+		'lps-slick'                             => LPS_PLUGIN_URL . 'assets/slick.css',
+	];
+
+	$scripts = [
+		'latest-post-shortcode-lps-block-view-script' => LPS_PLUGIN_URL . 'lps-block/build/view.js',
+	];
+
+	foreach ( $styles as $handle => $file ) {
+		if ( \wp_style_is( $handle, 'registered' ) ) {
+			\wp_deregister_style( $handle );
+			\wp_register_style( $handle, $file, [], ver() );
+			\wp_enqueue_style( $handle );
+		}
+	}
+
+	foreach ( $scripts as $handle => $file ) {
+		if ( \wp_script_is( $handle, 'registered' ) ) {
+			\wp_deregister_script( $handle );
+			\wp_register_script( $handle, $file, [], ver(), false );
+			\wp_enqueue_script( $handle );
+		}
 	}
 }

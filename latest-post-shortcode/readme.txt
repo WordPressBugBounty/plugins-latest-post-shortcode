@@ -3,8 +3,8 @@ Contributors: Iulia Cazan
 Donate Link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JJA37EHZXWUTJ
 Tags: posts grid, posts shortcode, Gutenberg block, paginated posts, configurable shortcode with UI
 Requires at least: 5.5.0
-Tested up to: 6.6
-Stable tag: 13.0.3
+Tested up to: 6.7.1
+Stable tag: 14.0.0
 Requires PHP: 7.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -35,7 +35,7 @@ Starting with version 7.0.0, the plugin implements new hooks that allow for defi
 
 * Pagination filters: `lps/override_pagination_display/first`, `lps/override_pagination_display/first_icon`, `lps/override_pagination_display/prev`, `lps/override_pagination_display/prev_icon`, `lps/override_pagination_display/next`, `lps/override_pagination_display/next_icon`, `lps/override_pagination_display/last`, `lps/override_pagination_display/last_icon`
 
-* Additional filters: `lps/filter_sites_list`, `lps/card_output_types`, `lps/remove_donate_info`, `lps/load_assets_on_page`, `lps/exclude_ids`, `lps/shortcode_arguments`, `lps/query_arguments`
+* Additional filters: `lps/filter_sites_list`, `lps/filter_statuses`, `lps/filter_types`, `lps/filter_taxonomies`, `lps/card_output_types`, `lps/remove_donate_info`, `lps/load_assets_on_page`, `lps/exclude_ids`, `lps/shortcode_arguments`, `lps/query_arguments`
 
 * Marked as deprecated: `lps_filter_tile_patterns`, `lps_filter_display_posts_list`, `lps_filter_remove_update_info`, `lps_filter_use_custom_section_markup_end`, `lps_filter_use_custom_section_markup_start`, `lps_filter_use_custom_tile_markup`, `lps_filter_exclude_previous_content_ids`, `lps_filter_use_custom_shortcode_arguments`, `lps_filter_use_custom_query_arguments`
 
@@ -67,7 +67,21 @@ The button for the shortcode configurator can be used:
 No mentions
 
 == Changelog ==
-= 13.0.3 =
-* Fixed the card elements elevation
+
+= 14.0.0 =
+* This version contains potential breaking changes, keep a backup of your files before updating
+* Tested up to 6.7.1
+* Tested with Elementor up to 3.27.2
+* New filters for the available statuses, post types, and taxonomies
+* Translation updates
+* The block has been prepared for the next styles
+* Accessibility improvements
+* Added style menu element in the settings modal
+* The settings modal styles were updated
+* Settings modal options have been reorganized by purpose
+* Fixed the card link when there is no read more text provided
+* Fixed the space-between vertical alignment for the card elements
+* Fixed the slider next/prev vertical position when the slider uses the dots
+* Selectors improvements for the card elements
 
 See the [changelog](changelog.txt) for detailed information on changes made in the earlier versions.
