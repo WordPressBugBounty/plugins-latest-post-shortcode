@@ -2,10 +2,10 @@
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: Latest Post Shortcode 13.0.4\n"
+"Project-Id-Version: Latest Post Shortcode 14.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/lps\n"
-"POT-Creation-Date: 2025-02-01T16:55:22+00:00\n"
-"PO-Revision-Date: 2025-02-01 18:56+0200\n"
+"POT-Creation-Date: 2025-02-18T15:34:52+00:00\n"
+"PO-Revision-Date: 2025-02-21 21:32+0200\n"
 "Last-Translator: Iulia Cazan\n"
 "Language-Team: \n"
 "Language: ro\n"
@@ -20,11 +20,11 @@ msgstr ""
 #: incs/elementor/widgets/class-lps-widgets.php:29
 #: incs/elementor/widgets/class-lps-widgets.php:56
 #: incs/elementor/widgets/class-lps-widgets.php:82 incs/settings-modal.php:16
-#: incs/settings-modal.php:23 latest-post-shortcode.php:3362
-#: latest-post-shortcode.php:3394 latest-post-shortcode.php:3566
+#: incs/settings-modal.php:23 latest-post-shortcode.php:3370
+#: latest-post-shortcode.php:3402 latest-post-shortcode.php:3574
 #: lps-block/build/index.js:1
 msgid "Latest Post Shortcode"
-msgstr "Scurtcod Articole Recente"
+msgstr "Latest Post Shortcode"
 
 #. Plugin URI of the plugin
 #: latest-post-shortcode.php
@@ -39,8 +39,8 @@ msgid ""
 "or as an Elementor widget."
 msgstr ""
 "Acest modul îți permite să afișezi o selecție dinamică de conținut din "
-"articolele și paginile tale. Acesta poate fi încorporat ca un scurtcod, ca "
-"un bloc Gutenberg sau ca un widget Elementor."
+"articolele și paginile tale. Acesta poate fi înglobat ca un scurtcod, ca un "
+"bloc Gutenberg sau ca o piesă Elementor."
 
 #. Author of the plugin
 #: latest-post-shortcode.php
@@ -58,14 +58,14 @@ msgid ""
 "has been deactivated. If you need to display posts as a slider you can find "
 "the settings integrated in the Latest Post Shortcode plugin"
 msgstr ""
-"Extensia Scurt-cod Carusel Articole Recente nu mai este suportată și a fost "
+"Extensia Latest Post Shortcode Slider nu mai este suportată și a fost "
 "dezactivată. Dacă este necesară afișarea unui carusel din articole, aceste "
-"setări sunt integrate în modulul Scurt-cod Articole Recente"
+"setări sunt integrate în modulul Latest Post Shortcode"
 
 #. Translators: 1: Plugin name 2: Elementor
 #: incs/elementor/class-elementor-lps-extension.php:128
 msgid "\"%1$s\" requires \"%2$s\" to be installed and activated."
-msgstr "\"%1$s\" necesită ca \"%2$s\" să fie instalat și activat."
+msgstr "„%1$s” necesită ca „%2$s” să fie instalat și activat."
 
 #: incs/elementor/class-elementor-lps-extension.php:129
 #: incs/elementor/class-elementor-lps-extension.php:146
@@ -82,7 +82,7 @@ msgstr "Elementor"
 #: incs/elementor/class-elementor-lps-extension.php:145
 #: incs/elementor/class-elementor-lps-extension.php:166
 msgid "\"%1$s\" requires \"%2$s\" version %3$s or greater."
-msgstr "\"%1$s\" necesită ca \"%2$s\" să fie cel puțin %3$s."
+msgstr "„%1$s” are nevoie de „%2$s” versiunea %3$s sau o versiune ulterioară."
 
 #: incs/elementor/class-elementor-lps-extension.php:168
 msgid "PHP"
@@ -116,7 +116,7 @@ msgstr "Versiune"
 
 #: incs/parts/tabs0.php:21
 msgid "1 (deprecated)"
-msgstr "1 (depreciată)"
+msgstr "1 (învechită)"
 
 #: incs/parts/tabs0.php:22
 msgid "2 (recommended starting with 11.0.0)"
@@ -132,7 +132,7 @@ msgstr "grilă/listă/card"
 
 #. Translators: %s - element name.
 #: incs/parts/tabs0.php:28 incs/settings-slider.php:21
-#: incs/settings-slider.php:156
+#: incs/settings-slider.php:152
 msgid "slider"
 msgstr "carusel"
 
@@ -241,7 +241,7 @@ msgid ""
 "Filter the results so that the posts already embedded by previous shortcodes "
 "on this page will not repeat."
 msgstr ""
-"Filtrează rezultatele astfel încât articolele deja încorporate de "
+"Filtrează rezultatele astfel încât articolele deja înglobate cu "
 "scurtcodurile anterioare pe această pagină să nu se repete."
 
 #: incs/parts/tabs1-exclude.php:105
@@ -416,15 +416,15 @@ msgid "exclude children"
 msgstr "exclude copiii"
 
 #: incs/parts/tabs1-type-filter.php:207 incs/parts/tabs1-type-filter.php:240
-#: incs/parts/tabs2-pagination.php:32 incs/parts/tabs3.php:101
+#: incs/parts/tabs2-pagination.php:32 incs/parts/tabs3.php:97
 #: incs/parts/tabs5.php:130 incs/parts/tabs5.php:137 incs/parts/tabs5.php:144
 #: incs/parts/tabs5.php:162 incs/parts/tabs5.php:171 incs/parts/tabs5.php:234
 #: incs/parts/tabs5.php:260 incs/parts/tabs5.php:286
-#: incs/settings-slider.php:51 incs/settings-slider.php:62
-#: incs/settings-slider.php:117 incs/settings-slider.php:132
-#: incs/settings-slider.php:139 incs/settings-slider.php:146
-#: incs/settings-slider.php:178 incs/settings-slider.php:185
-#: incs/settings-slider.php:207 incs/settings-slider.php:215
+#: incs/settings-slider.php:47 incs/settings-slider.php:58
+#: incs/settings-slider.php:113 incs/settings-slider.php:128
+#: incs/settings-slider.php:135 incs/settings-slider.php:142
+#: incs/settings-slider.php:174 incs/settings-slider.php:181
+#: incs/settings-slider.php:203 incs/settings-slider.php:211
 msgid "no"
 msgstr "nu"
 
@@ -433,12 +433,12 @@ msgstr "nu"
 #: incs/parts/tabs5.php:131 incs/parts/tabs5.php:138 incs/parts/tabs5.php:145
 #: incs/parts/tabs5.php:163 incs/parts/tabs5.php:172 incs/parts/tabs5.php:221
 #: incs/parts/tabs5.php:228 incs/parts/tabs5.php:235 incs/parts/tabs5.php:261
-#: incs/parts/tabs5.php:287 incs/settings-slider.php:52
-#: incs/settings-slider.php:63 incs/settings-slider.php:118
-#: incs/settings-slider.php:133 incs/settings-slider.php:140
-#: incs/settings-slider.php:147 incs/settings-slider.php:179
-#: incs/settings-slider.php:186 incs/settings-slider.php:208
-#: incs/settings-slider.php:216
+#: incs/parts/tabs5.php:287 incs/settings-slider.php:48
+#: incs/settings-slider.php:59 incs/settings-slider.php:114
+#: incs/settings-slider.php:129 incs/settings-slider.php:136
+#: incs/settings-slider.php:143 incs/settings-slider.php:175
+#: incs/settings-slider.php:182 incs/settings-slider.php:204
+#: incs/settings-slider.php:212
 msgid "yes"
 msgstr "da"
 
@@ -461,7 +461,7 @@ msgid ""
 "number of posts per page is inherited from the site reading settings. The "
 "output mimics native archives (categories, tags, etc.) or search results."
 msgstr ""
-"Această opțiune înlocuiește filtrele de taxonomii și dacă folosești "
+"Această opțiune contramandează filtrele de taxonomii și dacă folosești "
 "paginarea, numărul de articole pe pagină este moștenit din setările de "
 "citire ale site-ului. Afișarea imită arhivele native (categorii, etichete "
 "etc.) sau rezultatele căutării."
@@ -546,10 +546,10 @@ msgstr "interval de %s"
 
 #: incs/parts/tabs2-pagination.php:71
 msgid "`load more` button"
-msgstr "buton `încarcă mai mult`"
+msgstr "buton „încarcă mai mult”"
 
-#: incs/parts/tabs2-pagination.php:74 incs/settings-slider.php:137
-#: incs/settings-slider.php:183 incs/settings-slider.php:212
+#: incs/parts/tabs2-pagination.php:74 incs/settings-slider.php:133
+#: incs/settings-slider.php:179 incs/settings-slider.php:208
 msgid "infinite scroll"
 msgstr "derulare infinită"
 
@@ -559,13 +559,13 @@ msgstr "încarcă mai mult la derulare"
 
 #: incs/parts/tabs2-pagination.php:79
 msgid "`Load more` Text"
-msgstr "Textul `Încarcă mai mult`"
+msgstr "Textul „Încarcă mai mult”"
 
 #: incs/parts/tabs2-pagination.php:80
 msgid "This is the text that will be displayed on the button."
 msgstr "Acesta este textul care va fi afișat pe buton."
 
-#: incs/parts/tabs2-pagination.php:80 incs/parts/tabs3.php:146
+#: incs/parts/tabs2-pagination.php:80 incs/parts/tabs3.php:142
 msgid "Do not use brackets, these are shortcode delimiters."
 msgstr "Nu utiliza paranteze pătrate, acestea sunt delimitatori de scurtcod."
 
@@ -673,7 +673,7 @@ msgstr "Lasă necompletat dacă vrei să folosești valorile implicite."
 #. Translators: %d - total value.
 #: incs/parts/tabs2-pagination.php:135
 msgid "Custom `Total items: %d` text"
-msgstr "Text personalizat `Total articole: %d`"
+msgstr "Text personalizat „Total articole: %d”"
 
 #. Translators: %d - total value.
 #: incs/parts/tabs2-pagination.php:135 latest-post-shortcode.php:1287
@@ -696,7 +696,7 @@ msgstr "Setări afișare"
 msgid "Appearance"
 msgstr "Aspect"
 
-#: incs/parts/tabs3.php:24 incs/settings-slider.php:101
+#: incs/parts/tabs3.php:24 incs/settings-slider.php:97
 msgid "Card Elements"
 msgstr "Elemente card"
 
@@ -707,32 +707,22 @@ msgstr "Etichetă HTML pentru %s"
 
 #. Translators: %s - element name.
 #: incs/parts/tabs3.php:41 incs/parts/tabs5.php:183 incs/parts/tabs5.php:200
-#: incs/settings-slider.php:103 incs/settings-slider.php:104
+#: incs/settings-slider.php:99 incs/settings-slider.php:100
 #: latest-post-shortcode.php:339 latest-post-shortcode.php:344
 #: latest-post-shortcode.php:413
 msgid "title"
 msgstr "titlu"
 
-#. Translators: %s - element name.
-#: incs/parts/tabs3.php:48 incs/settings-slider.php:28
-msgid "This is the HTML tag that wraps %s in the output."
-msgstr "Aceasta este eticheta HTML care înfășoară %s în afișare."
-
-#. Translators: %s - element name.
-#: incs/parts/tabs3.php:48
-msgid "the title"
-msgstr "titlul"
-
 #. Translators: %s - default value.
-#: incs/parts/tabs3.php:52 incs/settings-slider.php:32
+#: incs/parts/tabs3.php:48 incs/settings-slider.php:28
 msgid "The default value is %s."
 msgstr "Valoarea implicită este %s."
 
-#: incs/parts/tabs3.php:63
+#: incs/parts/tabs3.php:59
 msgid "Chars Limit"
 msgstr "Limită de caractere"
 
-#: incs/parts/tabs3.php:64
+#: incs/parts/tabs3.php:60
 msgid ""
 "Maximum number of chars from excerpt / content to be displayed (the text "
 "will be truncated, but will not break words)."
@@ -740,11 +730,11 @@ msgstr ""
 "Numărul maxim de caractere din rezumat / conținut care se afișează (textul "
 "va fi scurtat, dar nu va despărți cuvintele)."
 
-#: incs/parts/tabs3.php:67
+#: incs/parts/tabs3.php:63
 msgid "Trim type"
 msgstr "Tip scurtare"
 
-#: incs/parts/tabs3.php:68
+#: incs/parts/tabs3.php:64
 msgid ""
 "Apply the chars limit to title and excerpt/content together (the excerpt/"
 "content length will be computed by subtracting the title length from the "
@@ -754,72 +744,72 @@ msgstr ""
 "rezumatului/conținutului va fi calculată scăzând lungimea titlului din "
 "limita de caractere)."
 
-#: incs/parts/tabs3.php:71
+#: incs/parts/tabs3.php:67
 msgid "limit the title and text together"
 msgstr "limitează titlul și textul împreună"
 
-#: incs/parts/tabs3.php:74
-msgid "`More` Suffix"
-msgstr "Sufixul `Mai mult`"
+#: incs/parts/tabs3.php:70
+msgid "'More' Suffix"
+msgstr "Sufixul „Mai mult”"
 
-#: incs/parts/tabs3.php:75
+#: incs/parts/tabs3.php:71
 msgid "The extra chars to be appended at the end of the trimmed strings."
 msgstr ""
 "Caracterele suplimentare care să se adauge la sfârșitul șirului scurtat."
 
-#: incs/parts/tabs3.php:80
+#: incs/parts/tabs3.php:76
 msgid "Raw Content"
 msgstr "Conținut brut"
 
-#: incs/parts/tabs3.php:81
+#: incs/parts/tabs3.php:77
 msgid ""
 "This option is forcing the content output without stripping the markup. This "
 "might produce unexpected content layout on the front end, use wisely."
 msgstr ""
-"Această opțiune forțează afișarea conținutului fără a elimina formatările. "
+"Această opțiune forțează afișarea conținutului fără a elimina markup-ul. "
 "Acest lucru poate produce aranjarea conținutului în mod neașteptat în partea "
 "din față, a se folosi cu precauție."
 
-#: incs/parts/tabs3.php:84
+#: incs/parts/tabs3.php:80
 msgid "show raw content"
 msgstr "afișează conținut brut"
 
-#: incs/parts/tabs3.php:89
+#: incs/parts/tabs3.php:85
 msgid "Date Option"
 msgstr "Opțiune dată"
 
-#: incs/parts/tabs3.php:90
+#: incs/parts/tabs3.php:86
 msgid ""
 "This options shows the date in the card (if that is included) as a date "
 "difference (ex: 2 hours ago, 1 day ago, etc.)."
 msgstr ""
 "Această opțiune afișează data în card (dacă este inclusă) ca o diferență de "
-"dată (ex: acum 2 ore, acum 1 zi, etc.)."
+"dată (ex: acum 2 ore, acum 1 zi etc.)."
 
-#: incs/parts/tabs3.php:93
+#: incs/parts/tabs3.php:89
 msgid "as date difference"
 msgstr "ca diferența de dată"
 
-#: incs/parts/tabs3.php:99
+#: incs/parts/tabs3.php:95
 msgid "Use Image"
 msgstr "Folosește imagine"
 
-#: incs/parts/tabs3.php:107 incs/parts/tabs3.php:158
+#: incs/parts/tabs3.php:103 incs/parts/tabs3.php:154
 msgid "full (original size)"
 msgstr "completă (dimensiune originală)"
 
-#: incs/parts/tabs3.php:111
+#: incs/parts/tabs3.php:107
 msgid "Image Placeholder"
 msgstr "Substituent imagine"
 
-#: incs/parts/tabs3.php:112
+#: incs/parts/tabs3.php:108
 msgid ""
 "Define an image to be used for the posts that do not have a featured image."
 msgstr ""
 "Definește o imagine care să fie utilizată pentru articolele care nu au o "
 "imagine reprezentativă."
 
-#: incs/parts/tabs3.php:112
+#: incs/parts/tabs3.php:108
 msgid ""
 "If you specify a list of images separated by comma, a random one from the "
 "list will be picked for each article that does not have a featured image."
@@ -829,111 +819,111 @@ msgstr ""
 "reprezentativă."
 
 #. Translators: %s - string replacer.
-#: incs/parts/tabs3.php:115
+#: incs/parts/tabs3.php:111
 msgid "Insert the word %s, if you want to use the default placeholders."
 msgstr "Inserează cuvântul %s, dacă vrei să folosești substituenții impliciți."
 
-#: incs/parts/tabs3.php:123
+#: incs/parts/tabs3.php:119
 msgid "Use Post URL"
 msgstr "Folosește URL-ul articolului"
 
-#: incs/parts/tabs3.php:124
+#: incs/parts/tabs3.php:120
 msgid "See below the available card patterns and select to one you want."
 msgstr ""
 "Vezi mai jos modelele de card disponibile și selectează-l pe cel dorit."
 
-#: incs/parts/tabs3.php:126
+#: incs/parts/tabs3.php:122
 msgid "no link to the post"
 msgstr "nicio legătură la articol"
 
-#: incs/parts/tabs3.php:127 incs/parts/tabs3.php:129
+#: incs/parts/tabs3.php:123 incs/parts/tabs3.php:125
 msgid "link to the post"
 msgstr "legătură la articol"
 
-#: incs/parts/tabs3.php:130 incs/parts/tabs3.php:137
+#: incs/parts/tabs3.php:126 incs/parts/tabs3.php:133
 msgid "_blank"
 msgstr "_blank"
 
-#: incs/parts/tabs3.php:133 incs/parts/tabs3.php:136
+#: incs/parts/tabs3.php:129 incs/parts/tabs3.php:132
 msgid "link to the media file"
 msgstr "legătură la fișierul media"
 
-#: incs/parts/tabs3.php:140
+#: incs/parts/tabs3.php:136
 msgid "link to the media file with lightbox"
 msgstr "legătură la fișierul media în casetă modală"
 
-#: incs/parts/tabs3.php:145 incs/parts/tabs3.php:147
+#: incs/parts/tabs3.php:141 incs/parts/tabs3.php:143
 msgid "Custom 'Read more' message"
-msgstr "Mesaj personalizat 'Citește mai mult'"
+msgstr "Mesaj personalizat „Citește mai mult”"
 
-#: incs/parts/tabs3.php:152
+#: incs/parts/tabs3.php:148
 msgid "Lightbox Attributes"
 msgstr "Atribute casetă modală"
 
-#: incs/parts/tabs3.php:153
+#: incs/parts/tabs3.php:149
 msgid ""
 "If you want to use a lightbox for the images, you can setup below the sub-"
 "size and the selector."
 msgstr ""
-"Dacă vrei să folosești o casetă modală pentru imagini, poți configura mai "
+"Dacă vrei să folosești o casetă modală pentru imagini, poți inițializa mai "
 "jos subdimensiunea și selectorul."
 
-#: incs/parts/tabs3.php:155
+#: incs/parts/tabs3.php:151
 msgid "Lightbox Image"
 msgstr "Imagine căsuță modală"
 
-#: incs/parts/tabs3.php:168
+#: incs/parts/tabs3.php:164
 msgid "Selector attribute and value"
 msgstr "Atribut și valoare selector"
 
-#: incs/parts/tabs3.php:169
+#: incs/parts/tabs3.php:165
 msgid "Ex: class"
 msgstr "Ex: class"
 
-#: incs/parts/tabs3.php:170
+#: incs/parts/tabs3.php:166
 msgid "Ex: fancybox image"
 msgstr "Ex: fancybox image"
 
-#: incs/parts/tabs3.php:171
+#: incs/parts/tabs3.php:167
 msgid ""
 "This feature has been tested and is recommended to be used with Easy "
 "FancyBox plugin (>=1.8) or FooBox Image Lightbox plugin (>=2.6)."
 msgstr ""
-"Această caracteristică a fost testată și se recomandă să fie utilizată cu "
+"Această funcționalitate a fost testată și se recomandă să fie utilizată cu "
 "modulul Easy FancyBox (>=1.8) sau cu modulul FooBox Image Lightbox (>=2.6)."
 
-#: incs/parts/tabs3.php:177
+#: incs/parts/tabs3.php:173
 msgid "Card Pattern"
 msgstr "Model de card"
 
-#: incs/parts/tabs3.php:178
+#: incs/parts/tabs3.php:174
 msgid ""
 "The icons suggest a default order of the HTML tags, the links are marked "
 "with red."
 msgstr ""
-"Pictogramele sugerează o ordine implicită a etichetelor HTML, legăturile "
-"sunt marcate cu roșu."
+"Iconurile sugerează o ordine implicită a etichetelor HTML, legăturile sunt "
+"marcate cu roșu."
 
-#: incs/parts/tabs3.php:179
+#: incs/parts/tabs3.php:175
 msgid ""
 "You are using a custom output, the markup is handled programatically, in "
 "your custom code."
 msgstr ""
-"Dacă folosești o afișare personalizată, marcajul este gestionat programatic, "
-"în codul tău personalizat."
+"Folosești o afișare personalizată, markup-ul este gestionat programatic, în "
+"codul tău personalizat."
 
-#: incs/parts/tabs3.php:192
+#: incs/parts/tabs3.php:188
 msgid "markup"
 msgstr "marcaj"
 
-#: incs/parts/tabs3.php:204
+#: incs/parts/tabs3.php:200
 msgid "Content Fallback"
 msgstr "Alternativă conținut"
 
-#: incs/parts/tabs3.php:205
+#: incs/parts/tabs3.php:201
 msgid "Add a custom text to be displayed if no content matches the settings."
 msgstr ""
-"Adăugă un text personalizat care să fie afișat dacă niciun conținut nu "
+"Adăugă un text personalizat care să fie afișat, dacă niciun conținut nu "
 "corespunde setărilor."
 
 #: incs/parts/tabs4.php:16 incs/settings-modal.php:44
@@ -950,14 +940,14 @@ msgstr ""
 "Te rog să notezi că, dacă utilizezi un șablon personalizat de afișare "
 "definit în tema ta, atunci autorul, taxonomiile și opțiunile suplimentare "
 "pentru etichete nu vor funcționa, deoarece șablonul tău personalizat "
-"înlocuiește rezultatul și comportamentul implicit."
+"contramandează rezultatul și comportamentul implicit."
 
-#: incs/parts/tabs4.php:25 latest-post-shortcode.php:3100
+#: incs/parts/tabs4.php:25 latest-post-shortcode.php:3108
 msgid "Caption"
 msgstr "Legendă"
 
 #: incs/parts/tabs4.php:26 incs/parts/tabs4.php:135
-#: latest-post-shortcode.php:3076
+#: latest-post-shortcode.php:3084
 msgid "Mime Type"
 msgstr "Tip MIME"
 
@@ -1002,7 +992,7 @@ msgid "no link for the terms"
 msgstr "nicio legătură pentru termeni"
 
 #: incs/parts/tabs4.php:120 incs/parts/tabs5.php:297
-#: incs/settings-slider.php:113
+#: incs/settings-slider.php:109
 msgid "default"
 msgstr "implicit"
 
@@ -1059,10 +1049,11 @@ msgid ""
 "programmatic hooks to register custom card types, these will also appear "
 "below, in the dropdown."
 msgstr ""
-"Modului suportă machete cu 1 până la 6 coloane. Modelele de card disponibile "
-"sunt: ​​vertical, orizontal (imagine + informații, informații + imagine), "
-"suprapunere. Dacă utilizezi cârlige programatice pentru a înregistra tipuri "
-"personalizate de carduri, acestea vor apărea și mai jos, în meniul derulant."
+"Modului suportă aranjamente cu 1 până la 6 coloane. Modelele de card "
+"disponibile sunt: ​​vertical, orizontal (imagine + informații, informații + "
+"imagine), suprapunere. Dacă utilizezi cârlige programatice pentru a "
+"înregistra tipuri personalizate de carduri, acestea vor apărea și mai jos, "
+"în meniul derulant."
 
 #: incs/parts/tabs5.php:22
 msgid "CSS Class"
@@ -1078,7 +1069,7 @@ msgid ""
 "keep only the core CSS classes when outputting the cards, and remove the "
 "third-party ones (added through `post_class` filter)"
 msgstr ""
-"păstrează doar clasele de bază CSS când se afișează cardurile și elimină-le "
+"păstrează doar clasele de bază CSS când se afișează cardurile și înlătură-le "
 "pe cele de la terți (adăugate prin filtrul `post_class`)"
 
 #: incs/parts/tabs5.php:31
@@ -1096,12 +1087,12 @@ msgstr "Scroller"
 #: incs/parts/tabs5.php:57
 msgid "This option enables the modern snap to grid inline scroller output."
 msgstr ""
-"Această opțiune permite afișarea modernă a scroller-ului inline de tip snap "
-"to grid."
+"Această opțiune permite afișarea modernă a derulatorului în-linie de tip "
+"snap to grid."
 
 #: incs/parts/tabs5.php:60
 msgid "show as inline scroller"
-msgstr "arată ca un scroller inline"
+msgstr "arată ca un derulator în-linie"
 
 #: incs/parts/tabs5.php:65
 msgid "This option displays a small dynamic counter on top of the card."
@@ -1124,7 +1115,7 @@ msgstr ""
 
 #: incs/parts/tabs5.php:82
 msgid "hide the `load more` button"
-msgstr "ascunde butonul `încărca mai mult`"
+msgstr "ascunde butonul „încarcă mai mult”"
 
 #: incs/parts/tabs5.php:89
 msgid "Card Aspect"
@@ -1155,7 +1146,7 @@ msgid "end"
 msgstr "sfârșit"
 
 #: incs/parts/tabs5.php:106 incs/parts/tabs5.php:114 incs/parts/tabs5.php:243
-#: incs/settings-slider.php:74 incs/settings-slider.php:92
+#: incs/settings-slider.php:70 incs/settings-slider.php:88
 msgid "auto"
 msgstr "automat"
 
@@ -1172,17 +1163,17 @@ msgid "aspect ratio"
 msgstr "raport de aspect"
 
 #: incs/parts/tabs5.php:115 incs/parts/tabs5.php:245
-#: incs/settings-slider.php:76
+#: incs/settings-slider.php:72
 msgid "square"
 msgstr "pătrat"
 
 #: incs/parts/tabs5.php:116 incs/parts/tabs5.php:246
-#: incs/settings-slider.php:77
+#: incs/settings-slider.php:73
 msgid "landscape"
 msgstr "peisaj"
 
 #: incs/parts/tabs5.php:121 incs/parts/tabs5.php:251
-#: incs/settings-slider.php:82
+#: incs/settings-slider.php:78
 msgid "portrait"
 msgstr "portret"
 
@@ -1236,7 +1227,7 @@ msgstr "Mărime font"
 
 #: incs/parts/tabs5.php:177
 msgid "Ex: 1rem, 24px, 2em, clamp(1rem, 0.6rem + 1.25vw, 1.4rem), etc."
-msgstr "Ex: 1rem, 24px, 2em, clamp(1rem, 0.6rem + 1.25vw, 1.4rem), etc."
+msgstr "Ex: 1rem, 24px, 2em, clamp(1rem, 0.6rem + 1.25vw, 1.4rem) etc."
 
 #: incs/parts/tabs5.php:177
 msgid "Use px, %, vw or vh as units."
@@ -1258,13 +1249,13 @@ msgstr "Culori"
 
 #: incs/parts/tabs5.php:189
 msgid "Ex: #fff, rbga(255,255,255, 0.5), etc."
-msgstr "Ex: #fff, rbga(255,255,255, 0.5), etc."
+msgstr "Ex: #fff, rbga(255,255,255, 0.5) etc."
 
 #: incs/parts/tabs5.php:189
 msgid ""
 "If you want to apply the colors, you should remove the card generic aspect."
 msgstr ""
-"Dacă vrei să aplici culorile, ar trebui să elimini aspectul generic al "
+"Dacă vrei să aplici culorile, ar trebui să înlături aspectul generic al "
 "cardului."
 
 #: incs/parts/tabs5.php:196 incs/parts/tabs5.php:204 incs/parts/tabs5.php:212
@@ -1295,7 +1286,7 @@ msgstr "umbră text"
 msgid "Image Style"
 msgstr "Stil imagine"
 
-#: incs/parts/tabs5.php:244 incs/settings-slider.php:75
+#: incs/parts/tabs5.php:244 incs/settings-slider.php:71
 msgid "none"
 msgstr "nimic"
 
@@ -1313,7 +1304,7 @@ msgstr "opacitate"
 
 #: incs/parts/tabs5.php:284
 msgid "zoom"
-msgstr "magnificare"
+msgstr "mărește"
 
 #: incs/parts/tabs5.php:293
 msgid "Spacing Options"
@@ -1328,7 +1319,7 @@ msgstr ""
 "minime, precum și decalajul dintre elementele din interiorul cardului. "
 "Folosește px, %, vw sau vh ca unități."
 
-#: incs/parts/tabs5.php:297 incs/settings-slider.php:113
+#: incs/parts/tabs5.php:297 incs/settings-slider.php:109
 msgid "Wide"
 msgstr "Lat"
 
@@ -1345,11 +1336,11 @@ msgstr "distanțare"
 msgid "gap"
 msgstr "decalaj"
 
-#: incs/parts/tabs5.php:318 incs/settings-slider.php:161
+#: incs/parts/tabs5.php:318 incs/settings-slider.php:157
 msgid "Medium"
 msgstr "Mediu"
 
-#: incs/parts/tabs5.php:339 incs/settings-slider.php:190
+#: incs/parts/tabs5.php:339 incs/settings-slider.php:186
 msgid "Small"
 msgstr "Mic"
 
@@ -1373,7 +1364,7 @@ msgstr "Înglobeză"
 msgid "Reset cache"
 msgstr "Resetează cache-ul"
 
-#: incs/settings-modal.php:38 latest-post-shortcode.php:3309
+#: incs/settings-modal.php:38 latest-post-shortcode.php:3317
 #: lps-block/build/index.js:1
 msgid "Settings"
 msgstr "Setări"
@@ -1386,62 +1377,57 @@ msgstr "Derulează în sus"
 msgid "Slider Settings"
 msgstr "Setări carusel"
 
-#. Translators: %s - element name.
-#: incs/settings-slider.php:28
-msgid "the slider"
-msgstr "caruselul"
-
-#: incs/settings-slider.php:41
+#: incs/settings-slider.php:37
 msgid "Transition"
 msgstr "Tranziție"
 
-#: incs/settings-slider.php:43
+#: incs/settings-slider.php:39
 msgid "horizontal"
 msgstr "orizontală"
 
-#: incs/settings-slider.php:44
+#: incs/settings-slider.php:40
 msgid "vertical"
 msgstr "verticală"
 
-#: incs/settings-slider.php:45
+#: incs/settings-slider.php:41
 msgid "fade"
 msgstr "estompare"
 
-#: incs/settings-slider.php:48
+#: incs/settings-slider.php:44
 msgid "Center Mode"
 msgstr "Mod centru"
 
-#: incs/settings-slider.php:49
+#: incs/settings-slider.php:45
 msgid "The center mode works for odd number of cards (3, 5, etc.)."
 msgstr ""
-"Modul centru funcționează pentru un număr impar de carduri (3, 5, etc.)."
+"Modul centru funcționează pentru un număr impar de carduri (3, 5 etc.)."
 
-#: incs/settings-slider.php:55
+#: incs/settings-slider.php:51
 msgid "Center Mode Padding"
 msgstr "Distanțare mod centru"
 
-#: incs/settings-slider.php:56 incs/settings-slider.php:97
-#: incs/settings-slider.php:110
+#: incs/settings-slider.php:52 incs/settings-slider.php:93
+#: incs/settings-slider.php:106
 msgid "This is the value in pixels."
 msgstr "Acesta este valoarea in pixeli."
 
-#: incs/settings-slider.php:60
+#: incs/settings-slider.php:56
 msgid "Auto Play"
 msgstr "Redare automată"
 
-#: incs/settings-slider.php:66
+#: incs/settings-slider.php:62
 msgid "Speed"
 msgstr "Viteză"
 
-#: incs/settings-slider.php:67
+#: incs/settings-slider.php:63
 msgid "Autoplay speed in milliseconds."
 msgstr "Viteza de redare automată în milisecunde."
 
-#: incs/settings-slider.php:71
+#: incs/settings-slider.php:67
 msgid "Card Aspect Ratio"
 msgstr "Raport de aspect pentru card"
 
-#: incs/settings-slider.php:72
+#: incs/settings-slider.php:68
 msgid ""
 "For a more consistent appearance, it is recommended to use the aspect ratio "
 "options instead of the height options."
@@ -1449,88 +1435,88 @@ msgstr ""
 "Pentru un aspect mai uniform se recomandă utilizarea opțiunilor de raport de "
 "aspect, în locul opțiunilor de înălțime."
 
-#: incs/settings-slider.php:88
+#: incs/settings-slider.php:84
 msgid "Height"
 msgstr "Înălțime"
 
-#: incs/settings-slider.php:89
+#: incs/settings-slider.php:85
 msgid "This depends on the selected sub-size."
 msgstr "Aceasta depinde de subdimensiunea selectată."
 
-#: incs/settings-slider.php:93
+#: incs/settings-slider.php:89
 msgid "fixed"
 msgstr "fix"
 
-#: incs/settings-slider.php:96
+#: incs/settings-slider.php:92
 msgid "Maximum Height"
 msgstr "Înălțime maximă"
 
-#: incs/settings-slider.php:103 incs/settings-slider.php:105
+#: incs/settings-slider.php:99 incs/settings-slider.php:101
 #: latest-post-shortcode.php:416
 msgid "trimmed excerpt"
 msgstr "rezumat scurtat"
 
-#: incs/settings-slider.php:106
+#: incs/settings-slider.php:102
 msgid "no overlay, just the image"
 msgstr "fără suprapunere, doar imaginea"
 
-#: incs/settings-slider.php:109
+#: incs/settings-slider.php:105
 msgid "Gap"
 msgstr "Decalaj"
 
-#: incs/settings-slider.php:110
+#: incs/settings-slider.php:106
 msgid "The gap between the visible cards in the row."
 msgstr "Decalajul între cardurile vizibile pe rând."
 
-#: incs/settings-slider.php:115
+#: incs/settings-slider.php:111
 msgid "next/previous"
 msgstr "următor/precedent"
 
-#: incs/settings-slider.php:122 incs/settings-slider.php:168
-#: incs/settings-slider.php:196
+#: incs/settings-slider.php:118 incs/settings-slider.php:164
+#: incs/settings-slider.php:192
 msgid "cards to show"
 msgstr "carduri la afișare"
 
-#: incs/settings-slider.php:126 incs/settings-slider.php:172
-#: incs/settings-slider.php:200
+#: incs/settings-slider.php:122 incs/settings-slider.php:168
+#: incs/settings-slider.php:196
 msgid "cards to scroll"
 msgstr "carduri la derulare"
 
-#: incs/settings-slider.php:130 incs/settings-slider.php:176
-#: incs/settings-slider.php:204
+#: incs/settings-slider.php:126 incs/settings-slider.php:172
+#: incs/settings-slider.php:200
 msgid "show dots"
 msgstr "arata puncte"
 
-#: incs/settings-slider.php:144
+#: incs/settings-slider.php:140
 msgid "Responsive"
-msgstr "Receptiv"
+msgstr "Responsiv"
 
-#: incs/settings-slider.php:150
+#: incs/settings-slider.php:146
 msgid ""
 "This represents the width that the responsive object responds to. The "
 "minimum (default) option applies the smaller value between the window and "
 "the slider."
 msgstr ""
-"Aceasta reprezintă lățimea la care răspunde obiectul receptiv. Opțiunea "
-"minimă (implicit) aplică valoarea mai mică dintre fereastră și glisor."
+"Aceasta reprezintă lățimea la care răspunde obiectul responsiv. Opțiunea "
+"minimă (implicit) aplică valoarea mai mică dintre fereastră și carusel."
 
-#: incs/settings-slider.php:152
+#: incs/settings-slider.php:148
 msgid "responds to"
 msgstr "răspunde la"
 
-#: incs/settings-slider.php:155
+#: incs/settings-slider.php:151
 msgid "window"
 msgstr "fereastră"
 
-#: incs/settings-slider.php:157
+#: incs/settings-slider.php:153
 msgid "minimum"
 msgstr "minim"
 
-#: incs/settings-slider.php:161 incs/settings-slider.php:190
+#: incs/settings-slider.php:157 incs/settings-slider.php:186
 msgid "resolution"
 msgstr "rezoluție"
 
-#: incs/settings-slider.php:163 incs/settings-slider.php:192
+#: incs/settings-slider.php:159 incs/settings-slider.php:188
 msgid "breakpoint"
 msgstr "punct de întrerupere"
 
@@ -1608,12 +1594,12 @@ msgid "after text"
 msgstr "după text"
 
 #: latest-post-shortcode.php:397
-msgid "before `read more`"
-msgstr "înainte de `citește mai mult`"
+msgid "before 'read more'"
+msgstr "înainte de „citește mai mult”"
 
 #: latest-post-shortcode.php:398
-msgid "after `read more`"
-msgstr "după `citește mai mult`"
+msgid "after 'read more'"
+msgstr "după „citește mai mult”"
 
 #: latest-post-shortcode.php:399
 msgid "before date"
@@ -1692,20 +1678,20 @@ msgctxt "%s = human-readable time difference"
 msgid "%s ago"
 msgstr "acum %s"
 
-#: latest-post-shortcode.php:3008
+#: latest-post-shortcode.php:3016
 msgid "By"
 msgstr "De către"
 
-#: latest-post-shortcode.php:3310
+#: latest-post-shortcode.php:3318
 msgid "Plugin URL"
 msgstr "URL modul"
 
-#: latest-post-shortcode.php:3364
+#: latest-post-shortcode.php:3372
 msgid "A huge thanks in advance!"
 msgstr "Multe mulțumiri în avans!"
 
 #. Translators: %s - donate URL.
-#: latest-post-shortcode.php:3369
+#: latest-post-shortcode.php:3377
 msgid ""
 "If you find the plugin useful and would like to support my work, please "
 "consider making a <a href=\"%s\" target=\"_blank\">donation</a>."
@@ -1714,17 +1700,17 @@ msgstr ""
 "bucura dacă ai face o <a href=\"%s\" target=\"_blank\">donație</a>."
 
 #. Translators: %s - rating.
-#: latest-post-shortcode.php:3373
+#: latest-post-shortcode.php:3381
 msgid "It would make me very happy if you would leave a %s rating."
 msgstr "M-aș bucura foarte mult dacă lași o evaluare de %s."
 
 #. Translators: %1$s - plugin name.
-#: latest-post-shortcode.php:3398
+#: latest-post-shortcode.php:3406
 msgid "%1$s plugin was activated!"
 msgstr "Modulul %1$s a fost activat!"
 
 #. Translators: %1$s - plugins URL, %2$s - heart, %3$s - extensions URL, %4$s - star, %5$s - pro.
-#: latest-post-shortcode.php:3402
+#: latest-post-shortcode.php:3410
 msgid ""
 "%5$sCheck out my other <a href=\"%1$s\" target=\"_blank\" "
 "rel=\"noreferrer\">%2$s free plugins</a> on WordPress.org and the <a "
@@ -1736,38 +1722,38 @@ msgstr ""
 "href=\"%3$s\" target=\"_blank\" rel=\"noreferrer\">%4$s extensiile premium</"
 "a> disponibile!"
 
-#: latest-post-shortcode.php:3422
+#: latest-post-shortcode.php:3430
 msgid "Dismiss this notice."
 msgstr "Respinge această notificare."
 
-#: latest-post-shortcode.php:3583
+#: latest-post-shortcode.php:3591
 msgid "let WordPress decide when to load the LPS assets"
 msgstr "lasă WordPress să decidă când să încarce resursele LPS"
 
-#: latest-post-shortcode.php:3584
+#: latest-post-shortcode.php:3592
 msgid "(recommended)"
 msgstr "(recomandat)"
 
-#: latest-post-shortcode.php:3588
+#: latest-post-shortcode.php:3596
 msgid "always load the LPS assets"
 msgstr "încarcă mereu resursele LPS"
 
-#: latest-post-shortcode.php:3589
+#: latest-post-shortcode.php:3597
 msgid "(sometimes needed for compatibility with other editors)"
 msgstr "(necesar câteodată pentru compatibilitatea cu alte editoare)"
 
-#: latest-post-shortcode.php:3593
+#: latest-post-shortcode.php:3601
 msgid "load the legacy styles"
 msgstr "încarcă stilurile depreciate"
 
-#: latest-post-shortcode.php:3594
+#: latest-post-shortcode.php:3602
 msgid "(version 1 is deprecated, used it only for backward compatibility)"
 msgstr ""
-"(versiunea 1 este depreciată, folosită doar pentru compatibilitate cu "
+"(versiunea 1 este învechită, folosită doar pentru compatibilitate cu "
 "versiunea anterioară)"
 
 #. Translators: %s - plugin icon.
-#: latest-post-shortcode.php:3602
+#: latest-post-shortcode.php:3610
 msgid ""
 "hide the %s LPS button in the Classic editor for the specified roles (if "
 "multiple, separate by comma)"
@@ -1818,7 +1804,7 @@ msgstr "Carduri orizontale"
 #: lps-block/build/block.json
 msgctxt "block title"
 msgid "Latest Post Shortcode"
-msgstr "Scurtcod Articole Recente"
+msgstr "Latest Post Shortcode"
 
 #: lps-block/build/block.json
 msgctxt "block keyword"
@@ -1859,6 +1845,15 @@ msgstr "articol"
 msgctxt "block keyword"
 msgid "shortcode"
 msgstr "scurtcod"
+
+#~ msgid "This is the HTML tag that wraps %s in the output."
+#~ msgstr "Aceasta este eticheta HTML care înfășoară %s în afișare."
+
+#~ msgid "the title"
+#~ msgstr "titlul"
+
+#~ msgid "the slider"
+#~ msgstr "caruselul"
 
 #~ msgid "Slide Elements"
 #~ msgstr "Elemente diapozitiv"

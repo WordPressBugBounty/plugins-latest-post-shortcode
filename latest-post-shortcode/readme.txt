@@ -3,8 +3,8 @@ Contributors: Iulia Cazan
 Donate Link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JJA37EHZXWUTJ
 Tags: posts grid, posts shortcode, Gutenberg block, paginated posts, configurable shortcode with UI
 Requires at least: 5.5.0
-Tested up to: 6.7.1
-Stable tag: 14.0.0
+Tested up to: 6.7.2
+Stable tag: 14.0.1
 Requires PHP: 7.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -68,20 +68,11 @@ No mentions
 
 == Changelog ==
 
-= 14.0.0 =
-* This version contains potential breaking changes, keep a backup of your files before updating
-* Tested up to 6.7.1
-* Tested with Elementor up to 3.27.2
-* New filters for the available statuses, post types, and taxonomies
+= 14.0.1 =
+* Tested up to 6.7.2
+* Tested with Elementor 3.27.6
+* Fixed the links for deprecated patterns (legacy version that is no longer mainained)
+* Override programmatically the shortodes arguments - correlate the link/element pair
 * Translation updates
-* The block has been prepared for the next styles
-* Accessibility improvements
-* Added style menu element in the settings modal
-* The settings modal styles were updated
-* Settings modal options have been reorganized by purpose
-* Fixed the card link when there is no read more text provided
-* Fixed the space-between vertical alignment for the card elements
-* Fixed the slider next/prev vertical position when the slider uses the dots
-* Selectors improvements for the card elements
 
-See the [changelog](changelog.txt) for detailed information on changes made in the earlier versions.
+See the [changelog](https://plugins.svn.wordpress.org/latest-post-shortcode/trunk/changelog.txt) for detailed information on changes made in the earlier versions.

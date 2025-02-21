@@ -24,10 +24,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</h4>
 	<p class="lps-update-blink" data-cond="#lps_centermode" data-comp="true">
 		<?php
-		// Translators: %s - element name.
-		echo esc_html( sprintf( __( 'This is the HTML tag that wraps %s in the output.', 'lps' ), __( 'the slider', 'lps' ) ) );
-		?>
-		<?php
 		// Translators: %s - default value.
 		echo esc_html( sprintf( __( 'The default value is %s.', 'lps' ), 'div' ) );
 		?>

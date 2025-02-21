@@ -1,5 +1,21 @@
 == Changelog ==
 
+= 14.0.0 =
+* This version contains potential breaking changes, keep a backup of your files before updating
+* Tested up to 6.7.1
+* Tested with Elementor up to 3.27.2
+* New filters for the available statuses, post types, and taxonomies
+* Translation updates
+* The block has been prepared for the next styles
+* Accessibility improvements
+* Added style menu element in the settings modal
+* The settings modal styles were updated
+* Settings modal options have been reorganized by purpose
+* Fixed the card link when there is no read more text provided
+* Fixed the space-between vertical alignment for the card elements
+* Fixed the slider next/prev vertical position when the slider uses the dots
+* Selectors improvements for the card elements
+
 = 13.0.3 =
 * Fixed the card elements elevation
 

@@ -44,10 +44,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 			</h4>
 			<p class="lps-update-blink">
 				<?php
-				// Translators: %s - element name.
-				echo esc_html( sprintf( __( 'This is the HTML tag that wraps %s in the output.', 'lps' ), __( 'the title', 'lps' ) ) );
-				?>
-				<?php
 				// Translators: %s - default value.
 				echo esc_html( sprintf( __( 'The default value is %s.', 'lps' ), 'h3' ) );
 				?>
@@ -71,7 +67,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<?php esc_html_e( 'limit the title and text together', 'lps' ); ?>
 			</label>
 
-			<h4><label for="lps_more"><?php esc_html_e( '`More` Suffix', 'lps' ); ?></label></h4>
+			<h4><label for="lps_more"><?php esc_html_e( '\'More\' Suffix', 'lps' ); ?></label></h4>
 			<p class="lps-update-blink"><?php esc_html_e( 'The extra chars to be appended at the end of the trimmed strings.', 'lps' ); ?></p>
 			<input type="text" name="lps_more" id="lps_more" onchange="lpsRefresh()" onkeyup="lpsRefresh()" placeholder="Ex: …" value="">
 		</div>
