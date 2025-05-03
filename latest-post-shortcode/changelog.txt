@@ -1,5 +1,12 @@
 == Changelog ==
 
+= 14.0.1 =
+* Tested up to 6.7.2
+* Tested with Elementor 3.27.6
+* Fixed the links for deprecated patterns (legacy version that is no longer mainained)
+* Override programmatically the shortodes arguments - correlate the link/element pair
+* Translation updates
+
 = 14.0.0 =
 * This version contains potential breaking changes, keep a backup of your files before updating
 * Tested up to 6.7.1

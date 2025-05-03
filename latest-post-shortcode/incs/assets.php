@@ -66,6 +66,20 @@ function use_style_main() {
 	if ( ! \wp_style_is( 'latest-post-shortcode-lps-block-style' ) ) {
 		\wp_enqueue_style( 'latest-post-shortcode-lps-block-style', LPS_PLUGIN_URL . 'lps-block/build/style-view.css', [], ver(), false );
 	}
+
+	if ( class_exists( 'WP_Theme_JSON_Resolver' ) ) {
+		$theme_json = \WP_Theme_JSON_Resolver::get_theme_data();
+		$styles     = $theme_json->get_raw_data();
+		$lateral    = $styles['styles']['spacing']['padding']['left'] ?? '0px';
+		$settings   = $theme_json->get_settings();
+		$content    = $settings['layout']['contentSize'] ?? '40rem';
+		$wide       = $settings['layout']['wideSize'] ?? '64rem';
+
+		\wp_add_inline_style(
+			'latest-post-shortcode-lps-block-style',
+			':root { --lps--admin-wide: ' . $wide . '; --lps--admin-content: ' . $content . '; --lps--root-padding: ' . $lateral . '; }'
+		);
+	}
 }
 
 /**

@@ -30,16 +30,22 @@ $count_items = 0;
 foreach ( $posts as $item ) :
 	setup_postdata( $item );
 	if ( ! empty( $imgsize ) ) :
+		$image_src = '';
 		if ( 'none' === $imgsize ) {
-			$image[0] = LPS_PLUGIN_URL . 'assets/images/samples/0.svg';
+			$image_src = LPS_PLUGIN_URL . 'assets/images/samples/0.svg';
 		} else {
 			$th_id = 'attachment' === $item->post_type ? (int) $item->ID : get_post_thumbnail_id( (int) $item->ID );
 			$image = wp_get_attachment_image_src( $th_id, $imgsize );
+			if ( ! empty( $image[0] ) ) {
+				$image_src = $image[0];
+			}
 		}
-		if ( empty( $image[0] ) && ! empty( $args['image_placeholder'] ) ) {
-			$image[0] = esc_attr( self::select_random_placeholder( $args['image_placeholder'] ) );
+		if ( empty( $image_src ) && ! empty( $args['image_placeholder'] ) ) {
+			$placeholder = self::select_random_placeholder( $args['image_placeholder'] );
+			$image_src   = ! empty( $placeholder ) ? esc_attr( $placeholder ) : '';
 		}
-		if ( ! empty( $image[0] ) ) :
+
+		if ( ! empty( $image_src ) ) :
 			$a_start   = '<div class="slide-inner"';
 			$a_end     = '</div>';
 			$title_str = self::cleanup_title( $item->post_title );
@@ -52,7 +58,7 @@ foreach ( $posts as $item ) :
 			?>
 			<div data-lps-id="<?php echo (int) $item->ID; ?>">
 				<?php echo $a_start; // phpcs:ignore ?>
-				<div class="img-wrap"><img src="<?php echo esc_url( $image[0] ); ?>" alt="<?php echo esc_attr( $title_str ); ?>"></div>
+				<div class="img-wrap"><img src="<?php echo esc_url( $image_src ); ?>" alt="<?php echo esc_attr( $title_str ); ?>"></div>
 
 				<?php if ( ! empty( $otype ) ) : ?>
 					<div class="overlay">

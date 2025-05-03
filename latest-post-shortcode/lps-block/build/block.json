@@ -28,10 +28,13 @@
       "link": true,
       "text": true
     },
+    "background": {
+      "backgroundImage": true,
+      "backgroundSize": true
+    },
     "spacing": {
       "margin": [
-        "bottom",
-        "top"
+        "vertical"
       ],
       "padding": true
     }

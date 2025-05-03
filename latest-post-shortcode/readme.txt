@@ -3,8 +3,8 @@ Contributors: Iulia Cazan
 Donate Link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JJA37EHZXWUTJ
 Tags: posts grid, posts shortcode, Gutenberg block, paginated posts, configurable shortcode with UI
 Requires at least: 5.5.0
-Tested up to: 6.7.2
-Stable tag: 14.0.1
+Tested up to: 6.8.1
+Stable tag: 14.0.2
 Requires PHP: 7.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -68,11 +68,13 @@ No mentions
 
 == Changelog ==
 
-= 14.0.1 =
-* Tested up to 6.7.2
-* Tested with Elementor 3.27.6
-* Fixed the links for deprecated patterns (legacy version that is no longer mainained)
-* Override programmatically the shortodes arguments - correlate the link/element pair
-* Translation updates
+= 14.0.2 =
+* Tested up to 6.8.1
+* PHP 8+ compatibility
+* Fixed _load_textdomain_just_in_time was called incorrectly warnings
+* Tested with Elementor 3.28.4
+* Tested with Gutenberg 20.7.0
+* Updated block editor styles to match the latest layout-constrained rules
+* Enabled the background support for the block
 
 See the [changelog](https://plugins.svn.wordpress.org/latest-post-shortcode/trunk/changelog.txt) for detailed information on changes made in the earlier versions.

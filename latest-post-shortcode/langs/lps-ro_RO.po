@@ -4,24 +4,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Latest Post Shortcode 14.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/lps\n"
-"POT-Creation-Date: 2025-02-18T15:34:52+00:00\n"
-"PO-Revision-Date: 2025-02-21 21:32+0200\n"
+"POT-Creation-Date: 2025-05-03T10:57:57+00:00\n"
+"PO-Revision-Date: 2025-05-03 13:59+0300\n"
 "Last-Translator: Iulia Cazan\n"
 "Language-Team: \n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 "X-Domain: lps\n"
 
 #. Plugin Name of the plugin
-#: latest-post-shortcode.php incs/assets.php:100
+#: latest-post-shortcode.php incs/assets.php:114
 #: incs/elementor/widgets/class-lps-widgets.php:29
 #: incs/elementor/widgets/class-lps-widgets.php:56
 #: incs/elementor/widgets/class-lps-widgets.php:82 incs/settings-modal.php:16
-#: incs/settings-modal.php:23 latest-post-shortcode.php:3370
-#: latest-post-shortcode.php:3402 latest-post-shortcode.php:3574
+#: incs/settings-modal.php:23 latest-post-shortcode.php:3406
+#: latest-post-shortcode.php:3438 latest-post-shortcode.php:3610
 #: lps-block/build/index.js:1
 msgid "Latest Post Shortcode"
 msgstr "Latest Post Shortcode"
@@ -573,7 +573,7 @@ msgstr "Nu utiliza paranteze pătrate, acestea sunt delimitatori de scurtcod."
 msgid "Custom button text"
 msgstr "Text personalizat buton"
 
-#: incs/parts/tabs2-pagination.php:81 latest-post-shortcode.php:982
+#: incs/parts/tabs2-pagination.php:81 latest-post-shortcode.php:985
 msgid "Load more"
 msgstr "Încarcă mai mult"
 
@@ -676,7 +676,7 @@ msgid "Custom `Total items: %d` text"
 msgstr "Text personalizat „Total articole: %d”"
 
 #. Translators: %d - total value.
-#: incs/parts/tabs2-pagination.php:135 latest-post-shortcode.php:1287
+#: incs/parts/tabs2-pagination.php:135 latest-post-shortcode.php:1321
 msgid "Total items: %d"
 msgstr "Total articole: %d"
 
@@ -942,12 +942,12 @@ msgstr ""
 "pentru etichete nu vor funcționa, deoarece șablonul tău personalizat "
 "contramandează rezultatul și comportamentul implicit."
 
-#: incs/parts/tabs4.php:25 latest-post-shortcode.php:3108
+#: incs/parts/tabs4.php:25 latest-post-shortcode.php:3144
 msgid "Caption"
 msgstr "Legendă"
 
 #: incs/parts/tabs4.php:26 incs/parts/tabs4.php:135
-#: latest-post-shortcode.php:3084
+#: latest-post-shortcode.php:3120
 msgid "Mime Type"
 msgstr "Tip MIME"
 
@@ -1364,7 +1364,7 @@ msgstr "Înglobeză"
 msgid "Reset cache"
 msgstr "Resetează cache-ul"
 
-#: incs/settings-modal.php:38 latest-post-shortcode.php:3317
+#: incs/settings-modal.php:38 latest-post-shortcode.php:3353
 #: lps-block/build/index.js:1
 msgid "Settings"
 msgstr "Setări"
@@ -1638,60 +1638,60 @@ msgid "overlay"
 msgstr "suprapunere"
 
 #. Translators: %1$d - current page, %2$d - total pages.
-#: latest-post-shortcode.php:1007
+#: latest-post-shortcode.php:1010
 msgid "Page %1$d of %2$d"
 msgstr "Pagina %1$d din %2$d"
 
-#: latest-post-shortcode.php:1011 latest-post-shortcode.php:1024
-#: latest-post-shortcode.php:1026 latest-post-shortcode.php:1043
-#: latest-post-shortcode.php:1050 latest-post-shortcode.php:1052
+#: latest-post-shortcode.php:1014 latest-post-shortcode.php:1027
+#: latest-post-shortcode.php:1029 latest-post-shortcode.php:1046
+#: latest-post-shortcode.php:1053 latest-post-shortcode.php:1055
 msgid "First page"
 msgstr "Prima pagină"
 
-#: latest-post-shortcode.php:1014 latest-post-shortcode.php:1033
-#: latest-post-shortcode.php:1038
+#: latest-post-shortcode.php:1017 latest-post-shortcode.php:1036
+#: latest-post-shortcode.php:1041
 msgid "Previous page"
 msgstr "Pagina precedentă"
 
-#: latest-post-shortcode.php:1017 latest-post-shortcode.php:1066
-#: latest-post-shortcode.php:1068
+#: latest-post-shortcode.php:1020 latest-post-shortcode.php:1069
+#: latest-post-shortcode.php:1071
 msgid "Next page"
 msgstr "Pagina următoare"
 
-#: latest-post-shortcode.php:1020 latest-post-shortcode.php:1073
-#: latest-post-shortcode.php:1075 latest-post-shortcode.php:1081
+#: latest-post-shortcode.php:1023 latest-post-shortcode.php:1076
+#: latest-post-shortcode.php:1078 latest-post-shortcode.php:1084
 msgid "Last page"
 msgstr "Ultima pagină"
 
-#: latest-post-shortcode.php:1035
+#: latest-post-shortcode.php:1038
 msgid "Previous"
 msgstr "Precedenta"
 
 #. Translators: %1$d - page number.
-#: latest-post-shortcode.php:1056 latest-post-shortcode.php:1059
+#: latest-post-shortcode.php:1059 latest-post-shortcode.php:1062
 msgid "Page %1$d"
 msgstr "Pagina %1$d"
 
 #. Translators: %s the date difference.
-#: latest-post-shortcode.php:1119
+#: latest-post-shortcode.php:1122
 msgctxt "%s = human-readable time difference"
 msgid "%s ago"
 msgstr "acum %s"
 
-#: latest-post-shortcode.php:3016
+#: latest-post-shortcode.php:3052
 msgid "By"
 msgstr "De către"
 
-#: latest-post-shortcode.php:3318
+#: latest-post-shortcode.php:3354
 msgid "Plugin URL"
 msgstr "URL modul"
 
-#: latest-post-shortcode.php:3372
+#: latest-post-shortcode.php:3408
 msgid "A huge thanks in advance!"
 msgstr "Multe mulțumiri în avans!"
 
 #. Translators: %s - donate URL.
-#: latest-post-shortcode.php:3377
+#: latest-post-shortcode.php:3413
 msgid ""
 "If you find the plugin useful and would like to support my work, please "
 "consider making a <a href=\"%s\" target=\"_blank\">donation</a>."
@@ -1700,17 +1700,17 @@ msgstr ""
 "bucura dacă ai face o <a href=\"%s\" target=\"_blank\">donație</a>."
 
 #. Translators: %s - rating.
-#: latest-post-shortcode.php:3381
+#: latest-post-shortcode.php:3417
 msgid "It would make me very happy if you would leave a %s rating."
 msgstr "M-aș bucura foarte mult dacă lași o evaluare de %s."
 
 #. Translators: %1$s - plugin name.
-#: latest-post-shortcode.php:3406
+#: latest-post-shortcode.php:3442
 msgid "%1$s plugin was activated!"
 msgstr "Modulul %1$s a fost activat!"
 
 #. Translators: %1$s - plugins URL, %2$s - heart, %3$s - extensions URL, %4$s - star, %5$s - pro.
-#: latest-post-shortcode.php:3410
+#: latest-post-shortcode.php:3446
 msgid ""
 "%5$sCheck out my other <a href=\"%1$s\" target=\"_blank\" "
 "rel=\"noreferrer\">%2$s free plugins</a> on WordPress.org and the <a "
@@ -1722,38 +1722,38 @@ msgstr ""
 "href=\"%3$s\" target=\"_blank\" rel=\"noreferrer\">%4$s extensiile premium</"
 "a> disponibile!"
 
-#: latest-post-shortcode.php:3430
+#: latest-post-shortcode.php:3466
 msgid "Dismiss this notice."
 msgstr "Respinge această notificare."
 
-#: latest-post-shortcode.php:3591
+#: latest-post-shortcode.php:3627
 msgid "let WordPress decide when to load the LPS assets"
 msgstr "lasă WordPress să decidă când să încarce resursele LPS"
 
-#: latest-post-shortcode.php:3592
+#: latest-post-shortcode.php:3628
 msgid "(recommended)"
 msgstr "(recomandat)"
 
-#: latest-post-shortcode.php:3596
+#: latest-post-shortcode.php:3632
 msgid "always load the LPS assets"
 msgstr "încarcă mereu resursele LPS"
 
-#: latest-post-shortcode.php:3597
+#: latest-post-shortcode.php:3633
 msgid "(sometimes needed for compatibility with other editors)"
 msgstr "(necesar câteodată pentru compatibilitatea cu alte editoare)"
 
-#: latest-post-shortcode.php:3601
+#: latest-post-shortcode.php:3637
 msgid "load the legacy styles"
 msgstr "încarcă stilurile depreciate"
 
-#: latest-post-shortcode.php:3602
-msgid "(version 1 is deprecated, used it only for backward compatibility)"
+#: latest-post-shortcode.php:3638
+msgid "(version 1 is deprecated, use it only for backward compatibility)"
 msgstr ""
 "(versiunea 1 este învechită, folosită doar pentru compatibilitate cu "
 "versiunea anterioară)"
 
 #. Translators: %s - plugin icon.
-#: latest-post-shortcode.php:3610
+#: latest-post-shortcode.php:3646
 msgid ""
 "hide the %s LPS button in the Classic editor for the specified roles (if "
 "multiple, separate by comma)"

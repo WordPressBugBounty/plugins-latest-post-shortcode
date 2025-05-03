@@ -5,7 +5,7 @@
  * Description: This plugin allows you to display a dynamic content selection from your posts and pages. This can be embedded as a shortcode, as a Gutenberg block, or as an Elementor widget.
  * Text Domain: lps
  * Domain Path: /langs
- * Version:     14.0.1
+ * Version:     14.0.2
  * Author:      Iulia Cazan
  * Author URI:  https://profiles.wordpress.org/iulia-cazan
  * Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JJA37EHZXWUTJ
@@ -30,7 +30,7 @@
  */
 
 // Define the plugin version.
-define( 'LPS_PLUGIN_VERSION', 14.01 );
+define( 'LPS_PLUGIN_VERSION', 14.02 );
 define( 'LPS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LPS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'LPS_PLUGIN_SLUG', 'lps' );
@@ -198,8 +198,8 @@ class Latest_Post_Shortcode {
 
 		self::$args = new stdClass();
 
-		add_action( 'init', [ $class, 'tile_pattern_setup' ], 1 ); // Hook into tile patterns.
-		add_action( 'plugins_loaded', [ $class, 'load_textdomain' ] ); // Text domain load.
+		add_action( 'init', [ $class, 'tile_pattern_setup' ], 2 ); // Hook into tile patterns.
+		add_action( 'init', [ $class, 'load_textdomain' ], 1 ); // Text domain load.
 		add_shortcode( 'latest-selected-content', [ $class, 'latest_selected_content' ] );
 
 		if ( is_admin() ) {
@@ -717,7 +717,10 @@ class Latest_Post_Shortcode {
 		self::$wrapper_was_set = true;
 		$display_posts_list    = self::$tile_content;
 
-		include_once __DIR__ . '/incs/settings-modal.php';
+		$the_screen = \get_current_screen();
+		if ( ! ( empty( $the_screen->base ) || ! in_array( $the_screen->base, [ 'post', 'attachment', '' ], true ) ) ) {
+			include_once __DIR__ . '/incs/settings-modal.php';
+		}
 	}
 
 	/**
@@ -1205,7 +1208,7 @@ class Latest_Post_Shortcode {
 	 * Refine arguments, to fix the manual added elements, when the UI is not
 	 * used as expected or the legacy hardcoded shortcodes were not updated.
 	 *
-	 * @param array $args Shortcode arguments
+	 * @param array $args Shortcode arguments.
 	 */
 	public static function refine_arguments( $args ): array {
 		if ( '_custom_' === substr( $args['display'], 0, 8 ) ) {
@@ -1221,10 +1224,10 @@ class Latest_Post_Shortcode {
 			$no_links = array_intersect( self::$tile_pattern_ver2, self::$tile_pattern_nolinks );
 		}
 
-		if ( ! empty( $args['url'] ) && ! in_array( $elems, $links ) ) {
+		if ( ! empty( $args['url'] ) && ! in_array( $elems, $links ) ) { // phpcs:ignore
 			// Requires links, but the elements are wrong.
 			$args['elements'] = reset( $links );
-		} elseif ( empty( $args['url'] ) && ! in_array( $elems, $no_links ) ) {
+		} elseif ( empty( $args['url'] ) && ! in_array( $elems, $no_links ) ) { // phpcs:ignore
 			// Requires no links, but the elements are wrong.
 			$args['elements'] = reset( $no_links );
 		}
@@ -3632,7 +3635,7 @@ class Latest_Post_Shortcode {
 			<li>
 				<input type="checkbox" name="lps-legacy" id="lps-legacy" value="yes" <?php checked( 'yes' === $legacy, true ); ?> />
 				<label for="lps-legacy"><?php \esc_html_e( 'load the legacy styles', 'lps' ); ?></label>
-				<em><?php \esc_html_e( '(version 1 is deprecated, used it only for backward compatibility)', 'lps' ); ?></em>
+				<em><?php \esc_html_e( '(version 1 is deprecated, use it only for backward compatibility)', 'lps' ); ?></em>
 			</li>
 			<li>
 				<input type="text" name="lps-classic-exclude-role" id="lps-exclude-role" value="<?php echo esc_html( $exclude ); ?>" />
