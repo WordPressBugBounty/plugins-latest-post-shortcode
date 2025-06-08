@@ -16,6 +16,7 @@ require_once __DIR__ . '/block-preview.php';
 \add_action( 'after_setup_theme', __NAMESPACE__ . '\\theme_support' );
 \add_action( 'init', __NAMESPACE__ . '\\block_init' );
 \add_action( 'enqueue_block_assets', __NAMESPACE__ . '\\enqueue_assets' );
+\add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\\enqueue_assets' );
 \add_action( 'init', __NAMESPACE__ . '\\enqueue_assets' );
 \add_action( 'init', __NAMESPACE__ . '\\script_translations', 30 );
 \add_filter( 'load_script_translation_file', __NAMESPACE__ . '\\fix_translation_location', 10, 3 );

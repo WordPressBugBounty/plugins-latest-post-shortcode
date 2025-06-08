@@ -5,7 +5,7 @@
  * Description: This plugin allows you to display a dynamic content selection from your posts and pages. This can be embedded as a shortcode, as a Gutenberg block, or as an Elementor widget.
  * Text Domain: lps
  * Domain Path: /langs
- * Version:     14.0.2
+ * Version:     14.0.3
  * Author:      Iulia Cazan
  * Author URI:  https://profiles.wordpress.org/iulia-cazan
  * Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JJA37EHZXWUTJ
@@ -30,7 +30,7 @@
  */
 
 // Define the plugin version.
-define( 'LPS_PLUGIN_VERSION', 14.02 );
+define( 'LPS_PLUGIN_VERSION', 14.03 );
 define( 'LPS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LPS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'LPS_PLUGIN_SLUG', 'lps' );
@@ -718,6 +718,11 @@ class Latest_Post_Shortcode {
 		$display_posts_list    = self::$tile_content;
 
 		$the_screen = \get_current_screen();
+		if ( ! empty( $the_screen->is_block_editor ) ) {
+			include_once __DIR__ . '/incs/settings-modal.php';
+			return;
+		}
+
 		if ( ! ( empty( $the_screen->base ) || ! in_array( $the_screen->base, [ 'post', 'attachment', '' ], true ) ) ) {
 			include_once __DIR__ . '/incs/settings-modal.php';
 		}

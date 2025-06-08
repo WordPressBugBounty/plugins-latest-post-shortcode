@@ -1,5 +1,14 @@
 == Changelog ==
 
+= 14.0.2 =
+* Tested up to 6.8.1
+* PHP 8+ compatibility
+* Fixed _load_textdomain_just_in_time was called incorrectly warnings
+* Tested with Elementor 3.28.4
+* Tested with Gutenberg 20.7.0
+* Updated block editor styles to match the latest layout-constrained rules
+* Enabled the background support for the block
+
 = 14.0.1 =
 * Tested up to 6.7.2
 * Tested with Elementor 3.27.6
