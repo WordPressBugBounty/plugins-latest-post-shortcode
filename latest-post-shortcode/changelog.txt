@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 14.0.3 =
+* Tested up to 6.8.1
+* Fixed the assets load in the site editor
+
 = 14.0.2 =
 * Tested up to 6.8.1
 * PHP 8+ compatibility

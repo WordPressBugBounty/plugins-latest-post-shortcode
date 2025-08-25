@@ -5,7 +5,7 @@
  * Description: This plugin allows you to display a dynamic content selection from your posts and pages. This can be embedded as a shortcode, as a Gutenberg block, or as an Elementor widget.
  * Text Domain: lps
  * Domain Path: /langs
- * Version:     14.0.3
+ * Version:     14.1.0
  * Author:      Iulia Cazan
  * Author URI:  https://profiles.wordpress.org/iulia-cazan
  * Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JJA37EHZXWUTJ
@@ -30,7 +30,7 @@
  */
 
 // Define the plugin version.
-define( 'LPS_PLUGIN_VERSION', 14.03 );
+define( 'LPS_PLUGIN_VERSION', 14.10 );
 define( 'LPS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LPS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'LPS_PLUGIN_SLUG', 'lps' );
@@ -1271,9 +1271,6 @@ class Latest_Post_Shortcode {
 			'more'                    => '',
 			'display'                 => '',
 			'url'                     => '',
-			'lightbox_size'           => '',
-			'lightbox_attr'           => '',
-			'lightbox_val'            => '',
 			'linktext'                => '',
 			'elements'                => '',
 			'default_height'          => '',
@@ -1468,11 +1465,8 @@ class Latest_Post_Shortcode {
 		self::$args->trimmore = ! empty( $args['more'] ) ? $args['more'] : '';
 		self::$args->linkurl  = ! empty( $args['url'] ) && ( 'yes' === $args['url'] || 'yes_blank' === $args['url'] ) ? true : false;
 
-		self::$args->linkmedia     = ! empty( $args['url'] ) && ( 'yes_media' === $args['url'] || 'yes_media_blank' === $args['url'] || 'yes_media_lightbox' === $args['url'] ) ? true : false;
-		self::$args->lightbox_size = self::$args->linkmedia && ! empty( $args['lightbox_size'] ) ? $args['lightbox_size'] : '';
-		self::$args->lightbox_attr = self::$args->linkmedia && ! empty( $args['lightbox_attr'] ) ? $args['lightbox_attr'] : '';
-		self::$args->lightbox_val  = self::$args->linkmedia && ! empty( $args['lightbox_val'] ) ? $args['lightbox_val'] : '';
-		self::$args->linkblank     = ! empty( $args['url'] ) && ( 'yes_blank' === $args['url'] || 'yes_media_blank' === $args['url'] || 'yes_media_lightbox' === $args['url'] ) ? true : false;
+		self::$args->linkmedia = ! empty( $args['url'] ) && ( 'yes_media' === $args['url'] || 'yes_media_blank' === $args['url'] ) ? true : false;
+		self::$args->linkblank = ! empty( $args['url'] ) && ( 'yes_blank' === $args['url'] || 'yes_media_blank' === $args['url'] ) ? true : false;
 
 		self::$args->linktext = '';
 		if ( self::$args->linkurl || self::$args->linkmedia ) {
@@ -1510,18 +1504,6 @@ class Latest_Post_Shortcode {
 		if ( in_array( (int) self::$args->card_type, [ 3, 11, 14, 19 ], true ) ) {
 			self::$args->card_link_class = 'class="article__link main-link read-more-wrap"';
 			self::$args->card_more_class = '';
-		}
-		if ( ! empty( self::$args->lightbox_attr ) ) {
-			if ( 'class' === self::$args->lightbox_attr ) {
-				if ( self::$args->card_link_class ) {
-					self::$args->card_link_class = str_replace( 'class="', 'class="' . esc_attr( self::$args->lightbox_val ) . ' ', self::$args->card_link_class );
-				}
-				if ( self::$args->card_more_class ) {
-					self::$args->card_more_class = str_replace( 'class="', 'class="' . esc_attr( self::$args->lightbox_val ) . ' ', self::$args->card_more_class );
-				}
-			} else {
-				self::$args->card_attributes = ' ' . esc_attr( self::$args->lightbox_attr ) . '="' . esc_attr( self::$args->lightbox_val ) . '"';
-			}
 		}
 
 		self::$args->extra      = ! empty( $args['show_extra'] ) ? trim( $args['show_extra'] ) : '';
@@ -1973,10 +1955,6 @@ class Latest_Post_Shortcode {
 				}
 			}
 
-			if ( ! empty( self::$args->lightbox_attr ) ) {
-				$pagination_class .= ' lps-lightbox';
-			}
-
 			$counter     = new WP_Query( $qargs );
 			$found_posts = ( ! empty( $counter->found_posts ) ) ? (int) $counter->found_posts : 0;
 			if ( ! empty( $args['limit'] ) && $found_posts > $args['limit'] ) {
@@ -2146,7 +2124,7 @@ class Latest_Post_Shortcode {
 					if ( self::$args->card_link ) {
 						$href = '';
 						if ( self::$args->linkmedia ) {
-							$mediaurl = wp_get_attachment_image_src( $postobj->ID, self::$args->lightbox_size );
+							$mediaurl = wp_get_attachment_image_src( $postobj->ID, 'full' );
 							$mediaurl = ! empty( $mediaurl[0] ) ? $mediaurl[0] : '';
 							$href     = $mediaurl;
 						} else {
@@ -2799,17 +2777,11 @@ class Latest_Post_Shortcode {
 
 			self::$args->card_link = true;
 
-			if ( self::$args->linkmedia ) {
-				$attrs[] = 'href=""';
-			} elseif ( ! empty( self::$args->linkurl ) ) {
+			if ( ! empty( self::$args->linkmedia ) || ! empty( self::$args->linkurl ) ) {
 				$attrs[] = 'href=""';
 			}
 
 			$attrs[] = 'title=""';
-
-			if ( ! empty( self::$args->lightbox_attr ) ) {
-				$attrs[] = 'rel="' . self::$args->shortcode_id . '"';
-			}
 
 			if ( ! empty( self::$args->linkblank ) ) {
 				$attrs[] = 'target="_blank"';
@@ -2823,12 +2795,13 @@ class Latest_Post_Shortcode {
 		}
 
 		if ( in_array( self::$args->elements, [ 25, 26 ], true ) ) {
-			if ( empty( self::$args->linkurl ) ) {
+			if ( empty( self::$args->a_start ) || ! self::$args->card_link ) {
+				// Remove link if attributes are not valid.
 				$pattern = str_replace( '[a][title][/a]', '[title]', $pattern );
-			} elseif ( empty( self::$args->a_start ) ) {
-				// Link on title.
-				$pattern = str_replace( '[a][title][/a]', '[title]', $pattern );
-			} elseif ( ! substr_count( $pattern, '[a][title][/a]' ) ) {
+				$pattern = str_replace( '[a-r][read_more_text][/a]', '[read_more_text]', $pattern );
+			}
+
+			if ( self::$args->card_link && ! substr_count( $pattern, '[a][title][/a]' ) ) {
 				$pattern = str_replace( '[title]', '[a][title][/a]', $pattern );
 			}
 		} elseif ( in_array( self::$args->elements, [ 5, 22, 26 ], true ) ) {
@@ -3201,7 +3174,7 @@ class Latest_Post_Shortcode {
 				}
 			}
 
-			if ( ! empty( self::$args->linkurl ) && substr_count( $tile, '[a][title][/a]' ) ) {
+			if ( ! empty( self::$args->card_link ) && substr_count( $tile, '[a][title][/a]' ) ) {
 				// Replace title with link.
 				$tile = str_replace( '[a][title][/a]', self::$args->sep_d . '<' . self::$args->titletag . ' class="article__title item-title-tag">' . $start . $title . $end . '</' . self::$args->titletag . '>', $tile );
 			} else {
@@ -3210,6 +3183,7 @@ class Latest_Post_Shortcode {
 
 			// Replace just title.
 			$tile = str_replace( '[title]', self::$args->sep_d . '<' . self::$args->titletag . ' class="article__title item-title-tag">' . $title . '</' . self::$args->titletag . '>', $tile );
+
 		}
 		$tile = str_replace( '[a][title][/a]', '', $tile );
 		$tile = str_replace( '[title]', '', $tile );

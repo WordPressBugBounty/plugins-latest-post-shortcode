@@ -132,40 +132,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php esc_html_e( 'link to the media file', 'lps' ); ?>
 					(<?php esc_html_e( '_blank', 'lps' ); ?>)
 				</option>
-				<option value="yes_media_lightbox" disabled>
-					<?php esc_html_e( 'link to the media file with lightbox', 'lps' ); ?>
-				</option>
 			</select>
 
 			<div id="lps_url_options_read" class="wrap">
 				<h4><label for="lps_linktext"><?php esc_html_e( 'Custom \'Read more\' message', 'lps' ); ?></label></h4>
 				<p class="lps-update-blink"><?php esc_html_e( 'Do not use brackets, these are shortcode delimiters.', 'lps' ); ?></p>
 				<input type="text" name="lps_linktext" id="lps_linktext" onchange="lpsRefresh()" onkeyup="lpsRefresh()" placeholder="<?php esc_html_e( 'Custom \'Read more\' message', 'lps' ); ?>" size="32">
-			</div>
-
-			<div class="wrap block-use available-for-tiles">
-				<div id="lps_lightbox_options" class="wrap lps-experimental lps-update-blink">
-					<h4><?php esc_html_e( 'Lightbox Attributes', 'lps' ); ?></h4>
-					<p><?php esc_html_e( 'If you want to use a lightbox for the images, you can setup below the sub-size and the selector.', 'lps' ); ?></p>
-
-					<h4><?php esc_html_e( 'Lightbox Image', 'lps' ); ?></h4>
-					<select name="lps_lightbox_size" id="lps_lightbox_size" data-default="full" onchange="lpsRefresh()">
-						<option value="full">
-							<?php esc_html_e( 'full (original size)', 'lps' ); ?>
-						</option>
-						<?php $app_sizes = get_intermediate_image_sizes(); ?>
-						<?php if ( ! empty( $app_sizes ) ) : ?>
-							<?php foreach ( $app_sizes as $as ) : ?>
-								<option value="<?php echo esc_attr( $as ); ?>"><?php echo esc_html( $as ); ?></option>
-							<?php endforeach; ?>
-						<?php endif; ?>
-					</select>
-
-					<h4><?php esc_html_e( 'Selector attribute and value', 'lps' ); ?></h4>
-					<input type="text" name="lps_lightbox_attr" id="lps_lightbox_attr" onchange="lpsRefresh()" onkeyup="lpsRefresh()" placeholder="<?php esc_html_e( 'Ex: class', 'lps' ); ?>" size="32">
-					<input type="text" name="lps_lightbox_val" id="lps_lightbox_val" onchange="lpsRefresh()" onkeyup="lpsRefresh()" placeholder="<?php esc_html_e( 'Ex: fancybox image', 'lps' ); ?>" size="32">
-					<p><?php esc_html_e( 'This feature has been tested and is recommended to be used with Easy FancyBox plugin (>=1.8) or FooBox Image Lightbox plugin (>=2.6).', 'lps' ); ?></p>
-				</div>
 			</div>
 		</div>
 

@@ -4,7 +4,7 @@ Donate Link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: posts grid, posts shortcode, Gutenberg block, paginated posts, configurable shortcode with UI
 Requires at least: 5.5.0
 Tested up to: 6.8
-Stable tag: 14.0.3
+Stable tag: 14.1.0
 Requires PHP: 7.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -68,8 +68,10 @@ No mentions
 
 == Changelog ==
 
-= 14.0.3 =
-* Tested up to 6.8.1
-* Fixed the assets load in the site editor
+= 14.1.0 =
+* Tested up to 6.8.2
+* Removed the experimental lightbox feature
+* Editor style updates (fixed the `.wp-core-ui .attachment` selector leakage)
+* Block packages updates
 
 See the [changelog](https://plugins.svn.wordpress.org/latest-post-shortcode/trunk/changelog.txt) for detailed information on changes made in the earlier versions.
