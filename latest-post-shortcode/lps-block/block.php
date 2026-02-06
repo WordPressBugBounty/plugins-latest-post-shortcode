@@ -74,7 +74,7 @@ function render( array $attributes, string $content, \WP_Block $block ): string 
 		);
 
 	} else {
-		$layout = ! empty( $attributes['constrained'] ) ? ' is-layout-constrained' : '';
+		$layout = ! empty( $attributes['align'] ) && 'full' === $attributes['align'] && ! empty( $attributes['constrained'] ) ? ' is-layout-constrained' : '';
 
 		$wrapper_attributes = \get_block_wrapper_attributes( [
 			'class' => 'latest-selected-content lps-block' . $layout,

@@ -5,7 +5,7 @@
  * Description: This plugin allows you to display a dynamic content selection from your posts and pages. This can be embedded as a shortcode, as a Gutenberg block, or as an Elementor widget.
  * Text Domain: lps
  * Domain Path: /langs
- * Version:     14.1.0
+ * Version:     14.2.1
  * Author:      Iulia Cazan
  * Author URI:  https://profiles.wordpress.org/iulia-cazan
  * Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JJA37EHZXWUTJ
@@ -13,7 +13,7 @@
  *
  * @package LPS
  *
- * Copyright (C) 2015-2025 Iulia Cazan
+ * Copyright (C) 2015-2026 Iulia Cazan
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as
@@ -30,7 +30,7 @@
  */
 
 // Define the plugin version.
-define( 'LPS_PLUGIN_VERSION', 14.10 );
+define( 'LPS_PLUGIN_VERSION', 14.21 );
 define( 'LPS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LPS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'LPS_PLUGIN_SLUG', 'lps' );
@@ -199,7 +199,6 @@ class Latest_Post_Shortcode {
 		self::$args = new stdClass();
 
 		add_action( 'init', [ $class, 'tile_pattern_setup' ], 2 ); // Hook into tile patterns.
-		add_action( 'init', [ $class, 'load_textdomain' ], 1 ); // Text domain load.
 		add_shortcode( 'latest-selected-content', [ $class, 'latest_selected_content' ] );
 
 		if ( is_admin() ) {
@@ -442,13 +441,6 @@ class Latest_Post_Shortcode {
 		$display_posts_list = apply_filters_deprecated( 'lps_filter_display_posts_list', [ $display_posts_list ], '11.4.0', 'lps/override_card_display' );
 
 		self::$tile_content = $display_posts_list;
-	}
-
-	/**
-	 * Load text domain for internalization.
-	 */
-	public static function load_textdomain() {
-		load_plugin_textdomain( 'lps', false, basename( __DIR__ ) . '/langs' );
 	}
 
 	/**
@@ -706,6 +698,49 @@ class Latest_Post_Shortcode {
 	}
 
 	/**
+	 * The list of usable taxonomies.
+	 */
+	public static function usable_taxonomies(): array {
+		static $usable_taxonomies;
+
+		if ( ! isset( $usable_taxonomies ) ) {
+			$exclude = [ 'nav_menu', 'link_category', 'post_format', 'amp_template', 'elementor_library_type', 'elementor_library_category', 'elementor_library', 'wp_theme' ];
+
+			// Get taxonomies.
+			$taxonomies        = get_taxonomies( [ 'public' => true ], 'objects' );
+			$usable_taxonomies = [];
+			$taxonomy_terms    = [];
+			foreach ( $taxonomies as $taxonomy ) {
+				if ( 0 === \strpos( $taxonomy->name, 'wp_' ) || in_array( $taxonomy->name, $exclude, true ) ) {
+					continue;
+				}
+
+				$rest_base = ! empty( $taxonomy->rest_base ) ? $taxonomy->rest_base : $taxonomy->name;
+				$prefix    = str_replace( 'post_tag', 'tag', $taxonomy->name );
+
+				$usable_taxonomies[ $taxonomy->name ] = [
+					'slug'   => $taxonomy->name,
+					'name'   => $taxonomy->label,
+					'rest'   => $rest_base,
+					'prefix' => $prefix . '-',
+					'types'  => $taxonomy->object_type,
+				];
+			}
+
+			/**
+			 * Allow external scripts to alter the usable taxonomies.
+			 *
+			 * @since 14.0.0
+			 *
+			 * @param array $taxonomies Usable taxonomies.
+			 */
+			$usable_taxonomies = apply_filters( 'lps/usable_taxonomies', $usable_taxonomies );
+		}
+
+		return $usable_taxonomies;
+	}
+
+	/**
 	 * Add some settings modal to the bottom of the page.
 	 */
 	public static function add_settings_modal() {
@@ -869,8 +904,18 @@ class Latest_Post_Shortcode {
 	public static function lps_reset_cache() {
 		$get = filter_input( INPUT_GET, 'no-cache', FILTER_DEFAULT );
 		if ( ! empty( $get ) ) {
-			self::execute_lps_cache_reset();
-			echo 'OK';
+			$verify = filter_input( INPUT_GET, 'verify', FILTER_DEFAULT );
+			if ( \wp_verify_nonce( $verify, 'lps-modal-actions' ) && \is_user_logged_in() ) {
+				$user  = \wp_get_current_user();
+				$match = array_intersect( [ 'administrator', 'editor', 'author', 'contributor' ], $user->roles ?? [] );
+				if ( ! empty( $match ) ) {
+					self::execute_lps_cache_reset();
+					echo 'OK';
+					die();
+				}
+			}
+
+			echo 'Not OK';
 			die();
 		}
 	}
@@ -1322,6 +1367,7 @@ class Latest_Post_Shortcode {
 			// Translators: %d - total value.
 			'total_text'              => __( 'Total items: %d', 'lps' ),
 			'loadtext'                => '',
+			'alltext'                 => __( 'All', 'lps' ),
 			'pagespos'                => '',
 			'fallback'                => '',
 			'image'                   => '',
@@ -1514,7 +1560,12 @@ class Latest_Post_Shortcode {
 		self::$args->display      = ! empty( $args['display'] ) ? trim( $args['display'] ) : 'title';
 		self::$args->display_list = explode( ',', self::$args->display );
 		self::$args->is_scroller  = self::in_extra( 'scroller' );
+		self::$args->is_masonry   = self::in_extra( 'masonry' );
+		self::$args->is_filters   = self::in_extra( 'filters' );
 		if ( ! empty( self::$args->is_scroller ) ) {
+			self::$args->is_masonry = false;
+			self::$args->is_filters = false;
+
 			self::$args->css  = str_replace( ' hover-highlight', '', self::$args->css );
 			self::$args->css .= ' scroller';
 			if ( self::in_extra( 'with_counter' ) ) {
@@ -1522,6 +1573,27 @@ class Latest_Post_Shortcode {
 
 				if ( self::in_extra( 'reverse_counter' ) ) {
 					self::$args->css .= ' reverse-counter';
+				}
+			}
+		}
+
+		if ( ! empty( self::$args->is_masonry ) ) {
+			self::$args->css .= ' lps-masonry';
+		}
+
+		if ( ! empty( self::$args->is_filters ) ) {
+			self::$args->css           .= ' lps-filters';
+			self::$args->filters_from   = 'tags';
+			self::$args->filters_prefix = 'tag-';
+			self::$args->filters_all    = trim( esc_html( $args['alltext'] ?? __( 'All', 'lps' ) ) );
+
+			$all_terms_list = self::usable_taxonomies();
+			foreach ( self::$args->extra_list as $filters_from ) {
+				if ( substr_count( $filters_from, 'filters_from_' ) ) {
+					$from = str_replace( 'filters_from_', '', $filters_from );
+
+					self::$args->filters_from   = $all_terms_list[ $from ]['rest'] ?? self::$args->filters_from;
+					self::$args->filters_prefix = $all_terms_list[ $from ]['prefix'] ?? self::$args->filters_prefix;
 				}
 			}
 		}
@@ -2073,10 +2145,17 @@ class Latest_Post_Shortcode {
 				}
 			}
 
+			$data_wrapper = '';
+			if ( ! empty( self::$args->is_filters ) && ! empty( self::$args->filters_from ) && ! empty( self::$args->filters_prefix ) ) {
+				$data_wrapper .= ' data-filters-from="' . esc_attr( self::$args->filters_from ) . '"';
+				$data_wrapper .= ' data-filters-all="' . esc_attr( self::$args->filters_all ) . '"';
+				$data_wrapper .= ' data-filters-prefix="' . esc_attr( self::$args->filters_prefix ) . '"';
+			}
+
 			// Section start.
 			$section_start = apply_filters(
 				'lps/override_section_start',
-				'<section class="latest-post-selection' . esc_attr( self::$args->section_class ) . '" id="' . esc_attr( self::$args->shortcode_id ) . '" style="' . self::$args->css_vars . '" role="list">',
+				'<section class="latest-post-selection' . esc_attr( self::$args->section_class ) . '" id="' . esc_attr( self::$args->shortcode_id ) . '" style="' . self::$args->css_vars . '" role="list"' . $data_wrapper . '>',
 				self::$args->shortcode_id,
 				self::$args->section_class,
 				self::$args->card_filter,
@@ -3491,6 +3570,12 @@ class Latest_Post_Shortcode {
 			// Dequeue the pagination.
 			\wp_dequeue_script( 'latest-post-shortcode-lps-block-view-script' );
 
+			// Dequeue the masonry.
+			\wp_dequeue_script( 'latest-post-shortcode-lps-block-masonry-script' );
+
+			// Dequeue the filters.
+			\wp_dequeue_script( 'latest-post-shortcode-lps-block-filters-script' );
+
 			// Fail-fast.
 			return;
 		}
@@ -3499,26 +3584,74 @@ class Latest_Post_Shortcode {
 			// Dequeue the pagination.
 			\wp_dequeue_script( 'latest-post-shortcode-lps-block-view-script' );
 		}
+
+		if ( ! self::page_has_masonry() ) {
+			// Dequeue the masonry.
+			\wp_dequeue_script( 'latest-post-shortcode-lps-block-masonry-script' );
+		}
+
+		if ( ! self::page_has_lps_filters() ) {
+			// Dequeue the filters.
+			\wp_dequeue_script( 'latest-post-shortcode-lps-block-filters-script' );
+		}
 	}
 
 	/**
 	 * The page content has LPS.
 	 */
 	public static function page_has_lps(): bool {
-		return self::lps_current_page_contains( 'latest-selected-content' )
+		static $page_has_lps;
+
+		if ( ! isset( $page_has_lps ) ) {
+			$page_has_lps = self::lps_current_page_contains( 'latest-selected-content' )
 			|| self::lps_current_page_contains( 'latest-post-selection' )
 			|| self::lps_current_page_contains( 'wp:latest-post-shortcode' )
 			|| self::lps_current_page_contains( '<!-- lps/' );
+		}
+
+		return $page_has_lps;
 	}
 
 	/**
 	 * The page content has LPS pagination.
 	 */
 	public static function page_has_pagination(): bool {
-		return self::lps_current_page_contains( ' pagespos=' )
+		static $page_has_pagination;
+
+		if ( ! isset( $page_has_pagination ) ) {
+			$page_has_pagination = self::lps_current_page_contains( ' pagespos=' )
 			|| self::lps_current_page_contains( ' showpages=' )
 			|| self::lps_current_page_contains( 'lps-pagination-wrap' )
 			|| self::lps_current_page_contains( '<!-- lps/pagination' );
+		}
+
+		return $page_has_pagination;
+	}
+
+	/**
+	 * The page content has LPS masonry.
+	 */
+	public static function page_has_masonry(): bool {
+		static $page_has_masonry;
+
+		if ( ! isset( $page_has_masonry ) ) {
+			$page_has_masonry = self::lps_current_page_contains( 'masonry' );
+		}
+
+		return $page_has_masonry;
+	}
+
+	/**
+	 * The page content has LPS filters.
+	 */
+	public static function page_has_lps_filters(): bool {
+		static $page_has_lps_filters;
+
+		if ( ! isset( $page_has_lps_filters ) ) {
+			$page_has_lps_filters = self::lps_current_page_contains( 'filters' );
+		}
+
+		return $page_has_lps_filters;
 	}
 
 	/**

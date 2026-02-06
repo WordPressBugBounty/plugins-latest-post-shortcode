@@ -21,7 +21,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Returns the assets version to be used.
  */
 function ver() {
-	return 'lpsv' . LPS_PLUGIN_VERSION . \get_option( 'lps_asset_version', LPS_PLUGIN_VERSION );
+	static $lps_assets_ver;
+
+	if ( ! isset( $lps_assets_ver ) ) {
+		$glob = glob( LPS_PLUGIN_DIR . 'lps-block/build/*.php' );
+		if ( $glob ) {
+			$list = '';
+			foreach ( $glob as $file ) {
+				$assets = require $file;
+				$list  .= $assets['version'] ?? time();
+			}
+
+			$lps_assets_ver = md5( $list );
+		}
+
+		if ( empty( $lps_assets_ver ) ) {
+			$lps_assets_ver = \get_option( 'lps_asset_version', LPS_PLUGIN_VERSION );
+		}
+	}
+
+	return 'lpsv' . LPS_PLUGIN_VERSION . $lps_assets_ver;
 }
 
 /**
@@ -42,6 +61,28 @@ function use_script_inline() {
 		\wp_enqueue_script(
 			'latest-post-shortcode-lps-block-view-script',
 			LPS_PLUGIN_URL . 'lps-block/build/view.js',
+			[],
+			ver(),
+			false
+		);
+	}
+
+	$path = LPS_PLUGIN_DIR . 'lps-block/build/masonry.asset.php';
+	if ( file_exists( $path ) && ! \wp_script_is( 'latest-post-shortcode-lps-block-masonry-script' ) ) {
+		\wp_enqueue_script(
+			'latest-post-shortcode-lps-block-masonry-script',
+			LPS_PLUGIN_URL . 'lps-block/build/masonry.js',
+			[],
+			ver(),
+			false
+		);
+	}
+
+	$path = LPS_PLUGIN_DIR . 'lps-block/build/filters.asset.php';
+	if ( file_exists( $path ) && ! \wp_script_is( 'latest-post-shortcode-lps-block-filters-script' ) ) {
+		\wp_enqueue_script(
+			'latest-post-shortcode-lps-block-filters-script',
+			LPS_PLUGIN_URL . 'lps-block/build/filters.js',
 			[],
 			ver(),
 			false
@@ -105,17 +146,14 @@ function use_script_modal() {
 			ver(),
 			false
 		);
-		\wp_localize_script(
-			'lps-admin-shortcode-button',
-			'lpsGenVars',
-			[
-				'ajaxUrl'     => \admin_url( 'admin-ajax.php' ),
-				'icon'        => LPS_PLUGIN_URL . 'assets/images/icon-purple.svg',
-				'title'       => \esc_html__( 'Latest Post Shortcode', 'lps' ),
-				'outputTypes' => implode( ' ', array_filter( array_keys( $lps::get_card_output_types() ) ) ),
-				'allowIcon'   => $lps::allow_icon_for_roles(),
-			]
-		);
+		\wp_localize_script( 'lps-admin-shortcode-button', 'lpsGenVars', [
+			'ajaxUrl'     => \admin_url( 'admin-ajax.php' ),
+			'verify'      => \wp_create_nonce( 'lps-modal-actions' ),
+			'icon'        => LPS_PLUGIN_URL . 'assets/images/icon-purple.svg',
+			'title'       => \esc_html__( 'Latest Post Shortcode', 'lps' ),
+			'outputTypes' => implode( ' ', array_filter( array_keys( $lps::get_card_output_types() ) ) ),
+			'allowIcon'   => $lps::allow_icon_for_roles(),
+		] );
 		\wp_enqueue_script( 'lps-admin-shortcode-button' );
 	}
 }
@@ -175,7 +213,9 @@ function fix_assets_ver() {
 	];
 
 	$scripts = [
-		'latest-post-shortcode-lps-block-view-script' => LPS_PLUGIN_URL . 'lps-block/build/view.js',
+		'latest-post-shortcode-lps-block-view-script'    => LPS_PLUGIN_URL . 'lps-block/build/view.js',
+		'latest-post-shortcode-lps-block-masonry-script' => LPS_PLUGIN_URL . 'lps-block/build/masonry.js',
+		'latest-post-shortcode-lps-block-filters-script' => LPS_PLUGIN_URL . 'lps-block/build/filters.js',
 	];
 
 	foreach ( $styles as $handle => $file ) {

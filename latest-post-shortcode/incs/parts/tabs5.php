@@ -82,6 +82,78 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php esc_html_e( 'hide the `load more` button', 'lps' ); ?>
 				</label>
 			</div>
+
+			<div class="wrap lps-update-blink" data-cond="#lps_show_extra_scroller" data-comp-not-checked="true">
+				<hr class="spacer">
+				<h4><?php esc_html_e( 'Masonry', 'lps' ); ?></h4>
+				<p><?php esc_html_e( 'This option enables the masonry output.', 'lps' ); ?></p>
+				<div class="lps-experimental">
+					<label>
+						<input type="checkbox" name="lps_show_extra[]" id="lps_show_extra_masonry" value="masonry" onclick="lpsRefresh()" class="lps_show_extra">
+						<?php esc_html_e( 'show as masonry', 'lps' ); ?>
+					</label>
+
+					<div class="wrap lps-update-blink" data-cond="#lps_show_extra_masonry" data-comp-checked="true">
+						<div class="row">
+							<label for="lps_style_has_masonry_animate"><?php esc_html_e( 'with slide in effect', 'lps' ); ?></label>
+							<select id="lps_style_has_masonry_animate" data-default="has-masonry-animation" onchange="lpsStyleHelper()">
+								<option value=""><?php esc_html_e( 'no', 'lps' ); ?></option>
+								<option value="has-masonry-animation"><?php esc_html_e( 'yes', 'lps' ); ?></option>
+							</select>
+						</div>
+						<div class="row" data-cond="#lps_style_helper_overlay" data-comp="as-overlay">
+							<label for="lps_style_has_masonry_media"><?php esc_html_e( 'adjust card height', 'lps' ); ?></label>
+							<select id="lps_style_has_masonry_media" data-default="" onchange="lpsStyleHelper()">
+								<option value="">
+									<?php
+									// Translators: %s - element name.
+									echo esc_html( sprintf( __( 'by %s', 'lps' ), __( 'info', 'lps' ) ) );
+									?>
+								</option>
+								<option value="has-masonry-media">
+									<?php
+									// Translators: %s - element name.
+									echo esc_html( sprintf( __( 'by %s', 'lps' ), __( 'image', 'lps' ) ) );
+									?>
+								</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="wrap lps-update-blink" data-cond="#lps_show_extra_scroller" data-comp-not-checked="true">
+				<hr class="spacer">
+				<h4><?php esc_html_e( 'Inline filters', 'lps' ); ?></h4>
+				<p><?php esc_html_e( 'This option enables the inline filters output.', 'lps' ); ?></p>
+				<div class="lps-experimental">
+					<label>
+						<input type="checkbox" name="lps_show_extra[]" id="lps_show_extra_filters" value="filters" onclick="lpsRefresh()" class="lps_show_extra">
+						<?php esc_html_e( 'show the terms inline filters', 'lps' ); ?>
+					</label>
+
+					<div class="wrap lps-update-blink" data-cond="#lps_show_extra_filters" data-comp-checked="true">
+						<div class="row">
+							<label for="lps_show_extra_filters_from"><?php esc_html_e( 'filters from', 'lps' ); ?></label>
+							<select name="lps_show_extra[]" id="lps_show_extra_filters_from" data-default="post_tags" onchange="lpsRefresh()" class="lps_show_extra">
+								<?php
+								$inline_tax = self::usable_taxonomies();
+								foreach ( $inline_tax as $slug => $tax_item ) {
+									?>
+									<option value="filters_from_<?php echo esc_attr( $slug ); ?>" data-cond="#lps_post_type" data-comp-in="<?php echo esc_attr( implode( ',', $tax_item['types'] ) ); ?>"><?php echo esc_attr( $tax_item['name'] ); ?></option>
+									<?php
+								}
+								?>
+							</select>
+						</div>
+						<div class="row">
+							<label for="lps_alltext"><?php esc_html_e( '`All` text', 'lps' ); ?></label>
+							<input type="text" name="lps_alltext" id="lps_alltext" onchange="lpsRefresh()" onkeyup="lpsRefresh()" placeholder="<?php esc_html_e( 'Custom all text', 'lps' ); ?>" value="<?php esc_html_e( 'All', 'lps' ); ?>" size="32">
+						</div>
+						<p><?php esc_html_e( 'This is the text that will be displayed on the "all" button that resets the filtering.', 'lps' ); ?> <?php esc_html_e( 'Do not use brackets, these are shortcode delimiters.', 'lps' ); ?></p>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -207,7 +279,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="row">
 			<label for="lps_color_bg"><?php esc_html_e( 'background', 'lps' ); ?></label>
 			<div class="lps-color-wrapper">
-				<input type="text" name="lps_color_bg" id="lps_color_bg" onchange="lpsRefresh()" onkeyup="lpsRefresh()" placeholder="<?php esc_attr_e( 'inherit', 'lps' ); ?>" size="32">
+				<input type="text" name="lps_color_bg" id="lps_color_bg" onchange="lpsRefresh(); lpsStyleHelper()" onkeyup="lpsRefresh()" placeholder="<?php esc_attr_e( 'inherit', 'lps' ); ?>" size="32">
 				<input type="color" id="lps_color_bg_field" onchange="lpsRefreshColor(this)">
 				<button onclick="lpsResetColor('bg')" onkeyup="lpsResetColor('bg')" aria-label="<?php esc_html_e( 'Reset', 'lps' ); ?>"></button>
 			</div>

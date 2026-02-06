@@ -62,15 +62,7 @@ final class Elementor_LPS_Extension {
 	 * @access public
 	 */
 	public function __construct() {
-		add_action( 'init', [ get_called_class(), 'i18n' ] );
 		add_action( 'plugins_loaded', [ get_called_class(), 'init' ] );
-	}
-
-	/**
-	 * Load plugin localization files.
-	 */
-	public static function i18n() {
-		load_plugin_textdomain( 'lps', false, basename( dirname( __DIR__ ) ) . '/langs' );
 	}
 
 	/**

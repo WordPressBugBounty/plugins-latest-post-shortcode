@@ -4,24 +4,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Latest Post Shortcode 14.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/lps\n"
-"POT-Creation-Date: 2025-05-03T10:57:57+00:00\n"
-"PO-Revision-Date: 2025-05-03 13:59+0300\n"
+"POT-Creation-Date: 2025-11-15T18:32:18+00:00\n"
+"PO-Revision-Date: 2025-11-15 20:33+0200\n"
 "Last-Translator: Iulia Cazan\n"
 "Language-Team: \n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.8\n"
 "X-Domain: lps\n"
 
 #. Plugin Name of the plugin
-#: latest-post-shortcode.php incs/assets.php:114
+#: latest-post-shortcode.php incs/assets.php:136
 #: incs/elementor/widgets/class-lps-widgets.php:29
 #: incs/elementor/widgets/class-lps-widgets.php:56
 #: incs/elementor/widgets/class-lps-widgets.php:82 incs/settings-modal.php:16
-#: incs/settings-modal.php:23 latest-post-shortcode.php:3406
-#: latest-post-shortcode.php:3438 latest-post-shortcode.php:3610
+#: incs/settings-modal.php:23 latest-post-shortcode.php:3454
+#: latest-post-shortcode.php:3486 latest-post-shortcode.php:3712
 #: lps-block/build/index.js:1
 msgid "Latest Post Shortcode"
 msgstr "Latest Post Shortcode"
@@ -63,28 +63,28 @@ msgstr ""
 "setări sunt integrate în modulul Latest Post Shortcode"
 
 #. Translators: 1: Plugin name 2: Elementor
-#: incs/elementor/class-elementor-lps-extension.php:128
+#: incs/elementor/class-elementor-lps-extension.php:120
 msgid "\"%1$s\" requires \"%2$s\" to be installed and activated."
 msgstr "„%1$s” necesită ca „%2$s” să fie instalat și activat."
 
-#: incs/elementor/class-elementor-lps-extension.php:129
-#: incs/elementor/class-elementor-lps-extension.php:146
-#: incs/elementor/class-elementor-lps-extension.php:167
+#: incs/elementor/class-elementor-lps-extension.php:121
+#: incs/elementor/class-elementor-lps-extension.php:138
+#: incs/elementor/class-elementor-lps-extension.php:159
 msgid "LPS Elementor Extension"
 msgstr "Extensie LPS pentru Elementor"
 
-#: incs/elementor/class-elementor-lps-extension.php:130
-#: incs/elementor/class-elementor-lps-extension.php:147
+#: incs/elementor/class-elementor-lps-extension.php:122
+#: incs/elementor/class-elementor-lps-extension.php:139
 msgid "Elementor"
 msgstr "Elementor"
 
 #. Translators: %1$s - plugin name, %2$s - required, %3$s - required version.
-#: incs/elementor/class-elementor-lps-extension.php:145
-#: incs/elementor/class-elementor-lps-extension.php:166
+#: incs/elementor/class-elementor-lps-extension.php:137
+#: incs/elementor/class-elementor-lps-extension.php:158
 msgid "\"%1$s\" requires \"%2$s\" version %3$s or greater."
 msgstr "„%1$s” are nevoie de „%2$s” versiunea %3$s sau o versiune ulterioară."
 
-#: incs/elementor/class-elementor-lps-extension.php:168
+#: incs/elementor/class-elementor-lps-extension.php:160
 msgid "PHP"
 msgstr "PHP"
 
@@ -417,9 +417,9 @@ msgstr "exclude copiii"
 
 #: incs/parts/tabs1-type-filter.php:207 incs/parts/tabs1-type-filter.php:240
 #: incs/parts/tabs2-pagination.php:32 incs/parts/tabs3.php:97
-#: incs/parts/tabs5.php:130 incs/parts/tabs5.php:137 incs/parts/tabs5.php:144
-#: incs/parts/tabs5.php:162 incs/parts/tabs5.php:171 incs/parts/tabs5.php:234
-#: incs/parts/tabs5.php:260 incs/parts/tabs5.php:286
+#: incs/parts/tabs5.php:100 incs/parts/tabs5.php:202 incs/parts/tabs5.php:209
+#: incs/parts/tabs5.php:216 incs/parts/tabs5.php:234 incs/parts/tabs5.php:243
+#: incs/parts/tabs5.php:306 incs/parts/tabs5.php:332 incs/parts/tabs5.php:358
 #: incs/settings-slider.php:47 incs/settings-slider.php:58
 #: incs/settings-slider.php:113 incs/settings-slider.php:128
 #: incs/settings-slider.php:135 incs/settings-slider.php:142
@@ -430,15 +430,15 @@ msgstr "nu"
 
 #: incs/parts/tabs1-type-filter.php:211 incs/parts/tabs1-type-filter.php:242
 #: incs/parts/tabs2-pagination.php:33 incs/parts/tabs2-pagination.php:105
-#: incs/parts/tabs5.php:131 incs/parts/tabs5.php:138 incs/parts/tabs5.php:145
-#: incs/parts/tabs5.php:163 incs/parts/tabs5.php:172 incs/parts/tabs5.php:221
-#: incs/parts/tabs5.php:228 incs/parts/tabs5.php:235 incs/parts/tabs5.php:261
-#: incs/parts/tabs5.php:287 incs/settings-slider.php:48
-#: incs/settings-slider.php:59 incs/settings-slider.php:114
-#: incs/settings-slider.php:129 incs/settings-slider.php:136
-#: incs/settings-slider.php:143 incs/settings-slider.php:175
-#: incs/settings-slider.php:182 incs/settings-slider.php:204
-#: incs/settings-slider.php:212
+#: incs/parts/tabs5.php:101 incs/parts/tabs5.php:203 incs/parts/tabs5.php:210
+#: incs/parts/tabs5.php:217 incs/parts/tabs5.php:235 incs/parts/tabs5.php:244
+#: incs/parts/tabs5.php:293 incs/parts/tabs5.php:300 incs/parts/tabs5.php:307
+#: incs/parts/tabs5.php:333 incs/parts/tabs5.php:359
+#: incs/settings-slider.php:48 incs/settings-slider.php:59
+#: incs/settings-slider.php:114 incs/settings-slider.php:129
+#: incs/settings-slider.php:136 incs/settings-slider.php:143
+#: incs/settings-slider.php:175 incs/settings-slider.php:182
+#: incs/settings-slider.php:204 incs/settings-slider.php:212
 msgid "yes"
 msgstr "da"
 
@@ -565,7 +565,8 @@ msgstr "Textul „Încarcă mai mult”"
 msgid "This is the text that will be displayed on the button."
 msgstr "Acesta este textul care va fi afișat pe buton."
 
-#: incs/parts/tabs2-pagination.php:80 incs/parts/tabs3.php:142
+#: incs/parts/tabs2-pagination.php:80 incs/parts/tabs3.php:139
+#: incs/parts/tabs5.php:153
 msgid "Do not use brackets, these are shortcode delimiters."
 msgstr "Nu utiliza paranteze pătrate, acestea sunt delimitatori de scurtcod."
 
@@ -573,7 +574,7 @@ msgstr "Nu utiliza paranteze pătrate, acestea sunt delimitatori de scurtcod."
 msgid "Custom button text"
 msgstr "Text personalizat buton"
 
-#: incs/parts/tabs2-pagination.php:81 latest-post-shortcode.php:985
+#: incs/parts/tabs2-pagination.php:81 latest-post-shortcode.php:1025
 msgid "Load more"
 msgstr "Încarcă mai mult"
 
@@ -597,20 +598,20 @@ msgstr "deasupra și sub rezultate"
 msgid "Alignment"
 msgstr "Aliniere"
 
-#: incs/parts/tabs2-pagination.php:94 incs/parts/tabs5.php:94
+#: incs/parts/tabs2-pagination.php:94 incs/parts/tabs5.php:166
 msgid "left"
 msgstr "stânga"
 
-#: incs/parts/tabs2-pagination.php:95 incs/parts/tabs5.php:95
-#: incs/parts/tabs5.php:102
+#: incs/parts/tabs2-pagination.php:95 incs/parts/tabs5.php:167
+#: incs/parts/tabs5.php:174
 msgid "center"
 msgstr "centru"
 
-#: incs/parts/tabs2-pagination.php:96 incs/parts/tabs5.php:96
+#: incs/parts/tabs2-pagination.php:96 incs/parts/tabs5.php:168
 msgid "right"
 msgstr "dreapta"
 
-#: incs/parts/tabs2-pagination.php:97 incs/parts/tabs5.php:105
+#: incs/parts/tabs2-pagination.php:97 incs/parts/tabs5.php:177
 msgid "space between"
 msgstr "spațiu între"
 
@@ -665,8 +666,8 @@ msgstr ""
 "Scrie textul pentru totalul articolelor. Plasează %s acolo unde ar trebui să "
 "apară valoarea totală."
 
-#: incs/parts/tabs2-pagination.php:133 incs/parts/tabs5.php:177
-#: incs/parts/tabs5.php:189 incs/parts/tabs5.php:294
+#: incs/parts/tabs2-pagination.php:133 incs/parts/tabs5.php:249
+#: incs/parts/tabs5.php:261 incs/parts/tabs5.php:366
 msgid "Leave empty if you want to use the default values."
 msgstr "Lasă necompletat dacă vrei să folosești valorile implicite."
 
@@ -676,7 +677,7 @@ msgid "Custom `Total items: %d` text"
 msgstr "Text personalizat „Total articole: %d”"
 
 #. Translators: %d - total value.
-#: incs/parts/tabs2-pagination.php:135 latest-post-shortcode.php:1321
+#: incs/parts/tabs2-pagination.php:135 latest-post-shortcode.php:1358
 msgid "Total items: %d"
 msgstr "Total articole: %d"
 
@@ -706,10 +707,10 @@ msgid "HTML Tag for the %s"
 msgstr "Etichetă HTML pentru %s"
 
 #. Translators: %s - element name.
-#: incs/parts/tabs3.php:41 incs/parts/tabs5.php:183 incs/parts/tabs5.php:200
+#: incs/parts/tabs3.php:41 incs/parts/tabs5.php:255 incs/parts/tabs5.php:272
 #: incs/settings-slider.php:99 incs/settings-slider.php:100
-#: latest-post-shortcode.php:339 latest-post-shortcode.php:344
-#: latest-post-shortcode.php:413
+#: latest-post-shortcode.php:338 latest-post-shortcode.php:343
+#: latest-post-shortcode.php:412
 msgid "title"
 msgstr "titlu"
 
@@ -794,7 +795,7 @@ msgstr "ca diferența de dată"
 msgid "Use Image"
 msgstr "Folosește imagine"
 
-#: incs/parts/tabs3.php:103 incs/parts/tabs3.php:154
+#: incs/parts/tabs3.php:103
 msgid "full (original size)"
 msgstr "completă (dimensiune originală)"
 
@@ -848,55 +849,15 @@ msgstr "_blank"
 msgid "link to the media file"
 msgstr "legătură la fișierul media"
 
-#: incs/parts/tabs3.php:136
-msgid "link to the media file with lightbox"
-msgstr "legătură la fișierul media în casetă modală"
-
-#: incs/parts/tabs3.php:141 incs/parts/tabs3.php:143
+#: incs/parts/tabs3.php:138 incs/parts/tabs3.php:140
 msgid "Custom 'Read more' message"
 msgstr "Mesaj personalizat „Citește mai mult”"
 
-#: incs/parts/tabs3.php:148
-msgid "Lightbox Attributes"
-msgstr "Atribute casetă modală"
-
-#: incs/parts/tabs3.php:149
-msgid ""
-"If you want to use a lightbox for the images, you can setup below the sub-"
-"size and the selector."
-msgstr ""
-"Dacă vrei să folosești o casetă modală pentru imagini, poți inițializa mai "
-"jos subdimensiunea și selectorul."
-
-#: incs/parts/tabs3.php:151
-msgid "Lightbox Image"
-msgstr "Imagine căsuță modală"
-
-#: incs/parts/tabs3.php:164
-msgid "Selector attribute and value"
-msgstr "Atribut și valoare selector"
-
-#: incs/parts/tabs3.php:165
-msgid "Ex: class"
-msgstr "Ex: class"
-
-#: incs/parts/tabs3.php:166
-msgid "Ex: fancybox image"
-msgstr "Ex: fancybox image"
-
-#: incs/parts/tabs3.php:167
-msgid ""
-"This feature has been tested and is recommended to be used with Easy "
-"FancyBox plugin (>=1.8) or FooBox Image Lightbox plugin (>=2.6)."
-msgstr ""
-"Această funcționalitate a fost testată și se recomandă să fie utilizată cu "
-"modulul Easy FancyBox (>=1.8) sau cu modulul FooBox Image Lightbox (>=2.6)."
-
-#: incs/parts/tabs3.php:173
+#: incs/parts/tabs3.php:145
 msgid "Card Pattern"
 msgstr "Model de card"
 
-#: incs/parts/tabs3.php:174
+#: incs/parts/tabs3.php:146
 msgid ""
 "The icons suggest a default order of the HTML tags, the links are marked "
 "with red."
@@ -904,7 +865,7 @@ msgstr ""
 "Iconurile sugerează o ordine implicită a etichetelor HTML, legăturile sunt "
 "marcate cu roșu."
 
-#: incs/parts/tabs3.php:175
+#: incs/parts/tabs3.php:147
 msgid ""
 "You are using a custom output, the markup is handled programatically, in "
 "your custom code."
@@ -912,15 +873,15 @@ msgstr ""
 "Folosești o afișare personalizată, markup-ul este gestionat programatic, în "
 "codul tău personalizat."
 
-#: incs/parts/tabs3.php:188
+#: incs/parts/tabs3.php:160
 msgid "markup"
 msgstr "marcaj"
 
-#: incs/parts/tabs3.php:200
+#: incs/parts/tabs3.php:172
 msgid "Content Fallback"
 msgstr "Alternativă conținut"
 
-#: incs/parts/tabs3.php:201
+#: incs/parts/tabs3.php:173
 msgid "Add a custom text to be displayed if no content matches the settings."
 msgstr ""
 "Adăugă un text personalizat care să fie afișat, dacă niciun conținut nu "
@@ -942,12 +903,12 @@ msgstr ""
 "pentru etichete nu vor funcționa, deoarece șablonul tău personalizat "
 "contramandează rezultatul și comportamentul implicit."
 
-#: incs/parts/tabs4.php:25 latest-post-shortcode.php:3144
+#: incs/parts/tabs4.php:25 latest-post-shortcode.php:3191
 msgid "Caption"
 msgstr "Legendă"
 
 #: incs/parts/tabs4.php:26 incs/parts/tabs4.php:135
-#: latest-post-shortcode.php:3120
+#: latest-post-shortcode.php:3167
 msgid "Mime Type"
 msgstr "Tip MIME"
 
@@ -991,7 +952,7 @@ msgstr "ascunde numele taxonomiei din listă"
 msgid "no link for the terms"
 msgstr "nicio legătură pentru termeni"
 
-#: incs/parts/tabs4.php:120 incs/parts/tabs5.php:297
+#: incs/parts/tabs4.php:120 incs/parts/tabs5.php:369
 #: incs/settings-slider.php:109
 msgid "default"
 msgstr "implicit"
@@ -1117,11 +1078,82 @@ msgstr ""
 msgid "hide the `load more` button"
 msgstr "ascunde butonul „încarcă mai mult”"
 
+#: incs/parts/tabs5.php:88
+msgid "Masonry"
+msgstr "Masonry"
+
 #: incs/parts/tabs5.php:89
+msgid "This option enables the masonry output."
+msgstr "Această opțiune activează afișarea de tip masonry."
+
+#: incs/parts/tabs5.php:93
+msgid "show as masonry"
+msgstr "afișează ca masonry"
+
+#: incs/parts/tabs5.php:98
+msgid "with slide in effect"
+msgstr "cu efect de glisare"
+
+#: incs/parts/tabs5.php:105
+msgid "adjust card height"
+msgstr "reglează înălțime card"
+
+#. Translators: %s - element name.
+#: incs/parts/tabs5.php:110 incs/parts/tabs5.php:116
+msgid "by %s"
+msgstr "după %s"
+
+#. Translators: %s - element name.
+#: incs/parts/tabs5.php:110
+msgid "info"
+msgstr "informații"
+
+#. Translators: %s - element name.
+#: incs/parts/tabs5.php:116
+msgid "image"
+msgstr "imagine"
+
+#: incs/parts/tabs5.php:127
+msgid "Inline filters"
+msgstr "Filtre în linie"
+
+#: incs/parts/tabs5.php:128
+msgid "This option enables the inline filters output."
+msgstr "Această opțiune activează afișarea filtrelor în linie."
+
+#: incs/parts/tabs5.php:132
+msgid "show the terms inline filters"
+msgstr "afișează termenii filtrelor în linie"
+
+#: incs/parts/tabs5.php:137
+msgid "filters from"
+msgstr "filtre din"
+
+#: incs/parts/tabs5.php:150
+msgid "`All` text"
+msgstr "Text `tot`"
+
+#: incs/parts/tabs5.php:151
+msgid "Custom all text"
+msgstr "Text tot personalizat"
+
+#: incs/parts/tabs5.php:151 latest-post-shortcode.php:1360
+#: latest-post-shortcode.php:1578
+msgid "All"
+msgstr "Tot"
+
+#: incs/parts/tabs5.php:153
+msgid ""
+"This is the text that will be displayed on the \"all\" button that resets "
+"the filtering."
+msgstr ""
+"Acesta este textul care va fi afișat pe butonul “tot” ce resetează filtrarea."
+
+#: incs/parts/tabs5.php:161
 msgid "Card Aspect"
 msgstr "Aspect card"
 
-#: incs/parts/tabs5.php:90
+#: incs/parts/tabs5.php:162
 msgid ""
 "Use the options below to configure content alignment, colors, spacing, and "
 "other settings."
@@ -1129,188 +1161,188 @@ msgstr ""
 "Folosește opțiunile de mai jos pentru a configura alinierea conținutului, "
 "culorile, spațierea și alte setări."
 
-#: incs/parts/tabs5.php:92
+#: incs/parts/tabs5.php:164
 msgid "horizontal alignment"
 msgstr "aliniere orizontală"
 
-#: incs/parts/tabs5.php:100
+#: incs/parts/tabs5.php:172
 msgid "vertical alignment"
 msgstr "aliniere verticală"
 
-#: incs/parts/tabs5.php:103
+#: incs/parts/tabs5.php:175
 msgid "start"
 msgstr "început"
 
-#: incs/parts/tabs5.php:104
+#: incs/parts/tabs5.php:176
 msgid "end"
 msgstr "sfârșit"
 
-#: incs/parts/tabs5.php:106 incs/parts/tabs5.php:114 incs/parts/tabs5.php:243
+#: incs/parts/tabs5.php:178 incs/parts/tabs5.php:186 incs/parts/tabs5.php:315
 #: incs/settings-slider.php:70 incs/settings-slider.php:88
 msgid "auto"
 msgstr "automat"
 
-#: incs/parts/tabs5.php:107
+#: incs/parts/tabs5.php:179
 msgid "first top"
 msgstr "primul sus"
 
-#: incs/parts/tabs5.php:108
+#: incs/parts/tabs5.php:180
 msgid "last bottom"
 msgstr "ultimul jos"
 
-#: incs/parts/tabs5.php:112 incs/parts/tabs5.php:241
+#: incs/parts/tabs5.php:184 incs/parts/tabs5.php:313
 msgid "aspect ratio"
 msgstr "raport de aspect"
 
-#: incs/parts/tabs5.php:115 incs/parts/tabs5.php:245
+#: incs/parts/tabs5.php:187 incs/parts/tabs5.php:317
 #: incs/settings-slider.php:72
 msgid "square"
 msgstr "pătrat"
 
-#: incs/parts/tabs5.php:116 incs/parts/tabs5.php:246
+#: incs/parts/tabs5.php:188 incs/parts/tabs5.php:318
 #: incs/settings-slider.php:73
 msgid "landscape"
 msgstr "peisaj"
 
-#: incs/parts/tabs5.php:121 incs/parts/tabs5.php:251
+#: incs/parts/tabs5.php:193 incs/parts/tabs5.php:323
 #: incs/settings-slider.php:78
 msgid "portrait"
 msgstr "portret"
 
-#: incs/parts/tabs5.php:128
+#: incs/parts/tabs5.php:200
 msgid "border radius"
 msgstr "rotunjire chenar"
 
-#: incs/parts/tabs5.php:135
+#: incs/parts/tabs5.php:207
 msgid "shadow"
 msgstr "umbră"
 
-#: incs/parts/tabs5.php:142
+#: incs/parts/tabs5.php:214
 msgid "highlight"
 msgstr "evidențiere"
 
-#: incs/parts/tabs5.php:142 incs/parts/tabs5.php:284
+#: incs/parts/tabs5.php:214 incs/parts/tabs5.php:356
 msgid "hover effect"
 msgstr "efect trecere peste"
 
-#: incs/parts/tabs5.php:149
+#: incs/parts/tabs5.php:221
 msgid "default mood"
 msgstr "starea implicită"
 
-#: incs/parts/tabs5.php:151 latest-post-shortcode.php:648
+#: incs/parts/tabs5.php:223 latest-post-shortcode.php:640
 msgid "-- unspecified --"
 msgstr "-- nespecificat --"
 
-#: incs/parts/tabs5.php:152
+#: incs/parts/tabs5.php:224
 msgid "dark"
 msgstr "închis"
 
-#: incs/parts/tabs5.php:153
+#: incs/parts/tabs5.php:225
 msgid "light"
 msgstr "deschis"
 
-#: incs/parts/tabs5.php:155
+#: incs/parts/tabs5.php:227
 msgid "no overlay"
 msgstr "fără suprapunere"
 
-#: incs/parts/tabs5.php:160
+#: incs/parts/tabs5.php:232
 msgid "make the card taller"
 msgstr "fă cardul mai înalt"
 
-#: incs/parts/tabs5.php:169
+#: incs/parts/tabs5.php:241
 msgid "Stacked on Mobile"
 msgstr "Stivuire pe mobil"
 
-#: incs/parts/tabs5.php:176
+#: incs/parts/tabs5.php:248
 msgid "Font Size"
 msgstr "Mărime font"
 
-#: incs/parts/tabs5.php:177
+#: incs/parts/tabs5.php:249
 msgid "Ex: 1rem, 24px, 2em, clamp(1rem, 0.6rem + 1.25vw, 1.4rem), etc."
 msgstr "Ex: 1rem, 24px, 2em, clamp(1rem, 0.6rem + 1.25vw, 1.4rem) etc."
 
-#: incs/parts/tabs5.php:177
+#: incs/parts/tabs5.php:249
 msgid "Use px, %, vw or vh as units."
 msgstr "Folosește px, %, vw sau vh ca unități."
 
-#: incs/parts/tabs5.php:179 incs/parts/tabs5.php:192
+#: incs/parts/tabs5.php:251 incs/parts/tabs5.php:264
 msgid "text"
 msgstr "text"
 
-#: incs/parts/tabs5.php:180 incs/parts/tabs5.php:184 incs/parts/tabs5.php:194
-#: incs/parts/tabs5.php:202 incs/parts/tabs5.php:210 incs/parts/tabs5.php:220
-#: incs/parts/tabs5.php:227 incs/parts/tabs5.php:267
+#: incs/parts/tabs5.php:252 incs/parts/tabs5.php:256 incs/parts/tabs5.php:266
+#: incs/parts/tabs5.php:274 incs/parts/tabs5.php:282 incs/parts/tabs5.php:292
+#: incs/parts/tabs5.php:299 incs/parts/tabs5.php:339
 msgid "inherit"
 msgstr "moștenit"
 
-#: incs/parts/tabs5.php:187
+#: incs/parts/tabs5.php:259
 msgid "Colors"
 msgstr "Culori"
 
-#: incs/parts/tabs5.php:189
+#: incs/parts/tabs5.php:261
 msgid "Ex: #fff, rbga(255,255,255, 0.5), etc."
 msgstr "Ex: #fff, rbga(255,255,255, 0.5) etc."
 
-#: incs/parts/tabs5.php:189
+#: incs/parts/tabs5.php:261
 msgid ""
 "If you want to apply the colors, you should remove the card generic aspect."
 msgstr ""
 "Dacă vrei să aplici culorile, ar trebui să înlături aspectul generic al "
 "cardului."
 
-#: incs/parts/tabs5.php:196 incs/parts/tabs5.php:204 incs/parts/tabs5.php:212
+#: incs/parts/tabs5.php:268 incs/parts/tabs5.php:276 incs/parts/tabs5.php:284
 msgid "Reset"
 msgstr "Resetează"
 
-#: incs/parts/tabs5.php:208
+#: incs/parts/tabs5.php:280
 msgid "background"
 msgstr "fundal"
 
-#: incs/parts/tabs5.php:216
+#: incs/parts/tabs5.php:288
 msgid "Title Style"
 msgstr "Stil titlu"
 
-#: incs/parts/tabs5.php:218
+#: incs/parts/tabs5.php:290
 msgid "no decoration"
 msgstr "fără decor"
 
-#: incs/parts/tabs5.php:225
+#: incs/parts/tabs5.php:297
 msgid "uppercase"
 msgstr "majuscule"
 
-#: incs/parts/tabs5.php:232
+#: incs/parts/tabs5.php:304
 msgid "text shadow"
 msgstr "umbră text"
 
-#: incs/parts/tabs5.php:239
+#: incs/parts/tabs5.php:311
 msgid "Image Style"
 msgstr "Stil imagine"
 
-#: incs/parts/tabs5.php:244 incs/settings-slider.php:71
+#: incs/parts/tabs5.php:316 incs/settings-slider.php:71
 msgid "none"
 msgstr "nimic"
 
-#: incs/parts/tabs5.php:258
+#: incs/parts/tabs5.php:330
 msgid "spacing"
 msgstr "spațiere"
 
-#: incs/parts/tabs5.php:266
+#: incs/parts/tabs5.php:338
 msgid "size"
 msgstr "mărime"
 
-#: incs/parts/tabs5.php:271
+#: incs/parts/tabs5.php:343
 msgid "opacity"
 msgstr "opacitate"
 
-#: incs/parts/tabs5.php:284
+#: incs/parts/tabs5.php:356
 msgid "zoom"
 msgstr "mărește"
 
-#: incs/parts/tabs5.php:293
+#: incs/parts/tabs5.php:365
 msgid "Spacing Options"
 msgstr "Opțiuni spațiere"
 
-#: incs/parts/tabs5.php:294
+#: incs/parts/tabs5.php:366
 msgid ""
 "These options allow to specify the card padding and minimum height, and the "
 "gap between the elements inside the card. Use px, %, vw or vh as units."
@@ -1319,28 +1351,28 @@ msgstr ""
 "minime, precum și decalajul dintre elementele din interiorul cardului. "
 "Folosește px, %, vw sau vh ca unități."
 
-#: incs/parts/tabs5.php:297 incs/settings-slider.php:109
+#: incs/parts/tabs5.php:369 incs/settings-slider.php:109
 msgid "Wide"
 msgstr "Lat"
 
-#: incs/parts/tabs5.php:301 incs/parts/tabs5.php:322 incs/parts/tabs5.php:343
+#: incs/parts/tabs5.php:373 incs/parts/tabs5.php:394 incs/parts/tabs5.php:415
 msgid "height"
 msgstr "înălțime"
 
-#: incs/parts/tabs5.php:305 incs/parts/tabs5.php:309 incs/parts/tabs5.php:326
-#: incs/parts/tabs5.php:330 incs/parts/tabs5.php:347 incs/parts/tabs5.php:351
+#: incs/parts/tabs5.php:377 incs/parts/tabs5.php:381 incs/parts/tabs5.php:398
+#: incs/parts/tabs5.php:402 incs/parts/tabs5.php:419 incs/parts/tabs5.php:423
 msgid "padding"
 msgstr "distanțare"
 
-#: incs/parts/tabs5.php:313 incs/parts/tabs5.php:334 incs/parts/tabs5.php:355
+#: incs/parts/tabs5.php:385 incs/parts/tabs5.php:406 incs/parts/tabs5.php:427
 msgid "gap"
 msgstr "decalaj"
 
-#: incs/parts/tabs5.php:318 incs/settings-slider.php:157
+#: incs/parts/tabs5.php:390 incs/settings-slider.php:157
 msgid "Medium"
 msgstr "Mediu"
 
-#: incs/parts/tabs5.php:339 incs/settings-slider.php:186
+#: incs/parts/tabs5.php:411 incs/settings-slider.php:186
 msgid "Small"
 msgstr "Mic"
 
@@ -1364,7 +1396,7 @@ msgstr "Înglobeză"
 msgid "Reset cache"
 msgstr "Resetează cache-ul"
 
-#: incs/settings-modal.php:38 latest-post-shortcode.php:3353
+#: incs/settings-modal.php:38 latest-post-shortcode.php:3401
 #: lps-block/build/index.js:1
 msgid "Settings"
 msgstr "Setări"
@@ -1452,7 +1484,7 @@ msgid "Maximum Height"
 msgstr "Înălțime maximă"
 
 #: incs/settings-slider.php:99 incs/settings-slider.php:101
-#: latest-post-shortcode.php:416
+#: latest-post-shortcode.php:415
 msgid "trimmed excerpt"
 msgstr "rezumat scurtat"
 
@@ -1520,178 +1552,178 @@ msgstr "rezoluție"
 msgid "breakpoint"
 msgstr "punct de întrerupere"
 
-#: latest-post-shortcode.php:292
+#: latest-post-shortcode.php:291
 msgid "months"
 msgstr "luni"
 
-#: latest-post-shortcode.php:293
+#: latest-post-shortcode.php:292
 msgid "weeks"
 msgstr "săptămâni"
 
-#: latest-post-shortcode.php:294
+#: latest-post-shortcode.php:293
 msgid "days"
 msgstr "zile"
 
-#: latest-post-shortcode.php:295
+#: latest-post-shortcode.php:294
 msgid "hours"
 msgstr "ore"
 
-#: latest-post-shortcode.php:309 latest-post-shortcode.php:314
-#: latest-post-shortcode.php:412
+#: latest-post-shortcode.php:308 latest-post-shortcode.php:313
+#: latest-post-shortcode.php:411
 msgid "date"
 msgstr "dată"
 
-#: latest-post-shortcode.php:319 latest-post-shortcode.php:324
+#: latest-post-shortcode.php:318 latest-post-shortcode.php:323
 msgid "modified date"
 msgstr "dată modificare"
 
-#: latest-post-shortcode.php:329 latest-post-shortcode.php:334
+#: latest-post-shortcode.php:328 latest-post-shortcode.php:333
 msgid "menu order"
 msgstr "ordine meniu"
 
-#: latest-post-shortcode.php:349 latest-post-shortcode.php:354
+#: latest-post-shortcode.php:348 latest-post-shortcode.php:353
 msgid "ID"
 msgstr "ID"
 
-#: latest-post-shortcode.php:359 latest-post-shortcode.php:364
+#: latest-post-shortcode.php:358 latest-post-shortcode.php:363
 msgid "text meta value"
 msgstr "valoare text metadată"
 
-#: latest-post-shortcode.php:369 latest-post-shortcode.php:374
+#: latest-post-shortcode.php:368 latest-post-shortcode.php:373
 msgid "numeric meta value"
 msgstr "valoare numerică metadată"
 
-#: latest-post-shortcode.php:379
+#: latest-post-shortcode.php:378
 msgid "random *"
 msgstr "aleatoriu *"
 
-#: latest-post-shortcode.php:384
+#: latest-post-shortcode.php:383
 msgid "relevance *"
 msgstr "relevanță *"
 
-#: latest-post-shortcode.php:391
+#: latest-post-shortcode.php:390
 msgid "before title"
 msgstr "înainte de titlul"
 
-#: latest-post-shortcode.php:392
+#: latest-post-shortcode.php:391
 msgid "after title"
 msgstr "după titlu"
 
-#: latest-post-shortcode.php:393
+#: latest-post-shortcode.php:392
 msgid "before image"
 msgstr "înainte de imagine"
 
-#: latest-post-shortcode.php:394
+#: latest-post-shortcode.php:393
 msgid "after image"
 msgstr "după imagine"
 
-#: latest-post-shortcode.php:395
+#: latest-post-shortcode.php:394
 msgid "before text"
 msgstr "înainte de text"
 
-#: latest-post-shortcode.php:396
+#: latest-post-shortcode.php:395
 msgid "after text"
 msgstr "după text"
 
-#: latest-post-shortcode.php:397
+#: latest-post-shortcode.php:396
 msgid "before 'read more'"
 msgstr "înainte de „citește mai mult”"
 
-#: latest-post-shortcode.php:398
+#: latest-post-shortcode.php:397
 msgid "after 'read more'"
 msgstr "după „citește mai mult”"
 
-#: latest-post-shortcode.php:399
+#: latest-post-shortcode.php:398
 msgid "before date"
 msgstr "înainte de dată"
 
-#: latest-post-shortcode.php:400
+#: latest-post-shortcode.php:399
 msgid "after date"
 msgstr "după dată"
 
-#: latest-post-shortcode.php:414
+#: latest-post-shortcode.php:413
 msgid "excerpt"
 msgstr "rezumat"
 
-#: latest-post-shortcode.php:415
+#: latest-post-shortcode.php:414
 msgid "content"
 msgstr "conținut"
 
-#: latest-post-shortcode.php:417
+#: latest-post-shortcode.php:416
 msgid "trimmed content"
 msgstr "conținut scurtat"
 
-#: latest-post-shortcode.php:649
+#: latest-post-shortcode.php:641
 msgid "vertical card"
 msgstr "card vertical"
 
-#: latest-post-shortcode.php:650
+#: latest-post-shortcode.php:642
 msgid "horizontal card: image + info"
 msgstr "card orizontal: imagine + informații"
 
-#: latest-post-shortcode.php:651
+#: latest-post-shortcode.php:643
 msgid "horizontal card: info + image"
 msgstr "card orizontal: informații + imagine"
 
-#: latest-post-shortcode.php:652
+#: latest-post-shortcode.php:644
 msgid "overlay"
 msgstr "suprapunere"
 
 #. Translators: %1$d - current page, %2$d - total pages.
-#: latest-post-shortcode.php:1010
+#: latest-post-shortcode.php:1050
 msgid "Page %1$d of %2$d"
 msgstr "Pagina %1$d din %2$d"
 
-#: latest-post-shortcode.php:1014 latest-post-shortcode.php:1027
-#: latest-post-shortcode.php:1029 latest-post-shortcode.php:1046
-#: latest-post-shortcode.php:1053 latest-post-shortcode.php:1055
+#: latest-post-shortcode.php:1054 latest-post-shortcode.php:1067
+#: latest-post-shortcode.php:1069 latest-post-shortcode.php:1086
+#: latest-post-shortcode.php:1093 latest-post-shortcode.php:1095
 msgid "First page"
 msgstr "Prima pagină"
 
-#: latest-post-shortcode.php:1017 latest-post-shortcode.php:1036
-#: latest-post-shortcode.php:1041
+#: latest-post-shortcode.php:1057 latest-post-shortcode.php:1076
+#: latest-post-shortcode.php:1081
 msgid "Previous page"
 msgstr "Pagina precedentă"
 
-#: latest-post-shortcode.php:1020 latest-post-shortcode.php:1069
-#: latest-post-shortcode.php:1071
+#: latest-post-shortcode.php:1060 latest-post-shortcode.php:1109
+#: latest-post-shortcode.php:1111
 msgid "Next page"
 msgstr "Pagina următoare"
 
-#: latest-post-shortcode.php:1023 latest-post-shortcode.php:1076
-#: latest-post-shortcode.php:1078 latest-post-shortcode.php:1084
+#: latest-post-shortcode.php:1063 latest-post-shortcode.php:1116
+#: latest-post-shortcode.php:1118 latest-post-shortcode.php:1124
 msgid "Last page"
 msgstr "Ultima pagină"
 
-#: latest-post-shortcode.php:1038
+#: latest-post-shortcode.php:1078
 msgid "Previous"
 msgstr "Precedenta"
 
 #. Translators: %1$d - page number.
-#: latest-post-shortcode.php:1059 latest-post-shortcode.php:1062
+#: latest-post-shortcode.php:1099 latest-post-shortcode.php:1102
 msgid "Page %1$d"
 msgstr "Pagina %1$d"
 
 #. Translators: %s the date difference.
-#: latest-post-shortcode.php:1122
+#: latest-post-shortcode.php:1162
 msgctxt "%s = human-readable time difference"
 msgid "%s ago"
 msgstr "acum %s"
 
-#: latest-post-shortcode.php:3052
+#: latest-post-shortcode.php:3099
 msgid "By"
 msgstr "De către"
 
-#: latest-post-shortcode.php:3354
+#: latest-post-shortcode.php:3402
 msgid "Plugin URL"
 msgstr "URL modul"
 
-#: latest-post-shortcode.php:3408
+#: latest-post-shortcode.php:3456
 msgid "A huge thanks in advance!"
 msgstr "Multe mulțumiri în avans!"
 
 #. Translators: %s - donate URL.
-#: latest-post-shortcode.php:3413
+#: latest-post-shortcode.php:3461
 msgid ""
 "If you find the plugin useful and would like to support my work, please "
 "consider making a <a href=\"%s\" target=\"_blank\">donation</a>."
@@ -1700,17 +1732,17 @@ msgstr ""
 "bucura dacă ai face o <a href=\"%s\" target=\"_blank\">donație</a>."
 
 #. Translators: %s - rating.
-#: latest-post-shortcode.php:3417
+#: latest-post-shortcode.php:3465
 msgid "It would make me very happy if you would leave a %s rating."
 msgstr "M-aș bucura foarte mult dacă lași o evaluare de %s."
 
 #. Translators: %1$s - plugin name.
-#: latest-post-shortcode.php:3442
+#: latest-post-shortcode.php:3490
 msgid "%1$s plugin was activated!"
 msgstr "Modulul %1$s a fost activat!"
 
 #. Translators: %1$s - plugins URL, %2$s - heart, %3$s - extensions URL, %4$s - star, %5$s - pro.
-#: latest-post-shortcode.php:3446
+#: latest-post-shortcode.php:3494
 msgid ""
 "%5$sCheck out my other <a href=\"%1$s\" target=\"_blank\" "
 "rel=\"noreferrer\">%2$s free plugins</a> on WordPress.org and the <a "
@@ -1722,38 +1754,38 @@ msgstr ""
 "href=\"%3$s\" target=\"_blank\" rel=\"noreferrer\">%4$s extensiile premium</"
 "a> disponibile!"
 
-#: latest-post-shortcode.php:3466
+#: latest-post-shortcode.php:3514
 msgid "Dismiss this notice."
 msgstr "Respinge această notificare."
 
-#: latest-post-shortcode.php:3627
+#: latest-post-shortcode.php:3729
 msgid "let WordPress decide when to load the LPS assets"
 msgstr "lasă WordPress să decidă când să încarce resursele LPS"
 
-#: latest-post-shortcode.php:3628
+#: latest-post-shortcode.php:3730
 msgid "(recommended)"
 msgstr "(recomandat)"
 
-#: latest-post-shortcode.php:3632
+#: latest-post-shortcode.php:3734
 msgid "always load the LPS assets"
 msgstr "încarcă mereu resursele LPS"
 
-#: latest-post-shortcode.php:3633
+#: latest-post-shortcode.php:3735
 msgid "(sometimes needed for compatibility with other editors)"
 msgstr "(necesar câteodată pentru compatibilitatea cu alte editoare)"
 
-#: latest-post-shortcode.php:3637
+#: latest-post-shortcode.php:3739
 msgid "load the legacy styles"
 msgstr "încarcă stilurile depreciate"
 
-#: latest-post-shortcode.php:3638
+#: latest-post-shortcode.php:3740
 msgid "(version 1 is deprecated, use it only for backward compatibility)"
 msgstr ""
 "(versiunea 1 este învechită, folosită doar pentru compatibilitate cu "
 "versiunea anterioară)"
 
 #. Translators: %s - plugin icon.
-#: latest-post-shortcode.php:3646
+#: latest-post-shortcode.php:3748
 msgid ""
 "hide the %s LPS button in the Classic editor for the specified roles (if "
 "multiple, separate by comma)"
@@ -1845,6 +1877,45 @@ msgstr "articol"
 msgctxt "block keyword"
 msgid "shortcode"
 msgstr "scurtcod"
+
+#~ msgid "info height"
+#~ msgstr "înălțime informații"
+
+#~ msgid "image height"
+#~ msgstr "înălțime imagine"
+
+#~ msgid "link to the media file with lightbox"
+#~ msgstr "legătură la fișierul media în casetă modală"
+
+#~ msgid "Lightbox Attributes"
+#~ msgstr "Atribute casetă modală"
+
+#~ msgid ""
+#~ "If you want to use a lightbox for the images, you can setup below the sub-"
+#~ "size and the selector."
+#~ msgstr ""
+#~ "Dacă vrei să folosești o casetă modală pentru imagini, poți inițializa "
+#~ "mai jos subdimensiunea și selectorul."
+
+#~ msgid "Lightbox Image"
+#~ msgstr "Imagine căsuță modală"
+
+#~ msgid "Selector attribute and value"
+#~ msgstr "Atribut și valoare selector"
+
+#~ msgid "Ex: class"
+#~ msgstr "Ex: class"
+
+#~ msgid "Ex: fancybox image"
+#~ msgstr "Ex: fancybox image"
+
+#~ msgid ""
+#~ "This feature has been tested and is recommended to be used with Easy "
+#~ "FancyBox plugin (>=1.8) or FooBox Image Lightbox plugin (>=2.6)."
+#~ msgstr ""
+#~ "Această funcționalitate a fost testată și se recomandă să fie utilizată "
+#~ "cu modulul Easy FancyBox (>=1.8) sau cu modulul FooBox Image Lightbox "
+#~ "(>=2.6)."
 
 #~ msgid "This is the HTML tag that wraps %s in the output."
 #~ msgstr "Aceasta este eticheta HTML care înfășoară %s în afișare."

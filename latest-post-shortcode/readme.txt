@@ -3,8 +3,8 @@ Contributors: Iulia Cazan
 Donate Link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JJA37EHZXWUTJ
 Tags: posts grid, posts shortcode, Gutenberg block, paginated posts, configurable shortcode with UI
 Requires at least: 5.5.0
-Tested up to: 6.8
-Stable tag: 14.1.0
+Tested up to: 6.9
+Stable tag: 14.2.1
 Requires PHP: 7.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -35,17 +35,19 @@ Starting with version 7.0.0, the plugin implements new hooks that allow for defi
 
 * Pagination filters: `lps/override_pagination_display/first`, `lps/override_pagination_display/first_icon`, `lps/override_pagination_display/prev`, `lps/override_pagination_display/prev_icon`, `lps/override_pagination_display/next`, `lps/override_pagination_display/next_icon`, `lps/override_pagination_display/last`, `lps/override_pagination_display/last_icon`
 
-* Additional filters: `lps/filter_sites_list`, `lps/filter_statuses`, `lps/filter_types`, `lps/filter_taxonomies`, `lps/card_output_types`, `lps/remove_donate_info`, `lps/load_assets_on_page`, `lps/exclude_ids`, `lps/shortcode_arguments`, `lps/query_arguments`
+* Additional filters: `lps/filter_sites_list`, `lps/filter_statuses`, `lps/filter_types`, `lps/filter_taxonomies`, `lps/usable_taxonomies`, `lps/card_output_types`, `lps/remove_donate_info`, `lps/load_assets_on_page`, `lps/exclude_ids`, `lps/shortcode_arguments`, `lps/query_arguments`, `lps/before_check_posts`, `lps/remove_update_info`
 
 * Marked as deprecated: `lps_filter_tile_patterns`, `lps_filter_display_posts_list`, `lps_filter_remove_update_info`, `lps_filter_use_custom_section_markup_end`, `lps_filter_use_custom_section_markup_start`, `lps_filter_use_custom_tile_markup`, `lps_filter_exclude_previous_content_ids`, `lps_filter_use_custom_shortcode_arguments`, `lps_filter_use_custom_query_arguments`
 
 == Screenshots ==
 1. Example of horizontal cards (info + image) with prev/next pagination.
 2. Example of 3 columns grid of overlay cards.
-3. Example of 3 columns grid of vertical cards.
+3. Example of 4 columns grid of vertical cards.
 4. Example of 2 columns grid of horizontal cards (image + info).
 5. Example of horizontal cards (image + info) as an inline scroller.
 6. Example of slider with center mode.
+7. Example of 4 columns grid of overlay cards with masonry style.
+8. Example of 4 columns grid of vertical cards with inline filters from tags.
 
 == Frequently Asked Questions ==
 = How to use the block =
@@ -68,10 +70,11 @@ No mentions
 
 == Changelog ==
 
-= 14.1.0 =
-* Tested up to 6.8.2
-* Removed the experimental lightbox feature
-* Editor style updates (fixed the `.wp-core-ui .attachment` selector leakage)
-* Block packages updates
+= 14.2.1 =
+* Tested up to 6.9
+* Styles changes to allow for gradient as card background
+* Fixed the mood toggle when the card background color changes
+* Bundler output files with functions assigned to window (global variable)
+* Fixed the cache reset vunerability
 
 See the [changelog](https://plugins.svn.wordpress.org/latest-post-shortcode/trunk/changelog.txt) for detailed information on changes made in the earlier versions.

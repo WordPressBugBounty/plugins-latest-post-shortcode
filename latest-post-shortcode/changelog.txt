@@ -1,5 +1,21 @@
 == Changelog ==
 
+= 14.2.0 =
+* Tested up to 6.8.3
+* PHP 8.4 compatibility
+* Added custom event dispatch `lpsLoadPageEnd` for pagination — useful for triggering external script events
+* Added experimental masonry layout feature
+* Added experimental inline filters feature
+* Updated block packages
+* Tested compatibility with Elementor up to 3.32.5
+* Styles compatibility with the stretchy feature
+
+= 14.1.0 =
+* Tested up to 6.8.2
+* Removed the experimental lightbox feature
+* Editor style updates (fixed the `.wp-core-ui .attachment` selector leakage)
+* Block packages updates
+
 = 14.0.3 =
 * Tested up to 6.8.1
 * Fixed the assets load in the site editor
