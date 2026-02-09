@@ -6,6 +6,10 @@
  * @package lps
  */
 
+// phpcs:disable WordPress.WP.I18n.TextDomainMismatch
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+defined( 'ABSPATH' ) || exit;
+
 /**
  * LPS Elementor Control class.
  */

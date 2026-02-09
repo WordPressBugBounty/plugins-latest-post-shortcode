@@ -1,5 +1,12 @@
 == Changelog ==
 
+= 14.2.1 =
+* Tested up to 6.9
+* Styles changes to allow for gradient as card background
+* Fixed the mood toggle when the card background color changes
+* Bundler output files with functions assigned to window (global variable)
+* Fixed the cache reset vunerability
+
 = 14.2.0 =
 * Tested up to 6.8.3
 * PHP 8.4 compatibility

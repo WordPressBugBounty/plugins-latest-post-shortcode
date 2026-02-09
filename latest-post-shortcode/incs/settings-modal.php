@@ -6,9 +6,10 @@
  * @package lps
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
+// phpcs:disable WordPress.WP.I18n.TextDomainMismatch
+defined( 'ABSPATH' ) || exit;
+
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
 $the_tax = self::filtered_taxonomies();
 ?>

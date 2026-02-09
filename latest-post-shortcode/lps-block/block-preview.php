@@ -5,11 +5,14 @@
  *
  * @package lps
  */
+
+// phpcs:disable WordPress.WP.I18n.TextDomainMismatch
+// phpcs:disable WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedNamespaceFound
 namespace LPS\Block;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
+defined( 'ABSPATH' ) || exit;
 
 \add_action( 'rest_api_init', __NAMESPACE__ . '\\lps_api_routes' );
 

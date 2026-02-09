@@ -1,4 +1,4 @@
-<?php //phpcs:ignore Generic.Files.LineEndings.InvalidEOLChar
+<?php // phpcs:disable Generic.Files.LineEndings.InvalidEOLChar
 /**
  * Latest Post Shortcode slider output.
  * Text Domain: lps
@@ -6,12 +6,13 @@
  * @package lps
  */
 
+// phpcs:disable WordPress.WP.I18n.TextDomainMismatch
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedNamespaceFound
+
 declare( strict_types = 1 );
 namespace LPS;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
+defined( 'ABSPATH' ) || exit;
 
 \add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\use_script_inline', 0 );
 \add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\use_script_inline', 0 );

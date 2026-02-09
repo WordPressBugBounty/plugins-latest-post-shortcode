@@ -1,30 +1,30 @@
-# Copyright (C) 2025 Iulia Cazan
+# Copyright (C) 2026 Iulia Cazan
 # This file is distributed under the GPL2.
 msgid ""
 msgstr ""
-"Project-Id-Version: Latest Post Shortcode 14.2.0\n"
+"Project-Id-Version: Latest Post Shortcode 14.2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/lps\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-11-15T18:33:46+00:00\n"
+"POT-Creation-Date: 2026-02-09T19:28:20+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: lps\n"
 
 #. Plugin Name of the plugin
 #: latest-post-shortcode.php
-#: incs/assets.php:136
-#: incs/elementor/widgets/class-lps-widgets.php:29
-#: incs/elementor/widgets/class-lps-widgets.php:56
-#: incs/elementor/widgets/class-lps-widgets.php:82
-#: incs/settings-modal.php:16
-#: incs/settings-modal.php:23
-#: latest-post-shortcode.php:3454
-#: latest-post-shortcode.php:3486
-#: latest-post-shortcode.php:3712
+#: incs/assets.php:154
+#: incs/elementor/widgets/class-lps-widgets.php:31
+#: incs/elementor/widgets/class-lps-widgets.php:58
+#: incs/elementor/widgets/class-lps-widgets.php:84
+#: incs/settings-modal.php:17
+#: incs/settings-modal.php:24
+#: latest-post-shortcode.php:3527
+#: latest-post-shortcode.php:3559
+#: latest-post-shortcode.php:3785
 #: lps-block/build/index.js:1
 msgid "Latest Post Shortcode"
 msgstr ""
@@ -49,7 +49,7 @@ msgstr ""
 msgid "https://profiles.wordpress.org/iulia-cazan"
 msgstr ""
 
-#: incs/deprecated-extension.php:21
+#: incs/deprecated-extension.php:20
 msgid "The Latest Post Shortcode Slider Extension is no longer supported, and it has been deactivated. If you need to display posts as a slider you can find the settings integrated in the Latest Post Shortcode plugin"
 msgstr ""
 
@@ -79,54 +79,54 @@ msgstr ""
 msgid "PHP"
 msgstr ""
 
-#: incs/elementor/widgets/class-lps-widgets.php:77
+#: incs/elementor/widgets/class-lps-widgets.php:79
 msgid "Read more"
 msgstr ""
 
 #. Translators: %1$s - icon embed.
-#: incs/elementor/widgets/class-lps-widgets.php:92
+#: incs/elementor/widgets/class-lps-widgets.php:94
 msgid "To configure the shortcode, use the custom button %1$s from the Visual editor or the LPS button from the Text editor (see a sample below)."
 msgstr ""
 
 #. Translators: %1$s - shorcode example.
-#: incs/elementor/widgets/class-lps-widgets.php:97
+#: incs/elementor/widgets/class-lps-widgets.php:99
 msgid "Sample of showing four columns of your posts: %1$s."
 msgstr ""
 
-#: incs/parts/tabs0.php:16
-#: incs/settings-modal.php:40
+#: incs/parts/tabs0.php:15
+#: incs/settings-modal.php:41
 msgid "Output Type"
 msgstr ""
 
-#: incs/parts/tabs0.php:19
+#: incs/parts/tabs0.php:18
 msgid "Version"
 msgstr ""
 
-#: incs/parts/tabs0.php:21
+#: incs/parts/tabs0.php:20
 msgid "1 (deprecated)"
 msgstr ""
 
-#: incs/parts/tabs0.php:22
+#: incs/parts/tabs0.php:21
 msgid "2 (recommended starting with 11.0.0)"
 msgstr ""
 
-#: incs/parts/tabs0.php:25
+#: incs/parts/tabs0.php:24
 msgid "Display as"
 msgstr ""
 
-#: incs/parts/tabs0.php:27
+#: incs/parts/tabs0.php:26
 msgid "grid/list/card"
 msgstr ""
 
 #. Translators: %s - element name.
-#: incs/parts/tabs0.php:28
+#: incs/parts/tabs0.php:27
 #: incs/settings-slider.php:21
 #: incs/settings-slider.php:152
 msgid "slider"
 msgstr ""
 
 #. Translators: %s - type of filtering.
-#: incs/parts/tabs1-exclude.php:19
+#: incs/parts/tabs1-exclude.php:18
 #: incs/parts/tabs1-type-filter.php:95
 #: incs/parts/tabs1-type-filter.php:132
 #: incs/parts/tabs1-type-filter.php:201
@@ -134,26 +134,26 @@ msgid "Filter By %s"
 msgstr ""
 
 #. Translators: %s - type of filtering.
-#: incs/parts/tabs1-exclude.php:19
-#: incs/parts/tabs1-exclude.php:27
-#: incs/parts/tabs1-exclude.php:31
-#: incs/parts/tabs1-exclude.php:47
-#: incs/parts/tabs1-exclude.php:73
-#: incs/parts/tabs1-exclude.php:113
-#: incs/parts/tabs1-exclude.php:118
-#: incs/parts/tabs1-exclude.php:133
+#: incs/parts/tabs1-exclude.php:18
+#: incs/parts/tabs1-exclude.php:26
+#: incs/parts/tabs1-exclude.php:30
+#: incs/parts/tabs1-exclude.php:46
+#: incs/parts/tabs1-exclude.php:72
+#: incs/parts/tabs1-exclude.php:112
+#: incs/parts/tabs1-exclude.php:117
+#: incs/parts/tabs1-exclude.php:132
 msgid "IDs"
 msgstr ""
 
-#: incs/parts/tabs1-exclude.php:23
-#: incs/parts/tabs1-exclude.php:108
+#: incs/parts/tabs1-exclude.php:22
+#: incs/parts/tabs1-exclude.php:107
 msgid "Post"
 msgstr ""
 
 #. Translators: %s - type of filtering.
-#: incs/parts/tabs1-exclude.php:27
-#: incs/parts/tabs1-exclude.php:43
-#: incs/parts/tabs1-exclude.php:69
+#: incs/parts/tabs1-exclude.php:26
+#: incs/parts/tabs1-exclude.php:42
+#: incs/parts/tabs1-exclude.php:68
 #: incs/parts/tabs1-type-filter.php:150
 #: incs/parts/tabs1-type-filter.php:180
 #: incs/parts/tabs1-type-filter.php:220
@@ -162,143 +162,143 @@ msgid "Filter the result by %s."
 msgstr ""
 
 #. Translators: %s - type of filtering.
-#: incs/parts/tabs1-exclude.php:31
-#: incs/parts/tabs1-exclude.php:47
-#: incs/parts/tabs1-exclude.php:73
-#: incs/parts/tabs1-exclude.php:118
-#: incs/parts/tabs1-exclude.php:133
-#: incs/parts/tabs1-exclude.php:148
-#: incs/parts/tabs1-exclude.php:163
+#: incs/parts/tabs1-exclude.php:30
+#: incs/parts/tabs1-exclude.php:46
+#: incs/parts/tabs1-exclude.php:72
+#: incs/parts/tabs1-exclude.php:117
+#: incs/parts/tabs1-exclude.php:132
+#: incs/parts/tabs1-exclude.php:147
+#: incs/parts/tabs1-exclude.php:162
 #: incs/parts/tabs1-type-filter.php:154
 #: incs/parts/tabs1-type-filter.php:184
 #: incs/parts/tabs1-type-filter.php:224
 msgid "Use a comma separated list of %s."
 msgstr ""
 
-#: incs/parts/tabs1-exclude.php:35
-#: incs/parts/tabs1-exclude.php:61
-#: incs/parts/tabs1-exclude.php:87
+#: incs/parts/tabs1-exclude.php:34
+#: incs/parts/tabs1-exclude.php:60
+#: incs/parts/tabs1-exclude.php:86
 msgid "list of IDs"
 msgstr ""
 
-#: incs/parts/tabs1-exclude.php:36
-#: incs/parts/tabs1-exclude.php:62
-#: incs/parts/tabs1-exclude.php:88
-#: incs/parts/tabs1-exclude.php:121
-#: incs/parts/tabs1-exclude.php:136
+#: incs/parts/tabs1-exclude.php:35
+#: incs/parts/tabs1-exclude.php:61
+#: incs/parts/tabs1-exclude.php:87
+#: incs/parts/tabs1-exclude.php:120
+#: incs/parts/tabs1-exclude.php:135
 msgid "Ex: 1,2,3"
 msgstr ""
 
-#: incs/parts/tabs1-exclude.php:39
+#: incs/parts/tabs1-exclude.php:38
 msgid "Parent"
 msgstr ""
 
 #. Translators: %s - type of filtering.
-#: incs/parts/tabs1-exclude.php:43
+#: incs/parts/tabs1-exclude.php:42
 msgid "parents"
+msgstr ""
+
+#: incs/parts/tabs1-exclude.php:51
+#: incs/parts/tabs1-exclude.php:77
+msgid "static"
 msgstr ""
 
 #: incs/parts/tabs1-exclude.php:52
 #: incs/parts/tabs1-exclude.php:78
-msgid "static"
-msgstr ""
-
-#: incs/parts/tabs1-exclude.php:53
-#: incs/parts/tabs1-exclude.php:79
 #: incs/parts/tabs1-type-filter.php:208
 msgid "use the selection"
 msgstr ""
 
-#: incs/parts/tabs1-exclude.php:56
-#: incs/parts/tabs1-exclude.php:82
+#: incs/parts/tabs1-exclude.php:55
+#: incs/parts/tabs1-exclude.php:81
 #: incs/parts/tabs1-type-filter.php:102
 msgid "dynamic"
 msgstr ""
 
-#: incs/parts/tabs1-exclude.php:57
-#: incs/parts/tabs1-exclude.php:83
+#: incs/parts/tabs1-exclude.php:56
+#: incs/parts/tabs1-exclude.php:82
 #: incs/parts/tabs1-type-filter.php:212
 msgid "use the current post context"
 msgstr ""
 
-#: incs/parts/tabs1-exclude.php:65
-#: incs/parts/tabs1-exclude.php:123
+#: incs/parts/tabs1-exclude.php:64
+#: incs/parts/tabs1-exclude.php:122
 #: incs/parts/tabs4.php:24
 msgid "Author"
 msgstr ""
 
 #. Translators: %s - type of filtering.
-#: incs/parts/tabs1-exclude.php:69
-#: incs/parts/tabs1-exclude.php:128
+#: incs/parts/tabs1-exclude.php:68
+#: incs/parts/tabs1-exclude.php:127
 msgid "authors"
 msgstr ""
 
-#: incs/parts/tabs1-exclude.php:93
+#: incs/parts/tabs1-exclude.php:92
 msgid "Exclude Content"
 msgstr ""
 
-#: incs/parts/tabs1-exclude.php:95
+#: incs/parts/tabs1-exclude.php:94
 msgid "Current"
 msgstr ""
 
-#: incs/parts/tabs1-exclude.php:98
+#: incs/parts/tabs1-exclude.php:97
 msgid "the current post"
 msgstr ""
 
-#: incs/parts/tabs1-exclude.php:101
+#: incs/parts/tabs1-exclude.php:100
 #: incs/parts/tabs1-type-filter.php:204
 msgid "Dynamic"
 msgstr ""
 
-#: incs/parts/tabs1-exclude.php:102
+#: incs/parts/tabs1-exclude.php:101
 msgid "Filter the results so that the posts already embedded by previous shortcodes on this page will not repeat."
 msgstr ""
 
-#: incs/parts/tabs1-exclude.php:105
+#: incs/parts/tabs1-exclude.php:104
 msgid "previous shortcodes"
 msgstr ""
 
 #. Translators: %s - type of filtering.
-#: incs/parts/tabs1-exclude.php:112
-#: incs/parts/tabs1-exclude.php:127
-#: incs/parts/tabs1-exclude.php:142
-#: incs/parts/tabs1-exclude.php:157
+#: incs/parts/tabs1-exclude.php:111
+#: incs/parts/tabs1-exclude.php:126
+#: incs/parts/tabs1-exclude.php:141
+#: incs/parts/tabs1-exclude.php:156
 msgid "Exclude posts from the results by %s."
 msgstr ""
 
 #. Translators: %s - type of filtering.
-#: incs/parts/tabs1-exclude.php:138
+#: incs/parts/tabs1-exclude.php:137
 #: incs/parts/tabs1-type-filter.php:201
 #: incs/parts/tabs1-type-filter.php:216
 msgid "Tag"
 msgstr ""
 
-#: incs/parts/tabs1-exclude.php:143
+#: incs/parts/tabs1-exclude.php:142
 msgid "tags"
 msgstr ""
 
 #. Translators: %s - type of filtering.
-#: incs/parts/tabs1-exclude.php:148
-#: incs/parts/tabs1-exclude.php:163
+#: incs/parts/tabs1-exclude.php:147
+#: incs/parts/tabs1-exclude.php:162
 #: incs/parts/tabs1-type-filter.php:154
 #: incs/parts/tabs1-type-filter.php:184
 #: incs/parts/tabs1-type-filter.php:224
 msgid "slugs"
 msgstr ""
 
-#: incs/parts/tabs1-exclude.php:151
-#: incs/parts/tabs1-exclude.php:166
+#: incs/parts/tabs1-exclude.php:150
+#: incs/parts/tabs1-exclude.php:165
 #: incs/parts/tabs1-type-filter.php:159
 #: incs/parts/tabs1-type-filter.php:189
 #: incs/parts/tabs1-type-filter.php:229
 msgid "Ex: white,grey"
 msgstr ""
 
-#: incs/parts/tabs1-exclude.php:153
+#: incs/parts/tabs1-exclude.php:152
 msgid "Category"
 msgstr ""
 
-#: incs/parts/tabs1-exclude.php:158
+#: incs/parts/tabs1-exclude.php:157
 msgid "categories"
 msgstr ""
 
@@ -433,7 +433,7 @@ msgstr ""
 
 #: incs/parts/tabs1-type-filter.php:207
 #: incs/parts/tabs1-type-filter.php:240
-#: incs/parts/tabs2-pagination.php:32
+#: incs/parts/tabs2-pagination.php:31
 #: incs/parts/tabs3.php:97
 #: incs/parts/tabs5.php:100
 #: incs/parts/tabs5.php:202
@@ -459,8 +459,8 @@ msgstr ""
 
 #: incs/parts/tabs1-type-filter.php:211
 #: incs/parts/tabs1-type-filter.php:242
-#: incs/parts/tabs2-pagination.php:33
-#: incs/parts/tabs2-pagination.php:105
+#: incs/parts/tabs2-pagination.php:32
+#: incs/parts/tabs2-pagination.php:104
 #: incs/parts/tabs5.php:101
 #: incs/parts/tabs5.php:203
 #: incs/parts/tabs5.php:210
@@ -515,193 +515,193 @@ msgstr ""
 msgid "search key"
 msgstr ""
 
-#: incs/parts/tabs1.php:16
-#: incs/settings-modal.php:41
+#: incs/parts/tabs1.php:15
+#: incs/settings-modal.php:42
 msgid "Content & Filters"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:16
+#: incs/parts/tabs2-pagination.php:15
 msgid "Posts Limit"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:18
+#: incs/parts/tabs2-pagination.php:17
 msgid "Number of Posts"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:19
+#: incs/parts/tabs2-pagination.php:18
 msgid "This is the maximum number of posts the shortcode will expose."
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:24
+#: incs/parts/tabs2-pagination.php:23
 msgid "Pagination Settings"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:27
+#: incs/parts/tabs2-pagination.php:26
 msgid "Pagination"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:29
+#: incs/parts/tabs2-pagination.php:28
 msgid "The pagination limits the results to the number specified above. Remove the number of posts value if you do not want to limit the results."
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:37
+#: incs/parts/tabs2-pagination.php:36
 msgid "Records Per Page"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:40
+#: incs/parts/tabs2-pagination.php:39
 msgid "Offset"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:43
+#: incs/parts/tabs2-pagination.php:42
 msgid "Visibility"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:45
+#: incs/parts/tabs2-pagination.php:44
 msgid "hide"
 msgstr ""
 
 #. Translators: %s - range size.
-#: incs/parts/tabs2-pagination.php:47
-#: incs/parts/tabs2-pagination.php:52
-#: incs/parts/tabs2-pagination.php:59
-#: incs/parts/tabs2-pagination.php:66
-#: incs/parts/tabs2-pagination.php:71
+#: incs/parts/tabs2-pagination.php:46
+#: incs/parts/tabs2-pagination.php:51
+#: incs/parts/tabs2-pagination.php:58
+#: incs/parts/tabs2-pagination.php:65
+#: incs/parts/tabs2-pagination.php:70
 msgid "show"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:47
+#: incs/parts/tabs2-pagination.php:46
 msgid "prev / next"
 msgstr ""
 
 #. Translators: %s - range size.
-#: incs/parts/tabs2-pagination.php:52
-#: incs/parts/tabs2-pagination.php:59
-#: incs/parts/tabs2-pagination.php:66
+#: incs/parts/tabs2-pagination.php:51
+#: incs/parts/tabs2-pagination.php:58
+#: incs/parts/tabs2-pagination.php:65
 msgid "range of %s"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:71
+#: incs/parts/tabs2-pagination.php:70
 msgid "`load more` button"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:74
+#: incs/parts/tabs2-pagination.php:73
 #: incs/settings-slider.php:133
 #: incs/settings-slider.php:179
 #: incs/settings-slider.php:208
 msgid "infinite scroll"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:74
+#: incs/parts/tabs2-pagination.php:73
 msgid "load more on scroll"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:79
+#: incs/parts/tabs2-pagination.php:78
 msgid "`Load more` Text"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:80
+#: incs/parts/tabs2-pagination.php:79
 msgid "This is the text that will be displayed on the button."
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:80
+#: incs/parts/tabs2-pagination.php:79
 #: incs/parts/tabs3.php:139
 #: incs/parts/tabs5.php:153
 msgid "Do not use brackets, these are shortcode delimiters."
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:81
+#: incs/parts/tabs2-pagination.php:80
 msgid "Custom button text"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:81
-#: latest-post-shortcode.php:1025
+#: incs/parts/tabs2-pagination.php:80
+#: latest-post-shortcode.php:1088
 msgid "Load more"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:84
+#: incs/parts/tabs2-pagination.php:83
 #: incs/parts/tabs4.php:117
 msgid "Position"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:86
+#: incs/parts/tabs2-pagination.php:85
 msgid "above the results"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:87
+#: incs/parts/tabs2-pagination.php:86
 msgid "below the results"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:88
+#: incs/parts/tabs2-pagination.php:87
 msgid "above & below the result"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:92
+#: incs/parts/tabs2-pagination.php:91
 msgid "Alignment"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:94
+#: incs/parts/tabs2-pagination.php:93
 #: incs/parts/tabs5.php:166
 msgid "left"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:95
+#: incs/parts/tabs2-pagination.php:94
 #: incs/parts/tabs5.php:167
 #: incs/parts/tabs5.php:174
 msgid "center"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:96
+#: incs/parts/tabs2-pagination.php:95
 #: incs/parts/tabs5.php:168
 msgid "right"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:97
+#: incs/parts/tabs2-pagination.php:96
 #: incs/parts/tabs5.php:177
 msgid "space between"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:101
+#: incs/parts/tabs2-pagination.php:100
 msgid "AJAX"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:108
+#: incs/parts/tabs2-pagination.php:107
 msgid "no spinner"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:109
+#: incs/parts/tabs2-pagination.php:108
 msgid "light spinner"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:110
+#: incs/parts/tabs2-pagination.php:109
 msgid "dark spinner"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:114
+#: incs/parts/tabs2-pagination.php:113
 msgid "Elements Style"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:115
+#: incs/parts/tabs2-pagination.php:114
 msgid "Check this option if you want to show pagination elements all the time, including disabled elements such as going to the: first page, previous page, next page, last page."
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:118
+#: incs/parts/tabs2-pagination.php:117
 msgid "all pagination elements"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:121
+#: incs/parts/tabs2-pagination.php:120
 msgid "Total"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:124
+#: incs/parts/tabs2-pagination.php:123
 msgid "show total items"
 msgstr ""
 
 #. Translators: %s - the placeholder string.
-#: incs/parts/tabs2-pagination.php:131
+#: incs/parts/tabs2-pagination.php:130
 msgid "Write the text for the total items. Place %s where the total value should appear."
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:133
+#: incs/parts/tabs2-pagination.php:132
 #: incs/parts/tabs5.php:249
 #: incs/parts/tabs5.php:261
 #: incs/parts/tabs5.php:366
@@ -709,27 +709,27 @@ msgid "Leave empty if you want to use the default values."
 msgstr ""
 
 #. Translators: %d - total value.
-#: incs/parts/tabs2-pagination.php:135
+#: incs/parts/tabs2-pagination.php:134
 msgid "Custom `Total items: %d` text"
 msgstr ""
 
 #. Translators: %d - total value.
-#: incs/parts/tabs2-pagination.php:135
-#: latest-post-shortcode.php:1358
+#: incs/parts/tabs2-pagination.php:134
+#: latest-post-shortcode.php:1423
 msgid "Total items: %d"
 msgstr ""
 
-#: incs/parts/tabs2-pagination.php:141
+#: incs/parts/tabs2-pagination.php:140
 msgid "The pagination is not available for the slider output type."
 msgstr ""
 
-#: incs/parts/tabs2.php:16
-#: incs/settings-modal.php:42
+#: incs/parts/tabs2.php:15
+#: incs/settings-modal.php:43
 msgid "Limit & Pagination"
 msgstr ""
 
 #: incs/parts/tabs3.php:16
-#: incs/settings-modal.php:43
+#: incs/settings-modal.php:44
 msgid "Display Settings"
 msgstr ""
 
@@ -754,9 +754,9 @@ msgstr ""
 #: incs/parts/tabs5.php:272
 #: incs/settings-slider.php:99
 #: incs/settings-slider.php:100
-#: latest-post-shortcode.php:338
-#: latest-post-shortcode.php:343
-#: latest-post-shortcode.php:412
+#: latest-post-shortcode.php:341
+#: latest-post-shortcode.php:346
+#: latest-post-shortcode.php:415
 msgid "title"
 msgstr ""
 
@@ -900,7 +900,7 @@ msgid "Add a custom text to be displayed if no content matches the settings."
 msgstr ""
 
 #: incs/parts/tabs4.php:16
-#: incs/settings-modal.php:44
+#: incs/settings-modal.php:45
 msgid "Extra Options"
 msgstr ""
 
@@ -909,13 +909,13 @@ msgid "Please note that if you are using a custom output template defined in you
 msgstr ""
 
 #: incs/parts/tabs4.php:25
-#: latest-post-shortcode.php:3191
+#: latest-post-shortcode.php:3265
 msgid "Caption"
 msgstr ""
 
 #: incs/parts/tabs4.php:26
 #: incs/parts/tabs4.php:135
-#: latest-post-shortcode.php:3167
+#: latest-post-shortcode.php:3241
 msgid "Mime Type"
 msgstr ""
 
@@ -1005,7 +1005,7 @@ msgstr ""
 
 #: incs/parts/tabs5.php:16
 #: incs/parts/tabs5.php:19
-#: incs/settings-modal.php:45
+#: incs/settings-modal.php:46
 msgid "Style"
 msgstr ""
 
@@ -1126,8 +1126,8 @@ msgid "Custom all text"
 msgstr ""
 
 #: incs/parts/tabs5.php:151
-#: latest-post-shortcode.php:1360
-#: latest-post-shortcode.php:1578
+#: latest-post-shortcode.php:1425
+#: latest-post-shortcode.php:1643
 msgid "All"
 msgstr ""
 
@@ -1220,7 +1220,7 @@ msgid "default mood"
 msgstr ""
 
 #: incs/parts/tabs5.php:223
-#: latest-post-shortcode.php:640
+#: latest-post-shortcode.php:686
 msgid "-- unspecified --"
 msgstr ""
 
@@ -1379,35 +1379,35 @@ msgstr ""
 msgid "Small"
 msgstr ""
 
-#: incs/settings-modal.php:16
+#: incs/settings-modal.php:17
 msgid "Settings Modal"
 msgstr ""
 
-#: incs/settings-modal.php:18
+#: incs/settings-modal.php:19
 msgid "Close"
 msgstr ""
 
-#: incs/settings-modal.php:27
-#: incs/settings-modal.php:32
+#: incs/settings-modal.php:28
+#: incs/settings-modal.php:33
 msgid "Preview"
 msgstr ""
 
-#: incs/settings-modal.php:28
+#: incs/settings-modal.php:29
 msgid "Embed"
 msgstr ""
 
-#: incs/settings-modal.php:35
+#: incs/settings-modal.php:36
 msgid "Reset cache"
 msgstr ""
 
-#: incs/settings-modal.php:38
-#: latest-post-shortcode.php:3401
+#: incs/settings-modal.php:39
+#: latest-post-shortcode.php:3476
 #: lps-block/build/index.js:1
 msgid "Settings"
 msgstr ""
 
-#: incs/settings-modal.php:64
 #: incs/settings-modal.php:65
+#: incs/settings-modal.php:66
 msgid "Scroll up"
 msgstr ""
 
@@ -1487,7 +1487,7 @@ msgstr ""
 
 #: incs/settings-slider.php:99
 #: incs/settings-slider.php:101
-#: latest-post-shortcode.php:415
+#: latest-post-shortcode.php:418
 msgid "trimmed excerpt"
 msgstr ""
 
@@ -1555,244 +1555,244 @@ msgstr ""
 msgid "breakpoint"
 msgstr ""
 
-#: latest-post-shortcode.php:291
+#: latest-post-shortcode.php:294
 msgid "months"
 msgstr ""
 
-#: latest-post-shortcode.php:292
+#: latest-post-shortcode.php:295
 msgid "weeks"
 msgstr ""
 
-#: latest-post-shortcode.php:293
+#: latest-post-shortcode.php:296
 msgid "days"
 msgstr ""
 
-#: latest-post-shortcode.php:294
+#: latest-post-shortcode.php:297
 msgid "hours"
 msgstr ""
 
-#: latest-post-shortcode.php:308
-#: latest-post-shortcode.php:313
-#: latest-post-shortcode.php:411
+#: latest-post-shortcode.php:311
+#: latest-post-shortcode.php:316
+#: latest-post-shortcode.php:414
 msgid "date"
 msgstr ""
 
-#: latest-post-shortcode.php:318
-#: latest-post-shortcode.php:323
+#: latest-post-shortcode.php:321
+#: latest-post-shortcode.php:326
 msgid "modified date"
 msgstr ""
 
-#: latest-post-shortcode.php:328
-#: latest-post-shortcode.php:333
+#: latest-post-shortcode.php:331
+#: latest-post-shortcode.php:336
 msgid "menu order"
 msgstr ""
 
-#: latest-post-shortcode.php:348
-#: latest-post-shortcode.php:353
+#: latest-post-shortcode.php:351
+#: latest-post-shortcode.php:356
 msgid "ID"
 msgstr ""
 
-#: latest-post-shortcode.php:358
-#: latest-post-shortcode.php:363
+#: latest-post-shortcode.php:361
+#: latest-post-shortcode.php:366
 msgid "text meta value"
 msgstr ""
 
-#: latest-post-shortcode.php:368
-#: latest-post-shortcode.php:373
+#: latest-post-shortcode.php:371
+#: latest-post-shortcode.php:376
 msgid "numeric meta value"
 msgstr ""
 
-#: latest-post-shortcode.php:378
+#: latest-post-shortcode.php:381
 msgid "random *"
 msgstr ""
 
-#: latest-post-shortcode.php:383
+#: latest-post-shortcode.php:386
 msgid "relevance *"
 msgstr ""
 
-#: latest-post-shortcode.php:390
+#: latest-post-shortcode.php:393
 msgid "before title"
 msgstr ""
 
-#: latest-post-shortcode.php:391
+#: latest-post-shortcode.php:394
 msgid "after title"
 msgstr ""
 
-#: latest-post-shortcode.php:392
+#: latest-post-shortcode.php:395
 msgid "before image"
 msgstr ""
 
-#: latest-post-shortcode.php:393
+#: latest-post-shortcode.php:396
 msgid "after image"
 msgstr ""
 
-#: latest-post-shortcode.php:394
+#: latest-post-shortcode.php:397
 msgid "before text"
 msgstr ""
 
-#: latest-post-shortcode.php:395
+#: latest-post-shortcode.php:398
 msgid "after text"
 msgstr ""
 
-#: latest-post-shortcode.php:396
+#: latest-post-shortcode.php:399
 msgid "before 'read more'"
 msgstr ""
 
-#: latest-post-shortcode.php:397
+#: latest-post-shortcode.php:400
 msgid "after 'read more'"
 msgstr ""
 
-#: latest-post-shortcode.php:398
+#: latest-post-shortcode.php:401
 msgid "before date"
 msgstr ""
 
-#: latest-post-shortcode.php:399
+#: latest-post-shortcode.php:402
 msgid "after date"
 msgstr ""
 
-#: latest-post-shortcode.php:413
+#: latest-post-shortcode.php:416
 msgid "excerpt"
 msgstr ""
 
-#: latest-post-shortcode.php:414
+#: latest-post-shortcode.php:417
 msgid "content"
 msgstr ""
 
-#: latest-post-shortcode.php:416
+#: latest-post-shortcode.php:419
 msgid "trimmed content"
 msgstr ""
 
-#: latest-post-shortcode.php:641
+#: latest-post-shortcode.php:687
 msgid "vertical card"
 msgstr ""
 
-#: latest-post-shortcode.php:642
+#: latest-post-shortcode.php:688
 msgid "horizontal card: image + info"
 msgstr ""
 
-#: latest-post-shortcode.php:643
+#: latest-post-shortcode.php:689
 msgid "horizontal card: info + image"
 msgstr ""
 
-#: latest-post-shortcode.php:644
+#: latest-post-shortcode.php:690
 msgid "overlay"
 msgstr ""
 
 #. Translators: %1$d - current page, %2$d - total pages.
-#: latest-post-shortcode.php:1050
+#: latest-post-shortcode.php:1113
 msgid "Page %1$d of %2$d"
 msgstr ""
 
-#: latest-post-shortcode.php:1054
-#: latest-post-shortcode.php:1067
-#: latest-post-shortcode.php:1069
-#: latest-post-shortcode.php:1086
-#: latest-post-shortcode.php:1093
-#: latest-post-shortcode.php:1095
+#: latest-post-shortcode.php:1117
+#: latest-post-shortcode.php:1130
+#: latest-post-shortcode.php:1132
+#: latest-post-shortcode.php:1149
+#: latest-post-shortcode.php:1156
+#: latest-post-shortcode.php:1158
 msgid "First page"
 msgstr ""
 
-#: latest-post-shortcode.php:1057
-#: latest-post-shortcode.php:1076
-#: latest-post-shortcode.php:1081
+#: latest-post-shortcode.php:1120
+#: latest-post-shortcode.php:1139
+#: latest-post-shortcode.php:1144
 msgid "Previous page"
 msgstr ""
 
-#: latest-post-shortcode.php:1060
-#: latest-post-shortcode.php:1109
-#: latest-post-shortcode.php:1111
+#: latest-post-shortcode.php:1123
+#: latest-post-shortcode.php:1172
+#: latest-post-shortcode.php:1174
 msgid "Next page"
 msgstr ""
 
-#: latest-post-shortcode.php:1063
-#: latest-post-shortcode.php:1116
-#: latest-post-shortcode.php:1118
-#: latest-post-shortcode.php:1124
+#: latest-post-shortcode.php:1126
+#: latest-post-shortcode.php:1179
+#: latest-post-shortcode.php:1181
+#: latest-post-shortcode.php:1187
 msgid "Last page"
 msgstr ""
 
-#: latest-post-shortcode.php:1078
+#: latest-post-shortcode.php:1141
 msgid "Previous"
 msgstr ""
 
 #. Translators: %1$d - page number.
-#: latest-post-shortcode.php:1099
-#: latest-post-shortcode.php:1102
+#: latest-post-shortcode.php:1162
+#: latest-post-shortcode.php:1165
 msgid "Page %1$d"
 msgstr ""
 
 #. Translators: %s the date difference.
-#: latest-post-shortcode.php:1162
+#: latest-post-shortcode.php:1225
 msgctxt "%s = human-readable time difference"
 msgid "%s ago"
 msgstr ""
 
-#: latest-post-shortcode.php:3099
+#: latest-post-shortcode.php:3173
 msgid "By"
 msgstr ""
 
-#: latest-post-shortcode.php:3402
+#: latest-post-shortcode.php:3477
 msgid "Plugin URL"
 msgstr ""
 
-#: latest-post-shortcode.php:3456
+#: latest-post-shortcode.php:3529
 msgid "A huge thanks in advance!"
 msgstr ""
 
 #. Translators: %s - donate URL.
-#: latest-post-shortcode.php:3461
+#: latest-post-shortcode.php:3534
 msgid "If you find the plugin useful and would like to support my work, please consider making a <a href=\"%s\" target=\"_blank\">donation</a>."
 msgstr ""
 
 #. Translators: %s - rating.
-#: latest-post-shortcode.php:3465
+#: latest-post-shortcode.php:3538
 msgid "It would make me very happy if you would leave a %s rating."
 msgstr ""
 
 #. Translators: %1$s - plugin name.
-#: latest-post-shortcode.php:3490
+#: latest-post-shortcode.php:3563
 msgid "%1$s plugin was activated!"
 msgstr ""
 
 #. Translators: %1$s - plugins URL, %2$s - heart, %3$s - extensions URL, %4$s - star, %5$s - pro.
-#: latest-post-shortcode.php:3494
+#: latest-post-shortcode.php:3567
 msgid "%5$sCheck out my other <a href=\"%1$s\" target=\"_blank\" rel=\"noreferrer\">%2$s free plugins</a> on WordPress.org and the <a href=\"%3$s\" target=\"_blank\" rel=\"noreferrer\">%4$s other extensions</a> available!"
 msgstr ""
 
-#: latest-post-shortcode.php:3514
+#: latest-post-shortcode.php:3587
 msgid "Dismiss this notice."
 msgstr ""
 
-#: latest-post-shortcode.php:3729
+#: latest-post-shortcode.php:3802
 msgid "let WordPress decide when to load the LPS assets"
 msgstr ""
 
-#: latest-post-shortcode.php:3730
+#: latest-post-shortcode.php:3803
 msgid "(recommended)"
 msgstr ""
 
-#: latest-post-shortcode.php:3734
+#: latest-post-shortcode.php:3807
 msgid "always load the LPS assets"
 msgstr ""
 
-#: latest-post-shortcode.php:3735
+#: latest-post-shortcode.php:3808
 msgid "(sometimes needed for compatibility with other editors)"
 msgstr ""
 
-#: latest-post-shortcode.php:3739
+#: latest-post-shortcode.php:3812
 msgid "load the legacy styles"
 msgstr ""
 
-#: latest-post-shortcode.php:3740
+#: latest-post-shortcode.php:3813
 msgid "(version 1 is deprecated, use it only for backward compatibility)"
 msgstr ""
 
 #. Translators: %s - plugin icon.
-#: latest-post-shortcode.php:3748
+#: latest-post-shortcode.php:3821
 msgid "hide the %s LPS button in the Classic editor for the specified roles (if multiple, separate by comma)"
 msgstr ""
 
-#: lps-block/block-preview.php:202
+#: lps-block/block-preview.php:205
 msgid "The shortcode found no results. If you provided a fallback message that will be shown on the front-end."
 msgstr ""
 

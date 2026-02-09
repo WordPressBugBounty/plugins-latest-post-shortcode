@@ -5,7 +5,7 @@
  * Description: This plugin allows you to display a dynamic content selection from your posts and pages. This can be embedded as a shortcode, as a Gutenberg block, or as an Elementor widget.
  * Text Domain: lps
  * Domain Path: /langs
- * Version:     14.2.1
+ * Version:     14.2.2
  * Author:      Iulia Cazan
  * Author URI:  https://profiles.wordpress.org/iulia-cazan
  * Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JJA37EHZXWUTJ
@@ -29,8 +29,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+// phpcs:disable WordPress.WP.I18n.TextDomainMismatch
+defined( 'ABSPATH' ) || exit;
+
 // Define the plugin version.
-define( 'LPS_PLUGIN_VERSION', 14.21 );
+define( 'LPS_PLUGIN_VERSION', 14.22 );
 define( 'LPS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LPS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'LPS_PLUGIN_SLUG', 'lps' );
@@ -516,9 +519,10 @@ class Latest_Post_Shortcode {
 					self::lps_assess_page_content();
 				}
 
+				// phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 				$text  = ! empty( $post->post_content ) ? $post->post_content : '';
 				$text .= $lps_assess_cpa;
-				$text .= serialize( get_option( 'widget_text' ) ) . serialize( get_option( 'widget_custom_html' ) ); // phpcs:ignore
+				$text .= serialize( get_option( 'widget_text' ) ) . serialize( get_option( 'widget_custom_html' ) );
 				$text  = str_replace( '\u0022', '"', $text );
 
 				if ( empty( $text ) ) {
@@ -548,7 +552,7 @@ class Latest_Post_Shortcode {
 		];
 
 		if ( ! empty( $wp_post_statuses ) ) {
-			$exclude = [ 'auto-draft', 'request-confirmed', 'request-pending', 'request-failed', 'request-completed', 'trash', 'wc-pending', 'wc-processing', 'wc-on-hold', 'wc-completed', 'wc-cancelled', 'wc-refunded', 'wc-failed', 'wc-checkout-draft', 'flamingo-spam', 'in-progress', 'failed' ];
+			$exclude = [ 'auto-draft', 'request-confirmed', 'request-pending', 'request-failed', 'request-completed', 'trash', 'wc-pending', 'wc-processing', 'wc-on-hold', 'wc-completed', 'wc-cancelled', 'wc-refunded', 'wc-failed', 'wc-checkout-draft', 'flamingo-spam', 'in-progress', 'failed', 'future', 'draft', 'pending' ];
 			foreach ( $wp_post_statuses as $t => $v ) {
 				if ( $v->public ) {
 					$statuses['public'][ $t ] = $v->label;
@@ -558,6 +562,8 @@ class Latest_Post_Shortcode {
 			}
 		}
 		self::get_cpts();
+
+		// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 		/**
 		 * Allow external scripts to alter the usable statuses.
@@ -569,6 +575,46 @@ class Latest_Post_Shortcode {
 		$statuses = apply_filters( 'lps/filter_statuses', $statuses );
 
 		return $statuses;
+	}
+
+	/**
+	 * Return the allowed statuses on the front-end.
+	 */
+	public static function get_fed_allowed_statuses(): array {
+		static $allowed_statuses;
+
+		if ( ! isset( $allowed_statuses ) ) {
+			$allowed_statuses = [ 'publish', 'inherit' ];
+
+			$statuses = self::get_statuses();
+			if ( ! empty( $statuses['public'] ) && is_array( $statuses['public'] ) ) {
+				foreach ( $statuses['public'] as $slug => $name ) {
+					if ( is_string( $slug ) ) {
+						$allowed_statuses[] = $slug;
+					}
+				}
+			}
+			if ( ! empty( $statuses['private'] ) && is_array( $statuses['private'] ) ) {
+				foreach ( $statuses['private'] as $slug => $name ) {
+					if ( is_string( $slug ) ) {
+						$allowed_statuses[] = $slug;
+					}
+				}
+			}
+
+			$allowed_statuses = array_unique( $allowed_statuses );
+
+			/**
+			 * Allow external scripts to alter the usable statuses.
+			 *
+			 * @since 14.2.2
+			 *
+			 * @param array $allowed_statuses Filtered the allowed statuses.
+			 */
+			$allowed_statuses = apply_filters( 'lps/filter_front_end_statuses', $allowed_statuses );
+		}
+
+		return $allowed_statuses;
 	}
 
 	/**
@@ -778,12 +824,13 @@ class Latest_Post_Shortcode {
 	 * @param bool   $excerpt True if this represents an excerpt.
 	 * @param string $suffix  Maybe some trailing extra chars for truncated string.
 	 */
-	public static function get_short_text( $text, $limit, $excerpt = false, $suffix = '' ): string { // phpcs:ignore
+	public static function get_short_text( $text, $limit, $excerpt = false, $suffix = '' ): string {
 		if ( empty( $text ) ) {
 			// Fail-fast.
 			return '';
 		}
 
+		// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound
 		$hook = $excerpt ? 'the_excerpt' : 'the_content';
 		$text = wp_strip_all_tags( $text );
 		$text = preg_replace( '~\[[^\]]+\]~', '', $text );
@@ -853,7 +900,7 @@ class Latest_Post_Shortcode {
 	 *
 	 * @param string $text Initial string.
 	 */
-	public static function cleanup_tralining_punctuation( $text = '' ): string { //phpcs:ignore
+	public static function cleanup_tralining_punctuation( $text = '' ): string {
 		if ( ! empty( $text ) && is_string( $text ) ) {
 			$text = trim( $text, " \t\n\r\0\x0B-.,:|?!-_`'…" );
 		}
@@ -872,7 +919,10 @@ class Latest_Post_Shortcode {
 			$wpdb->esc_like( '_transient_lps-' ) . '%',
 			$wpdb->esc_like( '_transient_timeout_lps-' ) . '%'
 		);
-		$wpdb->query( $tmp_query ); // phpcs:ignore
+
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->query( $tmp_query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	}
 
 	/**
@@ -956,15 +1006,18 @@ class Latest_Post_Shortcode {
 				}
 				set_query_var( 'page', (int) $ppage );
 
+				// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 				global $is_lps_ajax_call, $is_ajax_shortcode_id, $lps_current_queried_object_id;
 				$is_lps_ajax_call              = true;
 				$is_ajax_shortcode_id          = str_replace( '-wrap', '', $shid );
 				$lps_current_queried_object_id = (int) $current;
-				echo self::latest_selected_content( $args ); // phpcs:ignore
+				echo self::latest_selected_content( $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 		}
 		die();
 	}
+
+	// phpcs:disable Universal.NamingConventions.NoReservedKeywordParameterNames.classFound
 
 	/**
 	 * Return the content generated for plugin pagination with the specific arguments.
@@ -979,7 +1032,7 @@ class Latest_Post_Shortcode {
 	 * @param int    $site_initial  Initial site.
 	 * @param int    $site_expected Expected/requested site.
 	 */
-	public static function lps_pagination( $total = 1, $per_page = 10, $range = 4, $shortcode_id = '', $class = '', $args = [], $maxpg = 0, $site_initial = 0, $site_expected = 0 ): string { // phpcs:ignore
+	public static function lps_pagination( $total = 1, $per_page = 10, $range = 4, $shortcode_id = '', $class = '', $args = [], $maxpg = 0, $site_initial = 0, $site_expected = 0 ): string {
 		$current_page = self::get_current_page();
 		wp_reset_postdata();
 
@@ -1159,12 +1212,12 @@ class Latest_Post_Shortcode {
 	 *
 	 * @param int $id The post ID.
 	 */
-	public static function relative_time( $id = null ): string { // phpcs:ignore
+	public static function relative_time( $id = null ): string {
 		if ( function_exists( 'current_datetime' ) ) {
 			$date = current_datetime();
-			$now  = ! empty( $date->date ) ? strtotime( $date->date ) : current_time( 'timestamp' ); // phpcs:ignore
+			$now  = ! empty( $date->date ) ? strtotime( $date->date ) : time();
 		} else {
-			$now = current_time( 'timestamp' ); // phpcs:ignore
+			$now = time();
 		}
 
 		return sprintf(
@@ -1211,13 +1264,14 @@ class Latest_Post_Shortcode {
 	 * Returns true if the execution is triggered in the editor.
 	 */
 	public static function is_in_the_editor(): bool {
-		// phpcs:disable
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended
+		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$context = $_REQUEST['context'] ?? '';
 		$action  = $_REQUEST['action'] ?? '';
-		// phpcs:enable
 
 		$in_the_editor = defined( 'REST_REQUEST' ) && REST_REQUEST && ! empty( $context )
-			&& ( 'edit' === $context || 'edit' === $action ); // phpcs:ignore
+			&& ( 'edit' === $context || 'edit' === $action );
 
 		if ( empty( $in_the_editor ) ) {
 			$pagination_link = get_pagenum_link( 1 );
@@ -1246,11 +1300,12 @@ class Latest_Post_Shortcode {
 	 * Restore the filters that were previously removed.
 	 */
 	public static function maybe_restore_post_class_filters() {
+		// phpcs:disable WordPress.WP.GlobalVariablesOverride.Prohibited
 		global $wp_filter, $lps_backup_wp_filters;
 
 		// Restore the previous filters.
 		if ( ! empty( $lps_backup_wp_filters ) ) {
-			$wp_filter['post_class'] = $lps_backup_wp_filters; // phpcs:ignore
+			$wp_filter['post_class'] = $lps_backup_wp_filters;
 		}
 	}
 
@@ -1274,10 +1329,10 @@ class Latest_Post_Shortcode {
 			$no_links = array_intersect( self::$tile_pattern_ver2, self::$tile_pattern_nolinks );
 		}
 
-		if ( ! empty( $args['url'] ) && ! in_array( $elems, $links ) ) { // phpcs:ignore
+		if ( ! empty( $args['url'] ) && ! in_array( $elems, $links ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 			// Requires links, but the elements are wrong.
 			$args['elements'] = reset( $links );
-		} elseif ( empty( $args['url'] ) && ! in_array( $elems, $no_links ) ) { // phpcs:ignore
+		} elseif ( empty( $args['url'] ) && ! in_array( $elems, $no_links ) ) { // phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict
 			// Requires no links, but the elements are wrong.
 			$args['elements'] = reset( $no_links );
 		}
@@ -1290,7 +1345,7 @@ class Latest_Post_Shortcode {
 	 *
 	 * @param array $args Array of shortcode arguments.
 	 */
-	public static function latest_selected_content( $args ): string { // phpcs:ignore
+	public static function latest_selected_content( $args ): string {
 		if ( empty( $args ) ) {
 			// Fail-fast, too bad, this is used wrong, there is no argument.
 			return '';
@@ -1631,6 +1686,10 @@ class Latest_Post_Shortcode {
 
 		if ( ! empty( $args['status'] ) ) {
 			$qargs['post_status'] = explode( ',', trim( $args['status'] ) );
+
+			// Attempt to filter one more time the statuses.
+			$allowed_statuses     = self::get_fed_allowed_statuses();
+			$qargs['post_status'] = array_intersect( $qargs['post_status'], $allowed_statuses );
 			if ( in_array( 'private', $qargs['post_status'], true ) ) {
 				if ( ! is_user_logged_in() ) {
 					$pkey = array_search( 'private', $qargs['post_status'], true );
@@ -1640,6 +1699,7 @@ class Latest_Post_Shortcode {
 				}
 			}
 		}
+
 		if ( empty( $qargs['post_status'] ) ) {
 			return '';
 		}
@@ -1653,7 +1713,7 @@ class Latest_Post_Shortcode {
 			$qargs['order']   = self::$orderby_options[ $orderby ]['order'];
 			$qargs['orderby'] = self::$orderby_options[ $orderby ]['orderby'];
 			if ( substr_count( $qargs['orderby'], 'meta_value' ) ) {
-				$qargs['meta_key'] = $args['orderby_meta']; // phpcs:ignore
+				$qargs['meta_key'] = $args['orderby_meta']; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 			}
 		}
 
@@ -1662,6 +1722,7 @@ class Latest_Post_Shortcode {
 		$is_lps_search  = ! empty( $args['search'] );
 
 		// Make sure we do not loop in the current page.
+		// phpcs:disable WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in
 		if ( ! ( $is_lps_archive || $is_lps_search ) ) {
 			if ( ! empty( $post->ID ) ) {
 				$qargs['post__not_in'] = [ $post->ID ];
@@ -1768,7 +1829,7 @@ class Latest_Post_Shortcode {
 			$qargs['s'] = wp_strip_all_tags( esc_html( $args['search'] ) );
 		}
 
-		$qargs['tax_query'] = []; // phpcs:ignore
+		$qargs['tax_query'] = []; // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query
 
 		if ( $is_lps_archive ) {
 			$option_per_page         = get_option( 'posts_per_page' );
@@ -2051,7 +2112,7 @@ class Latest_Post_Shortcode {
 				self::$args->site_expected
 			);
 
-			if ( ! empty( $is_lps_ajax ) ) { // phpcs:ignore
+			if ( ! empty( $is_lps_ajax ) ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf
 				// No need to put again the top level.
 			} else {
 				$use_data_args = false;
@@ -2089,7 +2150,7 @@ class Latest_Post_Shortcode {
 						$data_exclude = ' data-exclude="' . esc_js( implode( ',', $lps_current_post_embedded_item_ids ) ) . '"';
 					}
 
-					echo '<!-- lps/start --><div id="' . esc_attr( self::$args->shortcode_id ) . '-wrap" data-args="' . esc_js( $data_args_string ) . '" data-current="' . get_the_ID() . '" data-perpage="' . $pagination_per_page . '" data-total="' . $found_posts . '" class="lps-top-section-wrap' . $maybe_spinner . '" data-url="' . esc_url( \get_pagenum_link( 1 ) ) . '"' . $data_exclude . '>'; // phpcs:ignore
+					echo '<!-- lps/start --><div id="' . esc_attr( self::$args->shortcode_id ) . '-wrap" data-args="' . esc_js( $data_args_string ) . '" data-current="' . (int) get_the_ID() . '" data-perpage="' . (int) $pagination_per_page . '" data-total="' . (int) $found_posts . '" class="lps-top-section-wrap' . esc_attr( $maybe_spinner ) . '" data-url="' . esc_url( \get_pagenum_link( 1 ) ) . '"' . $data_exclude . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 					if ( is_multisite() && self::$args->site_initial !== self::$args->site_expected ) {
 						switch_to_blog( self::$args->site_expected );
@@ -2100,7 +2161,7 @@ class Latest_Post_Shortcode {
 			}
 
 			if ( self::$args->nav_above ) {
-				echo str_replace( 'lps-pagination-wrap', 'before lps-pagination-wrap', $pagination_html ); // phpcs:ignore
+				echo str_replace( 'lps-pagination-wrap', 'before lps-pagination-wrap', $pagination_html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 		}
 
@@ -2170,29 +2231,29 @@ class Latest_Post_Shortcode {
 					$start       = '<div id="' . esc_attr( self::$args->shortcode_id ) . '" class="' . trim( esc_attr( self::$args->section_class ) ) . '">' . $start;
 					$forced_end .= '</div>';
 				}
-				echo $start; // phpcs:ignore
+				echo $start; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 
 			if ( $is_lps_ajax_call ) {
 				// Nothing to output for the section start.
 				$section_start = '';
 			}
-			echo $section_start; // phpcs:ignore
+			echo $section_start; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 			global $last_tiles_img;
 			foreach ( $posts as $postobj ) {
-				$post = $postobj; // phpcs:ignore
+				$post = $postobj; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 
 				// Collect the IDs for the current page from the shortcode results.
 				array_push( $lps_current_post_embedded_item_ids, $postobj->ID );
 
 				if ( self::$args->card_custom ) {
 					if ( ! self::$args->is_ver2 ) { // Legacy custom card markup.
-						$card_markup = apply_filters_deprecated( 'lps_filter_use_custom_tile_markup', [ self::$args->card_pattern, $postobj, $args ], '11.4.0', 'lps/override_card' ); // phpcs:ignore
+						$card_markup = apply_filters_deprecated( 'lps_filter_use_custom_tile_markup', [ self::$args->card_pattern, $postobj, $args ], '11.4.0', 'lps/override_card' );
 					} else { // Custom card markup.
 						$card_markup = apply_filters( 'lps/override_card', '', self::$args->card_filter, $postobj, $args, self::$args->card_type );
 					}
-					echo $card_markup; // phpcs:ignore
+					echo $card_markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				} else {
 					$tile = self::$args->card_pattern;
 
@@ -2278,7 +2339,7 @@ class Latest_Post_Shortcode {
 						self::$args->card_type
 					);
 
-					echo $card_markup; // phpcs:ignore
+					echo $card_markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				}
 			}
 
@@ -2294,9 +2355,9 @@ class Latest_Post_Shortcode {
 			);
 
 			if ( self::$args->card_custom && ! self::$args->is_ver2 ) { // Legacy markup.
-				echo apply_filters_deprecated( 'lps_filter_use_custom_section_markup_end', [ self::$args->card_pattern, self::$args->shortcode_id, self::$args->section_class, $args ], '11.4.0', 'lps/override_section_end' ); // phpcs:ignore
+				echo apply_filters_deprecated( 'lps_filter_use_custom_section_markup_end', [ self::$args->card_pattern, self::$args->shortcode_id, self::$args->section_class, $args ], '11.4.0', 'lps/override_section_end' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				if ( ! empty( $forced_end ) ) {
-					echo $forced_end; // phpcs:ignore
+					echo $forced_end; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				}
 			}
 
@@ -2304,18 +2365,18 @@ class Latest_Post_Shortcode {
 				// Nothing to output for the section end.
 				$section_end = '';
 			}
-			echo $section_end; // phpcs:ignore
+			echo $section_end; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		} elseif ( ! empty( $args['fallback'] ) ) {
 				echo '<div class="lps-placeholder">' . wp_kses_post( $args['fallback'] ) . '</div>';
 		}
 
 		if ( ! empty( $qargs['posts_per_page'] ) && ! empty( $args['showpages'] ) ) {
 			if ( self::$args->nav_below ) {
-				echo str_replace( 'lps-pagination-wrap', 'after lps-pagination-wrap', $pagination_html ); // phpcs:ignore
+				echo str_replace( 'lps-pagination-wrap', 'after lps-pagination-wrap', $pagination_html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 		}
 
-		echo $closing_tag; // phpcs:ignore
+		echo $closing_tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		$result = ob_get_clean();
 		wp_reset_postdata(); // Previously wp_reset_query(), but new CS now.
@@ -2471,7 +2532,7 @@ class Latest_Post_Shortcode {
 	 * @param string $where The where statement.
 	 * @param object $obj   The query object.
 	 */
-	public static function attachment_custom_where( $where, $obj ): string { // phpcs:ignore
+	public static function attachment_custom_where( $where, $obj ): string {
 		global $wpdb;
 		if ( is_scalar( self::$current_query_statuses_list ) ) {
 			$list = explode( ',', self::$current_query_statuses_list );
@@ -2498,18 +2559,20 @@ class Latest_Post_Shortcode {
 	 * @param string $join The join statement.
 	 * @param object $obj  The query object.
 	 */
-	public static function attachment_custom_join( $join, $obj ): string { // phpcs:ignore
+	public static function attachment_custom_join( $join, $obj ): string {
 		global $wpdb;
 		$join = str_replace( 'LEFT JOIN ' . $wpdb->posts . ' AS p2 ON (' . $wpdb->posts . '.post_parent = p2.ID) ', '', $join );
 		return $join;
 	}
+
+	// phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter.Found
 
 	/**
 	 * Return empty for the attachment paragraph that embeds the image in the content.
 	 *
 	 * @param string $p The paragraph.
 	 */
-	public static function remove_attachment_content_p( $p ): string { // phpcs:ignore
+	public static function remove_attachment_content_p( $p ): string {
 		return '';
 	}
 
@@ -2519,7 +2582,7 @@ class Latest_Post_Shortcode {
 	 * @param object $post The post object.
 	 * @param bool   $raw  Use or not raw content.
 	 */
-	public static function maybe_post_excerpt( $post, $raw = false ): string { // phpcs:ignore
+	public static function maybe_post_excerpt( $post, $raw = false ): string {
 		if ( $raw ) {
 			$excerpt = wp_kses_post( strip_shortcodes( $post->post_excerpt ) );
 		} else {
@@ -2534,7 +2597,7 @@ class Latest_Post_Shortcode {
 	 * @param object $post The post object.
 	 * @param bool   $raw  Use or not raw content.
 	 */
-	public static function maybe_post_content( $post, $raw = false ): string { // phpcs:ignore
+	public static function maybe_post_content( $post, $raw = false ): string {
 		if ( $raw ) {
 			$content = wp_kses_post( $post->post_content );
 		} else {
@@ -2550,18 +2613,17 @@ class Latest_Post_Shortcode {
 	 * @param string $text Initial text.
 	 */
 	public static function strip_quotes( $text ): string {
-		// phpcs:disable
+		// phpcs:disable WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine
 		$quotes = [
-			// "'", '"', // Straight quotes.
 			'‘', '’', '“', '”', // Curly quotes.
 			'‹', '›', '«', '»', // Angle quotes.
 			'′', '″', '‵', '‶', '˵', '˶', // Prime marks and modifier letters.
 			'「', '」', '『', '』', // Japanese quotation marks.
 			'《', '》', // Chinese double angle quotation marks.
 			'„', // Low double quotes.
-			'＂', '＇' // Fullwidth quotation marks.
+			'＂', '＇', // Fullwidth quotation marks.
 		];
-		// phpcs:enable
+		// phpcs:enable WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine
 
 		$result = str_replace( $quotes, '', $text );
 		return $result;
@@ -2576,7 +2638,7 @@ class Latest_Post_Shortcode {
 	 * @param bool   $raw      Use or not raw content.
 	 * @param string $trimmore Maybe some trailing extra chars for truncated string.
 	 */
-	public static function compute_tile_text( $post, $extra = [], $limit = 120, $raw = false, $trimmore = '' ): string { // phpcs:ignore
+	public static function compute_tile_text( $post, $extra = [], $limit = 120, $raw = false, $trimmore = '' ): string {
 		if ( 'attachment' === $post->post_type ) {
 			add_filter( 'prepend_attachment', [ get_called_class(), 'remove_attachment_content_p' ] );
 		}
@@ -2613,7 +2675,7 @@ class Latest_Post_Shortcode {
 	 * @param int    $max_len Max chars.
 	 * @param string $end     The ending string.
 	 */
-	public static function trim_html_to_length( $title, $max_len = 30, $end = '...' ): string { // phpcs:ignore
+	public static function trim_html_to_length( $title, $max_len = 30, $end = '...' ): string {
 		$current_len = 0;
 
 		$title = strip_shortcodes( $title );
@@ -2778,7 +2840,7 @@ class Latest_Post_Shortcode {
 	/**
 	 * Compute extra elements in the card patterns.
 	 */
-	public static function card_pattern_extra(): string { // phpcs:ignore
+	public static function card_pattern_extra(): string {
 		$pattern = str_replace( '[a][title][/a]', '[atitlea]', self::$args->card_pattern );
 
 		if ( in_array( 'date', self::$args->display_list, true ) ) {
@@ -2925,16 +2987,18 @@ class Latest_Post_Shortcode {
 	 *
 	 * @param string $str The string.
 	 */
-	public static function cleanup_title( string $str ): string { // phpcs:ignore
+	public static function cleanup_title( string $str ): string {
 		return ( ! empty( $str ) ) ? str_replace( ']', '', str_replace( '[', '', $str ) ) : '';
 	}
+
+	// phpcs:disable Universal.NamingConventions.NoReservedKeywordParameterNames.stringFound
 
 	/**
 	 * Select a random placeholder.
 	 *
 	 * @param string $string The list of placeholders separated by comma.
 	 */
-	public static function select_random_placeholder( string $string = '' ): string { // phpcs:ignore
+	public static function select_random_placeholder( string $string = '' ): string {
 		if ( empty( $string ) ) {
 			return '';
 		}
@@ -3338,7 +3402,7 @@ class Latest_Post_Shortcode {
 	 * @param array $args      Shortcode settings.
 	 * @param bool  $use_cache Use cache for the slider shortcode.
 	 */
-	public static function latest_selected_content_slider( $posts, $args, $use_cache = false ) { // phpcs:ignore
+	public static function latest_selected_content_slider( $posts, $args, $use_cache = false ) {
 		if ( empty( $posts ) ) {
 			return;
 		}
@@ -3353,7 +3417,7 @@ class Latest_Post_Shortcode {
 	 * @param  bool   $is_css  String to CSS or not.
 	 * @return string
 	 */
-	public static function custom_minify( $content, $is_css = false ) { // phpcs:ignore
+	public static function custom_minify( $content, $is_css = false ) {
 		// Minify the output.
 		$content = trim( $content );
 
@@ -3386,7 +3450,9 @@ class Latest_Post_Shortcode {
 	 *
 	 * @param bool $rebuild True to rebuild.
 	 */
-	public static function maybe_rebuild_assets( $rebuild ) { // phpcs:ignore
+	public static function maybe_rebuild_assets( $rebuild ) {
+		// phpcs:disable WordPress.PHP.NoSilencedErrors.Discouraged
+		// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
 		if ( true === $rebuild ) {
 			update_option( self::ASSETS_VERSION, gmdate( 'Ymd.Hi' ) );
 		}
@@ -3394,9 +3460,9 @@ class Latest_Post_Shortcode {
 		$original = __DIR__ . '/assets/sources/modal.js';
 		$script1  = __DIR__ . '/assets/modal.js';
 		if ( ( true === $rebuild && file_exists( $original ) ) || ! file_exists( $script1 ) ) {
-			$content = @file_get_contents( $original ); // phpcs:ignore
+			$content = @file_get_contents( $original );
 			$content = self::custom_minify( $content );
-			@file_put_contents( $script1, $content ); // phpcs:ignore
+			@file_put_contents( $script1, $content );
 		}
 	}
 
@@ -3405,14 +3471,11 @@ class Latest_Post_Shortcode {
 	 *
 	 * @param array $links Plugin links.
 	 */
-	public static function plugin_action_links( $links ): array { // phpcs:ignore
-		return array_merge(
-			[
-				'<a href="' . esc_url( admin_url( 'options-reading.php#lps-settings' ) ) . '">' . esc_html__( 'Settings', 'lps' ) . '</a>',
-				'<a href="https://iuliacazan.ro/latest-post-shortcode">' . esc_html__( 'Plugin URL', 'lps' ) . '</a>',
-			],
-			$links
-		);
+	public static function plugin_action_links( $links ): array {
+		return array_merge( [
+			'<a href="' . esc_url( admin_url( 'options-reading.php#lps-settings' ) ) . '">' . esc_html__( 'Settings', 'lps' ) . '</a>',
+			'<a href="https://iuliacazan.ro/latest-post-shortcode">' . esc_html__( 'Plugin URL', 'lps' ) . '</a>',
+		], $links );
 	}
 
 	/**
@@ -3447,7 +3510,7 @@ class Latest_Post_Shortcode {
 	 *
 	 * @param bool $ajax Is AJAX call.
 	 */
-	public static function plugin_admin_notices_cleanup( $ajax = true ) { // phpcs:ignore
+	public static function plugin_admin_notices_cleanup( $ajax = true ) {
 		// Delete transient, only display this notice once.
 		delete_transient( self::PLUGIN_TRANSIENT );
 
@@ -3526,7 +3589,7 @@ class Latest_Post_Shortcode {
 			<?php
 			$style = '#trans123super{--color-bg:rgba(63,77,183,.1); --color-border:rgb(63,77,183); border-left-color:var(--color-border);padding:0 38px 0 0!important}#trans123super *{margin:0}#trans123super .dashicons{color:var(--color-border)}#trans123super a{text-decoration:none}#trans123super img{display:flex;}#trans123super .content,#trans123super .details{display:flex;gap:1rem;padding-block:.5em}#trans123super .details{align-items:center;flex-wrap:wrap;padding-block:0}#trans123super .details>*{flex:1 1 35rem}#trans123super .details .notice-plugin-donate{flex:1 1 auto}#trans123super .details .notice-plugin-donate img{max-width:100%}#trans123super .icon{background:var(--color-bg);flex:0 0 4rem;margin:-.5em 0;padding:1rem}#trans123super .icon img{display:flex;height:auto;width:4rem} #trans123super h3{margin-bottom:0.5rem;text-transform:none}';
 			$style = str_replace( '#trans123super', '#item-' . esc_attr( $slug ), $style );
-			echo '<style>' . $style . '</style>'; // phpcs:ignore
+			echo '<style>' . $style . '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			?>
 			<script>function dismiss_notice_for_<?php echo esc_attr( $slug ); ?>() { document.getElementById( 'item-<?php echo esc_attr( $slug ); ?>' ).style='display:none'; fetch( '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>?action=plugin-deactivate-notice-<?php echo esc_attr( LPS_PLUGIN_SLUG ); ?>' ); }</script>
 			<?php
@@ -3714,7 +3777,7 @@ class Latest_Post_Shortcode {
 			add_allowed_options( $allowed_options );
 		} else {
 			// Fallback to old function.
-			add_option_whitelist( $allowed_options ); // phpcs:ignore
+			add_option_whitelist( $allowed_options ); // phpcs:ignore WordPress.WP.DeprecatedFunctions.add_option_whitelistFound
 		}
 
 		add_settings_field(

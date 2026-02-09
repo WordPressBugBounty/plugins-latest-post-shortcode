@@ -6,9 +6,9 @@
  * @package lps
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
+// phpcs:disable WordPress.WP.I18n.TextDomainMismatch
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Main Elementor LPS extension class

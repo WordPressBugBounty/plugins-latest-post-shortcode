@@ -6,6 +6,8 @@
  * @package lps
  */
 
+// phpcs:disable WordPress.WP.I18n.TextDomainMismatch
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound
 /**
  * LPS Elementor Widget class.
  */

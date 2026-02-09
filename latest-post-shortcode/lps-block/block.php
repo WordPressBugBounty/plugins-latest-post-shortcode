@@ -5,11 +5,12 @@
  *
  * @package lps
  */
+
+// phpcs:disable WordPress.WP.I18n.TextDomainMismatch
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedNamespaceFound
 namespace LPS\Block;
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
+defined( 'ABSPATH' ) || exit;
 
 require_once __DIR__ . '/block-preview.php';
 
