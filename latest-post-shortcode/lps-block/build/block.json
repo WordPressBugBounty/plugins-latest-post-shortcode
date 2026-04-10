@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "latest-post-shortcode/lps-block",
   "title": "Latest Post Shortcode",
   "textdomain": "lps",
@@ -17,11 +17,13 @@
   ],
   "supports": {
     "html": false,
+    "anchor": true,
     "align": [
       "center",
       "wide",
       "full"
     ],
+    "customCSS": false,
     "color": {
       "background": true,
       "gradients": true,

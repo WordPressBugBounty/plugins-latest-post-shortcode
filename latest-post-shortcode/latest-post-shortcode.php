@@ -5,7 +5,7 @@
  * Description: This plugin allows you to display a dynamic content selection from your posts and pages. This can be embedded as a shortcode, as a Gutenberg block, or as an Elementor widget.
  * Text Domain: lps
  * Domain Path: /langs
- * Version:     14.2.2
+ * Version:     14.2.3
  * Author:      Iulia Cazan
  * Author URI:  https://profiles.wordpress.org/iulia-cazan
  * Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JJA37EHZXWUTJ
@@ -33,7 +33,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Define the plugin version.
-define( 'LPS_PLUGIN_VERSION', 14.22 );
+define( 'LPS_PLUGIN_VERSION', 14.23 );
 define( 'LPS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LPS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'LPS_PLUGIN_SLUG', 'lps' );
@@ -206,6 +206,7 @@ class Latest_Post_Shortcode {
 
 		if ( is_admin() ) {
 			add_action( 'admin_footer', [ $class, 'add_settings_modal' ] );
+			add_action( 'enqueue_block_assets', [ $class, 'load_admin_assets' ] );
 			add_action( 'admin_enqueue_scripts', [ $class, 'load_admin_assets' ] );
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), [ $class, 'plugin_action_links' ] );
 		} else {
@@ -823,8 +824,9 @@ class Latest_Post_Shortcode {
 	 * @param int    $limit   Limit of chars.
 	 * @param bool   $excerpt True if this represents an excerpt.
 	 * @param string $suffix  Maybe some trailing extra chars for truncated string.
+	 * @param bool   $title   True if this represents a title.
 	 */
-	public static function get_short_text( $text, $limit, $excerpt = false, $suffix = '' ): string {
+	public static function get_short_text( $text, $limit, $excerpt = false, $suffix = '', $title = false ): string {
 		if ( empty( $text ) ) {
 			// Fail-fast.
 			return '';
@@ -832,6 +834,7 @@ class Latest_Post_Shortcode {
 
 		// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound
 		$hook = $excerpt ? 'the_excerpt' : 'the_content';
+		$hook = ! empty( $title ) ? 'the_title' : $hook;
 		$text = wp_strip_all_tags( $text );
 		$text = preg_replace( '~\[[^\]]+\]~', '', $text );
 		$text = strip_shortcodes( $text );
@@ -3311,7 +3314,7 @@ class Latest_Post_Shortcode {
 	public static function card_title( string $title, string $tile, string $start = '', string $end = '' ): string {
 		if ( self::in_display( 'title' ) ) {
 			if ( self::$args->is_ver2 && self::$args->text_trim ) { // Version >= 2 markup.
-				$title = self::get_short_text( $title, self::$args->chrlimit, false, self::$args->trimmore );
+				$title = self::get_short_text( $title, self::$args->chrlimit, false, self::$args->trimmore, true );
 				if ( ! empty( $title ) ) {
 					$title = wp_strip_all_tags( $title );
 				}

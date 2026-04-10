@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 14.2.2 =
+* Tested up to 6.9.1
+* PHP 8.4 compatibility
+* Added the new filter `lps/filter_front_end_statuses`
+* Fixed the post status vulnerability
+
 = 14.2.1 =
 * Tested up to 6.9
 * Styles changes to allow for gradient as card background

@@ -17,6 +17,7 @@ defined( 'ABSPATH' ) || exit;
 \add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\use_script_inline', 0 );
 \add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\use_script_inline', 0 );
 \add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\fix_assets_ver', 90 );
+\add_action( 'enqueue_block_assets', __NAMESPACE__ . '\\use_script_block_canvas', 0 );
 
 /**
  * Returns the assets version to be used.
@@ -67,7 +68,14 @@ function use_script_inline() {
 			false
 		);
 	}
+}
 
+/**
+ * Enqueue masonry and filters scripts via enqueue_block_assets so they load
+ * inside the editor iframe (WP 6.x) as well as on the frontend, ensuring
+ * document.querySelectorAll runs in the correct document context.
+ */
+function use_script_block_canvas() {
 	$path = LPS_PLUGIN_DIR . 'lps-block/build/masonry.asset.php';
 	if ( file_exists( $path ) && ! \wp_script_is( 'latest-post-shortcode-lps-block-masonry-script' ) ) {
 		\wp_enqueue_script(

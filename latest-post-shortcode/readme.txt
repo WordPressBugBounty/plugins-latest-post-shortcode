@@ -3,8 +3,8 @@ Contributors: Iulia Cazan
 Donate Link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JJA37EHZXWUTJ
 Tags: posts grid, posts shortcode, Gutenberg block, paginated posts, configurable shortcode with UI
 Requires at least: 5.5.0
-Tested up to: 6.9
-Stable tag: 14.2.2
+Tested up to: 7.0
+Stable tag: 14.2.3
 Requires PHP: 7.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -70,10 +70,11 @@ No mentions
 
 == Changelog ==
 
-= 14.2.2 =
-* Tested up to 6.9.1
+= 14.2.3 =
+* Tested up to 7.0
 * PHP 8.4 compatibility
-* Added the new filter `lps/filter_front_end_statuses`
-* Fixed the post status vulnerability
+* Prepares the styles for core next standardized UI component heights
+* Block apiVersion 3 and compatibility updates
+* Fixed the console warning for empty color value
 
 See the [changelog](https://plugins.svn.wordpress.org/latest-post-shortcode/trunk/changelog.txt) for detailed information on changes made in the earlier versions.
